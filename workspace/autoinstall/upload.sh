@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# description:  This is a helper script that will upload all the directories into an artifactory generic repo.  It's equivalent to serving this directory as a static web server.
+# Description:
+# This is a helper script that will upload all the directories into a generic repo called 'files'.
+# It's equivalent to serving this directory as a static web server.
 
 BASEDIR=$(dirname $BASH_SOURCE)
 
