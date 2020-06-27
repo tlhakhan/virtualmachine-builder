@@ -1,0 +1,14 @@
+{
+  "vm_hostname": "ubuntu-01",
+  "vm_cpus": "4",
+  "vm_username":"ubuntu",
+  "vm_memory": "4096",
+  "vm_disk_adapter_type": "nvme",
+  "vm_disk_size": "32768",
+  "vm_guest_os_type": "ubuntu-64",
+  "vm_boot_command":"chain http://repo.home.local/artifactory/files/ubuntu2004/ubuntu2004.ipxe",
+  "ansible_playbook_file":"ubuntu2004.yml",
+  "esx_server": "vs-200",
+  "esx_datastore": "nvme1",
+  "esx_network": "VM Network"
+}
