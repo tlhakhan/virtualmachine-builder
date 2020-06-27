@@ -1,0 +1,11 @@
+---
+version: '3'
+services:
+  packer:
+    build:
+      context: ./packer
+    volumes:
+      - ./vimrc:/root/.vimrc
+      - ./workspace:/packer
+      - ./ssh:/keys
+    entrypoint: bash /packer/start.sh

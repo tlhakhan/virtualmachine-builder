@@ -1,0 +1,6 @@
+[submodule "ssh"]
+	path = ssh
+	url = https://github.com/tlhakhan/ssh
+[submodule "workspace/playbooks"]
+	path = workspace/playbooks
+	url = https://github.com/tlhakhan/postinstall-playbooks
