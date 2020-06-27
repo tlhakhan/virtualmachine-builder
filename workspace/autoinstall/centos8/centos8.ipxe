@@ -1,0 +1,6 @@
+#!ipxe
+# centos 8 
+set base http://repo.home.local/artifactory/centos/8/BaseOS/x86_64/os/images/pxeboot
+kernel ${base}/vmlinuz initrd=initrd.img inst.text noipv6 net.ifnames=0 biosdevname=0 inst.ks=http://repo.home.local/artifactory/files/centos8/centos8.ks
+initrd ${base}/initrd.img
+boot

@@ -1,0 +1,6 @@
+#!ipxe
+# centos 7
+set base http://repo.home.local/artifactory/centos/7/os/x86_64/images/pxeboot
+kernel ${base}/vmlinuz initrd=initrd.img inst.text noipv6 net.ifnames=0 biosdevname=0 inst.ks=http://repo.home.local/artifactory/files/centos7/centos7.ks
+initrd ${base}/initrd.img
+boot

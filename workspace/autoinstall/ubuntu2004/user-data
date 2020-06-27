@@ -1,0 +1,48 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  early-commands:
+    - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+
+  network:
+    network:
+      version: 2
+      ethernets:
+        eth0:
+          dhcp4: yes
+          dhcp-identifier: mac
+
+  apt:
+    preserve_sources_list: false
+    primary:
+      - arches: [amd64]
+        uri: "http://repo.home.local/artifactory/ubuntu-archive-remote/ubuntu"
+
+  ssh:
+    install-server: yes
+    authorized-keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+B6xVQx5giGb7uJ+lvdWZEGJgIufq23wr/xGMin4f0+3LB3qDIt536kknG2j35V7BKqpPqF87IrAwtdNC91XKrDuJJ2UafEoeQnDjz8VFdD/SWrkvbiE7UfkVwjgJrpDcgGrcAe5K2Q2ZD4y6v/Ij2CdTaNN0vv0te6VwpJwvt1c0gyNNNGZuc/FLcGPoNnCTXldf2o0rF9LhyJA6lIUFPL7cE6lVgt1k727CHxpYNGaNSOAHMg4N1x47pHw46tRsGVYdrVLjp0g5DQPzUcGaE3eBqC5Hs3kYixbdpvP9Yi6rZZlFJe7EniPnpBsDyEbhnGYmyNW8Brucm61SzM8d"
+    allow-pw: no
+
+  identity:
+    hostname: localhost
+    password: "$6$FhcddHFVZ7ABA4Gi$9l4yURWASWe8xEa1jzI0bacVLvhe3Yn4/G3AnU11K3X0yu/mICVRxfo6tZTB2noKljlIRzjkVZPocdf63MtzC0" # root
+    username: ubuntu # root doesn't work
+
+  storage:
+    layout:
+      name: lvm
+
+  packages:
+    - git
+    - ansible
+    - open-vm-tools
+
+  user-data:
+    disable_root: false 
+
+  late-commands:
+    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
+    - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 ipv6.disable=1 biosdevname=0"/' /target/etc/default/grub
+    - curtin in-target --target /target update-grub2

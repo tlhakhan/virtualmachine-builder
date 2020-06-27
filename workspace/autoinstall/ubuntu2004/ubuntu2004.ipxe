@@ -1,0 +1,13 @@
+#!ipxe
+# ubuntu focal 20.04
+
+# $seedfrom used to find the user-data and meta-data files by nocloud-net provider for cloud-init.
+# the trailing slash is important, the cloud-init sticks 'meta-data' or 'user-data' right after it, without prepending a forward slash.
+set seedfrom http://repo.home.local/artifactory/files/ubuntu2004/
+
+# $base url is where the vmlinuz and initrd live, they were fished out from the live-server iso file, the iso file is also in this directory.
+set base http://repo.home.local/artifactory/iso_library/ubuntu2004
+
+kernel ${base}/vmlinuz autoinstall url=${base}/ubuntu-20.04-live-server-amd64.iso net.ifnames=0 biosdevname=0 ip=dhcp ipv6.disable=1 ds=nocloud-net;s=${seedfrom}
+initrd ${base}/initrd
+boot
