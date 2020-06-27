@@ -1,0 +1,59 @@
+{
+  "builders": [{
+          "type": "vmware-iso",
+          "boot_command": [ 
+            "<wait>",
+            "{{ user `vm_boot_command` }}",
+            "<enter>"
+          ],
+          "iso_url":"http://repo.home.local/artifactory/iso_library/empty.iso",
+          "iso_checksum":"4b58e1ea0f4975286da9760565eeae06",
+          "iso_checksum_type":"md5",
+          "vm_name": "{{ user `vm_hostname` }}",
+          "ssh_username": "{{ user `vm_username` }}",
+          "ssh_private_key_file": "/keys/packer.private",
+          "ssh_timeout": "25m",
+          "shutdown_command": "sudo shutdown -P now",
+          "remote_type": "esx5",
+          "remote_host": "{{ user `esx_server`}}",
+          "remote_port": "22",
+          "remote_datastore": "{{ user `esx_datastore` }}",
+          "remote_cache_datastore": "{{ user `esx_datastore` }}",
+          "remote_cache_directory": "packer_cache",
+          "remote_username": "root",
+          "remote_private_key_file": "/keys/vmware-esx.private",
+          "disable_vnc": false,
+          "guest_os_type": "{{ user `vm_guest_os_type`}}",
+          "cpus": "{{ user `vm_cpus` }}",
+          "memory": "{{ user `vm_memory` }}",
+          "version": "15",
+          "network_adapter_type": "vmxnet3",
+          "vmx_data": {
+              "RemoteDisplay.vnc.enabled": "true",
+              "RemoteDisplay.vnc.port": "5900",
+              "ethernet0.networkName": "{{ user `esx_network` }}",
+              "numa.autosize.once" : "false",
+              "numa.autosize" : "true",
+              "mem.hotadd" : "true",
+              "vcpu.hotadd" : "true",
+              "vmxnet3.rev.30": "false"
+          },
+          "vnc_bind_address": "0.0.0.0",
+          "vnc_disable_password": true,
+          "disk_adapter_type": "{{ user `vm_disk_adapter_type` }}",
+          "disk_size": "{{ user `vm_disk_size` }}",
+          "keep_registered":true,
+          "skip_export": true,
+          "disk_type_id": "thin",
+          "format": "vmx"
+      }
+  ],
+  "provisioners":[
+    {
+      "type":"ansible-local",
+      "extra_arguments": [ "-e vm_hostname={{ user `vm_hostname` }}" ],
+      "playbook_file":"/packer/playbooks/{{ user `ansible_playbook_file` }}",
+      "playbook_dir":"/packer/playbooks"
+    }
+   ]
+}
