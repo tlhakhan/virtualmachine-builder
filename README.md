@@ -1,11 +1,11 @@
 # README
-- A docker-compose project which uses a packer container to build a VM on an ESXi hypervisor.
+A docker-compose project which uses a packer container to build a VM on an ESXi hypervisor.
 
 ## var-files
-- There is a folder called `var-files` which should contain your VM configuration as a json file.
+There is a folder called `var-files` which should contain your VM configuration as a json file.
 
 ## Walkthrough
-- Place your VM configuration json in the `var-files` folder, named after the VM.
+Place your VM configuration json in the `var-files` folder, named after the VM.
 - Run the `docker-compose run packer [ vm-name ]`.
 - If no argument given, it will fail with a help message requesting a VM name.
 
