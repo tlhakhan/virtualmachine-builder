@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # the var file named after the vm
 VM_NAME=$1
