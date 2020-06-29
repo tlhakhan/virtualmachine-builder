@@ -52,7 +52,7 @@
     {
       "type":"ansible-local",
       "extra_arguments": [ "-e vm_hostname={{ user `vm_hostname` }}" ],
-      "playbook_file":"/packer/playbooks/{{ user `ansible_playbook_file` }}",
+      "playbook_file":"/packer/playbooks/main.yml",
       "playbook_dir":"/packer/playbooks"
     }
    ]
