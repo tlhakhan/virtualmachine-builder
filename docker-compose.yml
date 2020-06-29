@@ -4,6 +4,9 @@ services:
   packer:
     build:
       context: ./packer
+    dns_search: home.local
+    dns:
+      - 192.168.200.1
     volumes:
       - ./vimrc:/root/.vimrc
       - ./workspace:/packer
