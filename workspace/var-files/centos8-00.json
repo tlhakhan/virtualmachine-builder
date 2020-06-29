@@ -6,8 +6,7 @@
   "vm_disk_size": "32768",
   "vm_guest_os_type": "centos8-64",
   "vm_boot_command":"chain http://repo.home.local/artifactory/files/centos8/centos8.ipxe",
-  "esx_server": "vs-200",
-  "esx_datastore": "nvme2",
-  "esx_network": "VM Network",
-  "ansible_playbook_file":"centos8.yml"
+  "esx_server": "vs-22",
+  "esx_datastore": "datastore1",
+  "esx_network": "VM Network"
 }

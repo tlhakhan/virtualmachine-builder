@@ -1,0 +1,13 @@
+{
+  "vm_hostname": "ubuntu-00",
+  "vm_cpus": "4",
+  "vm_username":"ubuntu",
+  "vm_memory": "4096",
+  "vm_disk_adapter_type": "nvme",
+  "vm_disk_size": "32768",
+  "vm_guest_os_type": "ubuntu-64",
+  "vm_boot_command":"chain http://repo.home.local/artifactory/files/ubuntu2004/ubuntu2004.ipxe",
+  "esx_server": "vs-22",
+  "esx_datastore": "datastore1",
+  "esx_network": "VM Network"
+}
