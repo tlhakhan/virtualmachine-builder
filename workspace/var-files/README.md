@@ -1,4 +1,5 @@
-# var-files definitions
+# README
+## var-files
 The key values are self explanatory, they will be used by the packer templates as [user variables](https://packer.io/docs/templates/user-variables.html).
 
 key | value
@@ -14,9 +15,8 @@ key | value
 `esx_server` | The ESXi host where the vm will be created upon.
 `esx_datastore` | The name of the datastore on the ESXi host where the vm's vmdk will be placed upon.
 `esx_network` | The name of the network on the ESXi host where the vm's vmnic will be placed upon.
-`ansible_playbook_file` | This is the ansible-playbook file that packer will run in the provisioner step.  The playbooks names are referenced relative from the `packer/playbooks` directory.
 
-# example var-file
+### example var-file
 ```json
 {
   "vm_hostname": "centos8-00",
@@ -29,7 +29,6 @@ key | value
   "vm_boot_command":"chain http://repo.home.local/artifactory/files/centos8/centos8.ipxe",
   "esx_server": "vs-200",
   "esx_datastore": "nvme2",
-  "esx_network": "VM Network",
-  "ansible_playbook_file":"centos8.yml"
+  "esx_network": "VM Network"
 }
 ```
