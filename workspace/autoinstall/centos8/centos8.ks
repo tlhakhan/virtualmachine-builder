@@ -46,13 +46,13 @@ services --disabled="kdump" --enabled="sshd,NetworkManager,rngd,chronyd"
 timezone America/New_York
 
 # Disk partitioning information
-part /boot --fstype=xfs --size=1024 --ondisk=sda
+part /boot --fstype=xfs --size=256 --ondisk=sda
 part pv.01 --fstype=lvmpv --size=1 --grow --ondisk=sda
 
 # create lvm
 volgroup vg_root pv.01
 
-logvol swap --vgname=vg_root --fstype=swap --size=4096 --name=lv_swap
+logvol swap --vgname=vg_root --fstype=swap --size=768 --name=lv_swap
 logvol / --vgname=vg_root --fstype=xfs --size=4096 --grow --name=lv_root
 
 
