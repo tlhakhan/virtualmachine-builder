@@ -2,7 +2,7 @@
   "builders": [{
           "type": "vmware-iso",
           "boot_command": [ 
-            "<wait>",
+            "<wait15>",
             "{{ user `vm_boot_command` }}",
             "<enter>"
           ],
