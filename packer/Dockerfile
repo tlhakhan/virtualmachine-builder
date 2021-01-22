@@ -1,6 +1,6 @@
-FROM repo.home.local/tlhakhan/centos8:latest
+FROM repo.home.local/tlhakhan/os/centos:centos8
 
-ENV PACKER_VERSION=1.5.4
+ENV PACKER_VERSION=1.6.3
 
 RUN yum makecache && \
     yum install -y unzip python3 python3-pip ansible vim vim-enhanced jq

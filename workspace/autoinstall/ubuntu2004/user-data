@@ -17,7 +17,7 @@ autoinstall:
     preserve_sources_list: false
     primary:
       - arches: [amd64]
-        uri: "http://repo.home.local/artifactory/ubuntu-archive-remote/ubuntu"
+        uri: "http://repo.home.local/artifactory/ubuntu"
 
   ssh:
     install-server: yes

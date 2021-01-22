@@ -9,5 +9,5 @@ services:
       - 192.168.200.1
     volumes:
       - ./workspace:/packer
-      - ./ssh:/keys
+      - ./ssh:/root/.ssh:ro
     entrypoint: bash /packer/start.sh
