@@ -2,12 +2,8 @@
 version: '3'
 services:
   packer:
-    build:
-      context: ./packer
-    dns_search: home.local
-    dns:
-      - 192.168.200.1
+    image: repo.home.local/tlhakhan/app/packer:latest
     volumes:
-      - ./workspace:/packer
+      - ./workspace:/workspace
       - ./ssh:/root/.ssh:ro
-    entrypoint: bash /packer/start.sh
+    entrypoint: bash /workspace/start.sh
