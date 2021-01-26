@@ -6,8 +6,8 @@
             "{{ user `vm_boot_command` }}",
             "<enter>"
           ],
-          "iso_url":"http://repo.home.local/artifactory/iso_library/empty.iso",
-          "iso_checksum":"md5:4b58e1ea0f4975286da9760565eeae06",
+          "iso_url":"http://repo.home.local/artifactory/files/ipxe/ipxe.iso",
+          "iso_checksum":"30ff40de8c5f2dd369c0e709e861e048",
           "vm_name": "{{ user `vm_hostname` }}",
           "ssh_username": "{{ user `vm_username` }}",
           "ssh_private_key_file": "~/.ssh/id_rsa",
@@ -49,8 +49,8 @@
     {
       "type":"ansible-local",
       "extra_arguments": [ "-e vm_hostname={{ user `vm_hostname` }}" ],
-      "playbook_file":"/packer/playbooks/main.yml",
-      "playbook_dir":"/packer/playbooks"
+      "playbook_file":"/workspace/playbooks/main.yml",
+      "playbook_dir":"/workspace/playbooks"
     }
    ]
 }
