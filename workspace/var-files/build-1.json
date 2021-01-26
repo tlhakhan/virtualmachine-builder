@@ -1,8 +1,8 @@
 {
-  "vm_hostname": "ubuntu-00",
-  "vm_cpus": "4",
+  "vm_hostname": "build-1",
+  "vm_cpus": "8",
   "vm_username":"ubuntu",
-  "vm_memory": "4096",
+  "vm_memory": "65536",
   "vm_disk_adapter_type": "nvme",
   "vm_disk_size": "131072",
   "vm_guest_os_type": "ubuntu-64",
