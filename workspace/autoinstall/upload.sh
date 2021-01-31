@@ -8,8 +8,7 @@ BASEDIR=$(dirname $BASH_SOURCE)
 
 for folder in $(ls -1d ./*/)
 do
-  folder_name="$(basename $folder)"
-  echo Uploading $folder to files/$folder_name/
-  jfrog rt u $folder files/$folder_name/
+  echo Uploading $folder to files
+  jfrog rt u --flat=false $folder files
   echo
 done
