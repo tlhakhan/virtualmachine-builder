@@ -1,9 +1,0 @@
----
-version: '3'
-services:
-  packer:
-    image: repo.home.local/tlhakhan/app/packer:latest
-    volumes:
-      - ./workspace:/workspace
-      - ./ssh:/root/.ssh:ro
-    entrypoint: bash /workspace/start.sh
