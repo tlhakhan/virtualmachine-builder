@@ -29,18 +29,18 @@ ESX Build Network | The ESXi port group on which to place the vmnic of the virtu
 ESX Build Username | An ESXi user that can build virtual machines on the ESXi host.
 ESX Build Password | The password for the given ESX Build Username.
 
-## Buildng a virtual machine
+## Building a virtual machine
 Use the `build.sh` script to start creating a virtual machine.
 
-### Usage of build.sh
+### Usage of build.sh script
 The `build.sh` script expects two arguments; the path to the template file and the name of the new virtual machine.  The templates are located in the `templates` folder.
 ``` 
 root@dev-1:~/hub/packer-esxi# ./build.sh
 Usage: ./build.sh [ vm template file ] [ vm name ]
 ```
 
-### Example build output
-Below example, a vSphere 6.7u3 virtual machine was created, named vss-61.
+### Example build.sh output
+In the below example, a vSphere 6.7u3 virtual machine is created; named vss-61.
 
 ```
 root@dev-1:~/hub/packer-esxi# ./build.sh templates/vsphere/6.7u4/vm.json vss-61
