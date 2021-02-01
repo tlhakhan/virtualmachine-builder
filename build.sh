@@ -1,27 +1,26 @@
 #!/bin/bash
 set -e
 
-# the var file 
-VM_VAR_FILE=$1
+VM_TEMPLATE_FILE=$1
+VM_HOSTNAME=$2
 
-if [[ -z $VM_VAR_FILE ]]
+if [[ -z $VM_TEMPLATE_FILE || -z $VM_HOSTNAME ]]
 then
-  echo "Provide a virtual machine var-file."
-  echo "Usage: $0 [ vm var-file ]"
+  echo "Usage: $0 [ vm template file ] [ vm name ]"
   exit 1
 fi
 
 if [[ -e .env ]]
 then
-  echo "Sourced .env file"
+  echo "Sourced local .env file"
   source .env
 else
   echo "ESX_BUILD_* environment variables not present. Run the setup_env.sh script."
   exit 1
 fi
 
-echo Validating virtual machine configuration for $VM_VAR_FILE.
-packer validate --var-file $VM_VAR_FILE ./templates/vm.json
+echo Validating virtual machine configuration for $VM_TEMPLATE_FILE.
+packer validate --var="vm_hostname=${VM_HOSTNAME}" $VM_TEMPLATE_FILE
 
-echo Performing virtual machine build for $VM_VAR_FILE.
-packer build --var-file $VM_VAR_FILE ./templates/vm.json
+echo Performing virtual machine build for $VM_TEMPLATE_FILE.
+packer build --var="vm_hostname=${VM_HOSTNAME}" $VM_TEMPLATE_FILE
