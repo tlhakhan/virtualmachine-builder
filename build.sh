@@ -10,6 +10,14 @@ then
   exit 1
 fi
 
+if [[ -e .env ]]
+then
+  source .env
+else
+  echo "No ESX environment variables present."
+  exit 1
+fi
+
 echo Validating virtual machine configuration for $VM_VAR_FILE.
 packer validate --var-file $VM_VAR_FILE ./templates/vm.json
 
