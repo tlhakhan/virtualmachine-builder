@@ -3,7 +3,7 @@ This repo helps build virtual machines using packer on ESXi hosts.  This repo is
 
 file | description
 --- | ---
-`setup_env.sh` | Prompts admin for input to create a `.env` file.  This needs to be run before building an virtual machine.
+`setup_env.sh` | Prompts user for input to create a `.env` file.  This needs to be run before building an virtual machine.
 `build.sh` | A helper script used to build virtual machines.
 `get_packer.sh` | A helper script to install the latest Packer on an Ubuntu control machine.
 
