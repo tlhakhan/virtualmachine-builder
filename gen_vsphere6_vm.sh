@@ -26,11 +26,11 @@ cat << 'eof' >> "$TEMP_VM"
   "vm_disk_adapter_type": "nvme",
   "vm_disk_size": "132768",
   "vm_guest_os_type": "vmkernel6",
-  "vm_boot_command":"dhcp && chain http://repo/artifactory/packer-httpdir/vsphere/7.0b/7.0b.ipxe",
+  "vm_boot_command":"dhcp && chain http://repo/artifactory/packer-httpdir/vsphere/6.7u3/6.7u3.ipxe",
   "vm_vhv": "true",
   "vm_hpet": "true",
   "vm_shutdown_command": "poweroff",
-  "vm_bootstrap_script": "postinstall-scripts/vsphere/7.0b/bootstrap.sh",
+  "vm_bootstrap_script": "postinstall-scripts/vsphere/6.7u3/bootstrap.sh",
   "esx_build_username": "{{ env `ESX_BUILD_USERNAME` }}",
   "esx_build_password": "{{ env `ESX_BUILD_PASSWORD` }}",
   "esx_build_server": "{{ env `ESX_BUILD_SERVER` }}",
@@ -39,4 +39,4 @@ cat << 'eof' >> "$TEMP_VM"
 }
 eof
 
-$BASEDIR/build.sh "$TEMP_VM"
+bash $BASEDIR/build.sh "$TEMP_VM"
