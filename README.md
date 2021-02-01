@@ -33,8 +33,8 @@ ESX Build Password | The password for the given ESX Build Username.
 Use the `build.sh` script to start creating a virtual machine.
 
 ### Usage of build.sh
-The `build.sh` script expects two arguments, the path to the template, and the name of the new virtual machine.
-```
+The `build.sh` script expects two arguments; the path to the template file and the name of the new virtual machine.  The templates are located in the `templates` folder.
+``` 
 root@dev-1:~/hub/packer-esxi# ./build.sh
 Usage: ./build.sh [ vm template file ] [ vm name ]
 ```
