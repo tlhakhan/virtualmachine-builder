@@ -12,7 +12,7 @@
           "ssh_username": "{{ user `vm_username` }}",
           "ssh_password": "{{ user `vm_password` }}",
           "ssh_timeout": "25m",
-          "shutdown_command": "poweroff",
+          "shutdown_command": "{{ user `vm_shutdown_command`}} ",
           "remote_type": "esx5",
           "remote_host": "{{ user `esx_build_server` }}",
           "remote_username": "{{ user `esx_build_username` }}",

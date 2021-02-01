@@ -7,14 +7,16 @@ VM_VAR_FILE=$1
 if [[ -z $VM_VAR_FILE ]]
 then
   echo "Provide a virtual machine var-file."
+  echo "Usage: $0 [ vm var-file ]"
   exit 1
 fi
 
 if [[ -e .env ]]
 then
+  echo "Sourced .env file"
   source .env
 else
-  echo "No ESX environment variables present."
+  echo "ESX_BUILD_* environment variables not present. Run the setup_env.sh script."
   exit 1
 fi
 
