@@ -39,4 +39,4 @@ cat << 'eof' >> "$TEMP_VM"
 }
 eof
 
-$BASEDIR/build.sh $TEMP_VM
+bash $BASEDIR/build.sh $TEMP_VM
