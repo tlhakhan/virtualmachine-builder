@@ -3,7 +3,7 @@ VM_HOSTNAME=$1
 #
 
 BASEDIR=$(dirname $BASH_SOURCE)
-TEMP_VM=$(mktemp --suffix=.json)
+TEMP_VM=$(mktemp --suffix=.json -t "${VM_HOSTNAME}-XXXXXXXXXX")
 
 cat << eof > "$TEMP_VM"
 {
