@@ -9,7 +9,7 @@
     "vm_memory": "8192",
     "vm_disk_size": "102400",
     "vm_guest_username": "sysuser",
-    "vm_guest_password": "Welcome123",
+    "vm_guest_password": "{{ env `VM_GUEST_PASSWORD` }}",
     "vm_shutdown_command": "sudo poweroff",
     "vm_disk_adapter_type": "nvme"
   },
