@@ -3,8 +3,6 @@ This repo helps build virtual machines using packer on ESXi hosts.  This repo is
 
 file | description
 --- | ---
-`setup_env.sh` | Prompts user for input to create a `.env` file.  This needs to be run before building an virtual machine.
-`build.sh` | A helper script used to build virtual machines.
 `get_packer.sh` | A helper script to install the latest Packer.
 
 
@@ -18,6 +16,7 @@ ESX Build Datastore: nvme1
 ESX Build Network: VM Network
 ESX Build Username: builder
 ESX Build Password:
+VM Guest Password:
 Creating .env file
 ```
 
@@ -28,12 +27,14 @@ ESX Build Datastore | The datastore name on which to create virtual machine fold
 ESX Build Network | The ESXi port group on which to place the vmnic of the virtual machine.
 ESX Build Username | An ESXi user that can build virtual machines on the ESXi host.
 ESX Build Password | The password for the given ESX Build Username.
+VM Guest Password | The password used to SSH into the built virtual machine.
 
 ## Building a virtual machine
-Use the `build.sh` script to start creating a virtual machine.
+Use the `build.sh` script create a virtual machine.
 
 ### Usage of build.sh script
-The `build.sh` script expects two arguments; the path to the template file and the name of the new virtual machine.  The templates are located in the `templates` folder.
+The `build.sh` script expects two arguments; the path to the packer template file and the hostname of the new virtual machine.  The templates are located in the `templates` folder.
+
 ``` 
 root@dev-1:~/hub/packer-esxi# ./build.sh
 Usage: ./build.sh [ vm template file ] [ vm name ]
@@ -84,3 +85,9 @@ Build 'vmware-iso' finished after 7 minutes 25 seconds.
 ==> Builds finished. The artifacts of successful builds are:
 --> vmware-iso: VM files in directory: /vmfs/volumes/nvme1/vss-61
 ```
+
+# Appendix
+document | link
+--- | ---
+Get ESXi 7.0b Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi7>
+Get ESXi 6.7u3 Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi6>
