@@ -5,8 +5,8 @@ file | description
 --- | ---
 `build.sh` | A helper script used to build virtual machines.
 `get_packer.sh` | A helper script to install the latest Packer.
-`templates` | A folder that contains the packer vmware-iso templates to build different virtual machine OSes. More details here <https://www.packer.io/docs/builders/vmware/iso>.
-`postinstall-scripts` | A folder that contains shell scripts that is called by the packer shell provisioner.  More details here <https://www.packer.io/docs/provisioners/shell>.
+`templates` | A folder that contains the packer templates for vmware-iso builder to build different virtual machine OSes. 
+`postinstall-scripts` | A folder that contains post-install shell scripts called by the packer shell provisioner. 
 
 
 ## Getting started
@@ -90,3 +90,5 @@ document | link
 --- | ---
 Get ESXi 7.0b Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi7>
 Get ESXi 6.7u3 Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi6>
+Packer vmware-iso builder | <https://www.packer.io/docs/builders/vmware/iso>
+Packer shell provisioner | <https://www.packer.io/docs/provisioners/shell>
