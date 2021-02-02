@@ -90,5 +90,6 @@ document | link
 --- | ---
 Get ESXi 7.0b Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi7>
 Get ESXi 6.7u3 Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esxi6>
+Installing Packer | <https://learn.hashicorp.com/tutorials/packer/getting-started-install>
 Packer vmware-iso builder | <https://www.packer.io/docs/builders/vmware/iso>
 Packer shell provisioner | <https://www.packer.io/docs/provisioners/shell>
