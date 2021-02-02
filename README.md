@@ -7,8 +7,18 @@ file | description
 
 
 ## Getting started
-Run the `setup_env.sh` script to create the `.env` file.  This file's content is eventually consumed by packer. The script will ask for credentials and virtual machine placement on the ESXi host. See below for an example.
+Run the `setup_env.sh` script to create the `.env` file.  This file's content is eventually consumed by packer. The script will ask for credentials and virtual machine placement on the ESXi host. 
 
+prompt | description
+--- | ---
+ESX Build Server | The ESXi host on which to build virtual machines.
+ESX Build Datastore | The datastore name on which to create virtual machine folders.
+ESX Build Network | The ESXi port group on which to place the vmnic of the virtual machine.
+ESX Build Username | An ESXi user that can build virtual machines on the ESXi host.
+ESX Build Password | The password for the given ESX Build Username.
+VM Guest Password | The password to SSH into the built virtual machine.
+
+Example `setup_env.sh` output:
 ```
 root@dev-1:~/hub/packer-esxi# ./setup_env.sh
 ESX Build Server: vs-200
@@ -19,15 +29,6 @@ ESX Build Password:
 VM Guest Password:
 Creating .env file
 ```
-
-prompt | description
---- | ---
-ESX Build Server | The ESXi host on which to build virtual machines.
-ESX Build Datastore | The datastore name on which to create virtual machine folders.
-ESX Build Network | The ESXi port group on which to place the vmnic of the virtual machine.
-ESX Build Username | An ESXi user that can build virtual machines on the ESXi host.
-ESX Build Password | The password for the given ESX Build Username.
-VM Guest Password | The password used to SSH into the built virtual machine.
 
 ## Building a virtual machine
 Use the `build.sh` script create a virtual machine.
@@ -40,9 +41,9 @@ root@dev-1:~/hub/packer-esxi# ./build.sh
 Usage: ./build.sh [ vm template file ] [ vm name ]
 ```
 
-### Example build.sh output
 In the below example, a vSphere 6.7u3 virtual machine is created; named vss-61.
 
+Example `build.sh` output:
 ```
 root@dev-1:~/hub/packer-esxi# ./build.sh templates/vsphere/6.7u4/vm.json vss-61
 Sourced .env file
