@@ -3,7 +3,10 @@ This repo helps build virtual machines using packer on ESXi hosts.  This repo is
 
 file | description
 --- | ---
+`build.sh` | A helper script used to build virtual machines.
 `get_packer.sh` | A helper script to install the latest Packer.
+`templates` | A folder that contains the packer vmware-iso templates to build different virtual machine OSes. More details here <https://www.packer.io/docs/builders/vmware/iso>.
+`postinstall-scripts` | A folder that contains shell scripts that is called by the packer shell provisioner.  More details here <https://www.packer.io/docs/provisioners/shell>.
 
 
 ## Getting started
@@ -31,18 +34,13 @@ Creating .env file
 ```
 
 ## Building a virtual machine
-Use the `build.sh` script create a virtual machine.
-
-### Usage of build.sh script
-The `build.sh` script expects two arguments; the path to the packer template file and the hostname of the new virtual machine.  The templates are located in the `templates` folder.
-
+Use the `build.sh` script to create a virtual machine.  The `build.sh` script expects two arguments; the path to the packer template file and the hostname of the new virtual machine.  The templates are located in the `templates` folder.
 ``` 
 root@dev-1:~/hub/packer-esxi# ./build.sh
 Usage: ./build.sh [ vm template file ] [ vm name ]
 ```
 
 In the below example, a vSphere 6.7u3 virtual machine is created; named vss-61.
-
 Example `build.sh` output:
 ```
 root@dev-1:~/hub/packer-esxi# ./build.sh templates/vsphere/6.7u4/vm.json vss-61
