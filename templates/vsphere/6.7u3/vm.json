@@ -7,8 +7,8 @@
     "esx_build_password": "{{ env `ESX_BUILD_PASSWORD` }}",
     "vm_cpus": "8",
     "vm_memory": "32768",
-    "vm_disk_size": "102400",
-    "vm_guest_username": "root",
+    "vm_disk_os_size": "102400",
+    "vm_guest_username": "{{ env `VM_GUEST_USERNAME` }}",
     "vm_guest_password": "{{ env `VM_GUEST_PASSWORD` }}",
     "vm_shutdown_command": "poweroff",
     "vm_disk_adapter_type": "nvme"
@@ -35,7 +35,7 @@
           "remote_datastore": "{{ user `esx_build_datastore` }}",
           "remote_cache_datastore": "{{ user `esx_build_datastore` }}",
           "remote_cache_directory": "packer_cache/{{ user `vm_hostname` }}",
-          "guest_os_type": "vmkernel6",
+          "guest_os_type": "vmkernel65",
           "cpus": "{{ user `vm_cpus` }}",
           "memory": "{{ user `vm_memory` }}",
           "version": "15",
@@ -51,7 +51,7 @@
               "hpet0.present": "true"
           },
           "disk_adapter_type": "{{ user `vm_disk_adapter_type` }}",
-          "disk_size": "{{ user `vm_disk_size` }}",
+          "disk_size": "{{ user `vm_disk_os_size` }}",
           "keep_registered": "true",
           "skip_export": "true",
           "disk_type_id": "thin",
