@@ -41,3 +41,4 @@ Get ESXi 6.7u3 Free | <https://my.vmware.com/en/web/vmware/evalcenter?p=free-esx
 Installing Packer | <https://learn.hashicorp.com/tutorials/packer/getting-started-install>
 Packer vmware-iso builder | <https://www.packer.io/docs/builders/vmware/iso>
 Packer shell provisioner | <https://www.packer.io/docs/provisioners/shell>
+iPXE ISO CD | <https://github.com/tlhakhan/ipxe-iso>
