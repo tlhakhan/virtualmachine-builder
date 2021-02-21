@@ -1,2 +1,2 @@
 # README
-Ubuntu releases are found at <https://releases.ubuntu.com>
+Ubuntu releases found at <https://releases.ubuntu.com>
