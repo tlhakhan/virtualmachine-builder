@@ -1,8 +1,8 @@
 # README This repo helps build virtual machines using packer on ESXi hosts.
-[x] Requires only a simple DHCP server, no need for additional configuration. 
-[x] Doesn't use TFTP server for netbooting.
-[x] Doesn't use a separate HTTP server.
-[x] Build a working container with all required dependencies.
+- [x] Requires only a simple DHCP server, no need for additional configuration. 
+- [x] Doesn't use TFTP server for netbooting.
+- [x] Doesn't use a separate HTTP server.
+- [x] Build a working container with all required dependencies.
 
 file | description
 --- | ---
@@ -13,6 +13,9 @@ file | description
 `docker_run.sh` | A helper script to start packer-esxi container run-time.
 `Dockerfile` | A Dockerfile to build a container image of the run-time environment.
 `packages` | A list of packages needed in a Debian/Ubuntu run-time environment.
+
+## Pre-requisites
+- ESXi host with a SSH access.
 
 ## Getting started
 1. Get the ISO files or vendor files.  Each `<os>/<version>` folder in `templates` has a README document for additional reference.
