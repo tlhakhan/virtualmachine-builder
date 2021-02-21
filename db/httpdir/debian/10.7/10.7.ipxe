@@ -1,0 +1,14 @@
+#!ipxe
+#
+# Debian 10.7
+#
+set installer_url http://${http_ip}:${http_port}/debian/10.7
+#
+set linux_url ${installer_url}/linux
+set initrd_url ${installer_url}/initrd.gz
+set preseed_url ${installer_url}/preseed.cfg 
+#
+#
+kernel ${linux_url} auto=true priority=critical interface=auto preseed/url=${preseed_url} DEBIAN_FRONTEND=text
+initrd ${initrd_url}
+boot
