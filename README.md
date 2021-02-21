@@ -3,7 +3,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Requires only a simple DHCP server, no need for additional configuration. 
 - [x] Doesn't use TFTP server for netbooting.
 - [x] Doesn't use a separate HTTP server.
-- [x] Build a working container with all required dependencies.
+- [x] Build a working container with all required dependencies. Allows for concurrent packer builds.
 
 **Pre-requisites**
 - vSphere ESXi host with SSH enabled.
@@ -13,7 +13,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso` folder.
 
 ### Container method
-1. Run `docker_run.sh`.
+1. Run `builder.sh`.
   1. It will build a container image with its run-time dependencies called `packer-esxi`.
   1. It will create a named volume `packer_env` and mount it to `/packer_env` in a container.
   1. It will start the `packer-esxi` container.  Any additional arguments given to `docker_run.sh` is passed to the container.  This can be used to override default vars in `build.yml` playbook by using `-e` extra vars flag.
@@ -25,11 +25,11 @@ This repo helps build virtual machines using packer on ESXi hosts.
 ## File list
 file | description
 --- | ---
+`builder.sh` | A helper script to start packer-esxi container run-time.
 `build.yml` | An ansible playbook to build virtual machines.
 `templates` | The folder with packer templates and its dependent files.
 `mount_iso_folders.sh` | A helper script to mount ISO files onto a path local `iso` directory.
 `unmount_iso_folders.sh` | A helper script to unmount ISO files from path local `iso` directory.
-`docker_run.sh` | A helper script to start packer-esxi container run-time.
 `Dockerfile` | A Dockerfile to build a container image of the run-time environment.
 `packages` | A list of packages needed in a Debian/Ubuntu run-time environment.
 
