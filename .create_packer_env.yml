@@ -1,5 +1,7 @@
 ---
-# create a .yml file
+#
+# create a .packer_env.yml file
+#
 
 - name: ESX Build Server?
   pause:
