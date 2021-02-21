@@ -69,7 +69,7 @@
       register: packer_validate
 
     - debug:
-        msg: 'valid packer template templates/{{ os }}/{{ version }}/vm.json'
+        msg: 'packer template valid'
       when: packer_validate.rc == 0
 
     - name: Build virtual machine {{ os }}/{{ version }} {{ vm_hostname }}
@@ -86,5 +86,5 @@
       register: packer_build
 
     - debug: 
-        msg: 'packer build passed, output: {{ packer_build.stdout_lines | to_nice_yaml }}'
+        msg: 'packer build passed'
       when: packer_build.rc == 0
