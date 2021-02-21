@@ -6,7 +6,7 @@
 
 file | description
 --- | ---
-`build.yml` | An executable ansible-playbook to build virtual machines.
+`build.yml` | An ansible-playbook to build virtual machines.
 `templates` | The folder that contains packer templates and its dependent files.
 `mount_iso_folders.sh` | A helper script to mount ISO files onto a path local `iso` directory.
 `unmount_iso_folders.sh` | A helper script to unmount ISO files from path local `iso` directory.
@@ -15,7 +15,7 @@ file | description
 `packages` | A list of packages needed in a Debian/Ubuntu run-time environment.
 
 ## Getting started
-1. Get the ISO files or vendor files.  Each `os/version` folder in `templates` has a README for additional reference.
+1. Get the ISO files or vendor files.  Each `<os>/<version>` folder in `templates` has a README document for additional reference.
 1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso` folder.
 
 ### Container method
