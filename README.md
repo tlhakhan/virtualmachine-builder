@@ -11,6 +11,7 @@ file | description
 `templates` | The folder that contains packer templates and its dependent files.
 `mount_iso_folders.sh` | A helper script to mount ISO files onto a path local `iso` directory.
 `unmount_iso_folders.sh` | A helper script to unmount ISO files from path local `iso` directory.
+`docker_run.sh` | A helper script to start packer-esxi container run-time.
 `Dockerfile` | A Dockerfile to build a container image of the run-time environment.
 `packages` | A list of packages needed in a Debian/Ubuntu run-time environment.
 
