@@ -1,0 +1,90 @@
+#!/bin/ansible-playbook
+---
+- name: Build a virtual machine
+  hosts: 127.0.0.1
+  vars:
+    os: ubuntu
+    version: 20.04
+    packer_env_folder: packer_env
+    packer_env:
+      ESX_BUILD_SERVER:
+      ESX_BUILD_DATASTORE:
+      ESX_BUILD_NETWORK:
+      ESX_BUILD_USERNAME:
+      ESX_BUILD_PASSWORD:
+      VM_GUEST_USERNAME:
+      VM_GUEST_PASSWORD:
+
+  vars_prompt:
+    - name: vm_hostname
+      prompt: New virtual machine name?
+      private: no
+
+  pre_tasks:
+    - name: Stat .packer_env.yml file
+      stat:
+        path: '{{ packer_env_folder }}/.packer_env.yml'
+      register: packer_env_file
+
+    - name: Create .packer_env.yml file
+      include_tasks: .create_packer_env.yml
+      when: not packer_env_file.stat.exists
+
+    - name: Include .packer_env.yml vars
+      include_vars:
+        file: '{{ packer_env_folder }}/.packer_env.yml'
+        name: packer_env
+
+    - name: Stat '{{ os }}/{{ version }}' folder
+      stat:
+        path: 'templates/{{ os }}/{{ version }}'
+      register: packer_template_folder
+
+    - name: Validate vars 
+      assert:  
+        that:
+          - vm_hostname | length > 0
+          - vm_hostname | replace(' ', '') | length > 0
+          - packer_template_folder.stat.exists == True
+          - packer_env.ESX_BUILD_SERVER is defined
+          - packer_env.ESX_BUILD_DATASTORE is defined
+          - packer_env.ESX_BUILD_NETWORK is defined
+          - packer_env.ESX_BUILD_USERNAME is defined
+          - packer_env.ESX_BUILD_PASSWORD is defined
+          - packer_env.VM_GUEST_USERNAME is defined
+          - packer_env.VM_GUEST_PASSWORD is defined
+                  
+  tasks:
+    - name: Validate packer template for {{ os }}/{{ version }}
+      command:
+        argv:
+          - packer
+          - validate
+          - --var=vm_hostname={{vm_hostname | quote}}
+          - vm.json
+      args:
+        chdir: 'templates/{{ os }}/{{ version }}'
+      environment: '{{ packer_env }}'
+      changed_when: false
+      register: packer_validate
+
+    - debug:
+        msg: 'valid packer template templates/{{ os }}/{{ version }}/vm.json'
+      when: packer_validate.rc == 0
+
+    - name: Build virtual machine {{ os }}/{{ version }} {{ vm_hostname }}
+      command:
+        argv:
+          - packer
+          - build
+          - --var=vm_hostname={{vm_hostname | quote}}
+          - vm.json
+      args:
+        chdir: 'templates/{{ os }}/{{ version }}'
+      environment: '{{ packer_env }}'
+      changed_when: false
+      register: packer_build
+
+    - debug: 
+        msg: 'packer build passed, output: {{ packer_build.stdout_lines | to_nice_yaml }}'
+      when: packer_build.rc == 0

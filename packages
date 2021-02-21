@@ -1,0 +1,6 @@
+curl
+gnupg
+software-properties-common
+apt-utils
+lsb-release
+ansible

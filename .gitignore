@@ -1,4 +1,4 @@
 **/iso/*
 **/*.iso
 packer_cache
-.env
+packer_env

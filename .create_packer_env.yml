@@ -1,0 +1,53 @@
+---
+# create a .yml file
+
+- name: ESX Build Server?
+  pause:
+  register: esx_build_server
+
+- name: ESX Build Datastore?
+  pause:
+  register: esx_build_datastore
+
+- name: ESX Build Network?
+  pause:
+  register: esx_build_network
+
+- name: ESX Build User?
+  pause:
+  register: esx_build_username
+
+- name: ESX Build Password?
+  pause:
+    echo: no
+  register: esx_build_password
+
+- name: VM Guest User?
+  pause:
+  register: vm_guest_username
+
+- name: VM Guest Password?
+  pause:
+    echo: no
+  register: vm_guest_password
+
+- name: Set facts
+  set_fact:
+    packer_env: 
+      ESX_BUILD_SERVER: '{{ esx_build_server.user_input }}'
+      ESX_BUILD_DATASTORE: '{{ esx_build_datastore.user_input }}'
+      ESX_BUILD_NETWORK: '{{ esx_build_network.user_input }}'
+      ESX_BUILD_USERNAME: '{{ esx_build_username.user_input }}'
+      ESX_BUILD_PASSWORD: '{{ esx_build_password.user_input }}'
+      VM_GUEST_USERNAME: '{{ vm_guest_username.user_input }}'
+      VM_GUEST_PASSWORD: '{{ vm_guest_password.user_input }}'
+
+- name: Create {{ packer_env_folder }} folder
+  file:
+    path: '{{ packer_env_folder }}'
+    state: directory
+
+- name: Create .packer_env.yml file
+  copy:
+    dest: '{{ packer_env_folder }}/.packer_env.yml'
+    content: '{{ packer_env | to_nice_yaml }}'
