@@ -5,7 +5,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Doesn't use a separate HTTP server.
 - [x] Build a working container with all required dependencies.
 
-*Pre-requisites*
+**Pre-requisites**
 - vSphere ESXi host with SSH enabled.
 
 ## Getting started
@@ -22,7 +22,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 1. Install the run-time package dependencies listed in `packages` file.
 1. Run `ansible-playbook build.yml`.  A local `packer_env` folder is created to store the packer environment variables, it is gitignored by default.
 
-## File List
+## File list
 file | description
 --- | ---
 `build.yml` | An ansible playbook to build virtual machines.
