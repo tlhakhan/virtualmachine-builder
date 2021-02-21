@@ -20,7 +20,7 @@ WORKDIR /build
 VOLUME /packer_env
 
 # copy ansible playbooks to build area
-COPY .ansible.cfg .
+COPY ansible.cfg .
 COPY build.yml .
 COPY .create_packer_env.yml .
 

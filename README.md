@@ -1,6 +1,6 @@
 # README
 This repo helps build virtual machines using packer on ESXi hosts.
-- [x] Requires only a simple DHCP server, no need for additional configuration. 
+- [x] Build on a simple network with a basic DHCP server, no need for additional configuration. 
 - [x] Doesn't use TFTP server for netbooting.
 - [x] Doesn't use a separate HTTP server.
 - [x] Build a working container with all required dependencies. Allows for concurrent packer builds.
@@ -26,6 +26,7 @@ u. It will create a named volume `packer_env` and mount it to `/packer_env` in a
 ## File list
 file | description
 --- | ---
+`ansible.cfg` | A ansible default configuration overrides.
 `builder.sh` | A helper script to start packer-esxi container run-time.
 `build.yml` | An ansible playbook to build virtual machines.
 `templates` | The folder with packer templates and its dependent files.
