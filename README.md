@@ -11,16 +11,17 @@ This repo helps build virtual machines using packer on ESXi hosts.
 ## Getting started
 1. Get the ISO files or vendor files.  Each `<os>/<version>` folder in `templates` has a README document for additional reference.
 1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso` folder.
+1. Run one of the two methods below.
 
 ### Container method
-1. Run `builder.sh`.
-  1. It will build a container image with its run-time dependencies called `packer-esxi`.
-  1. It will create a named volume `packer_env` and mount it to `/packer_env` in a container.
-  1. It will start the `packer-esxi` container.  Any additional arguments given to `docker_run.sh` is passed to the container.  This can be used to override default vars in `build.yml` playbook by using `-e` extra vars flag.
+1. Run `builder.sh` script.
+1. It will build a container image with its run-time dependencies called `packer-esxi`.
+u. It will create a named volume `packer_env` and mount it to `/packer_env` in a container.
+1. It will start the `packer-esxi` container.  Any additional arguments given to `builder.sh` is passed to the container's entrypoint.  This can be used to override default vars in `build.yml` playbook by using `-e` extra vars flags.
 
 ### Non-container method
 1. Install the run-time package dependencies listed in `packages` file.
-1. Run `ansible-playbook build.yml`.  A local `packer_env` folder is created to store the packer environment variables, it is gitignored by default.
+1. Run `ansible-playbook build.yml`.  A local `packer_env` folder is created to store the packer environment variables, it is gitignored by default.  The default vars in `build.yml` can be overridden by using `-e` extra vars flags.
 
 ## File list
 file | description
