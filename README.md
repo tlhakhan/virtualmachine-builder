@@ -1,12 +1,12 @@
 # README
-This repo helps build virtual machines using packer on ESXi hosts.  This repo is used in conjuction with <http://github.com/tlhakhan/packer-httpdir>.
+This repo helps build virtual machines using packer on ESXi hosts.
 
 file | description
 --- | ---
 `build.sh` | A helper script used to build virtual machines.
+`db` | A folder that contains the set of files needed for building virtual machines.
+`templates` | A symlink to `db/templates`, it serves as an ease of access with the `build.sh` script.
 `get_packer.sh` | A helper script to install the latest Packer.
-`templates` | A folder that contains the packer templates for vmware-iso builder to build different virtual machine OSes. 
-`postinstall-scripts` | A folder that contains post-install shell scripts called by the packer shell provisioner. 
 
 
 ## Getting started
