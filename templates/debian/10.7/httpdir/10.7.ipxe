@@ -2,7 +2,7 @@
 #
 # Debian 10.7
 #
-set installer_url http://${http_ip}:${http_port}/debian/10.7
+set installer_url http://${http_ip}:${http_port}
 #
 set linux_url ${installer_url}/linux
 set initrd_url ${installer_url}/initrd.gz

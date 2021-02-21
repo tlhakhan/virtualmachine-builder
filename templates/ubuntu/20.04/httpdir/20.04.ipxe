@@ -3,7 +3,7 @@
 # Ubuntu 20.04
 #
 # The location of all the installer files
-set installer_url http://${http_ip}:${http_port}/ubuntu/20.04
+set installer_url http://${http_ip}:${http_port}
 #
 # The $seed_url is used by cloud-init's nocloud-net provider to find the user-data and meta-data files. The trailing slash is important, the cloud-init process sticks 'meta-data' or 'user-data' right after, without prepending a forward slash to the file name.
 set seed_url ${installer_url}/

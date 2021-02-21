@@ -19,9 +19,9 @@
             "<wait>",
             "set http_ip {{ .HTTPIP }}<enter>",
             "set http_port {{ .HTTPPort }}<enter>",
-            "dhcp && chain http://${http_ip}:${http_port}/debian/10.7/10.7.ipxe<enter>"
+            "dhcp && chain http://${http_ip}:${http_port}/10.7.ipxe<enter>"
           ],
-          "http_directory": "db/httpdir",
+          "http_directory": "httpdir",
           "iso_url": "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso",
           "iso_checksum":"aed2f5c2a15ebf31a4a2782943bb0cabf59c4f0ccc8c9277822573d7bd6e5adb",
           "vm_name": "{{ user `vm_hostname` }}",
@@ -66,7 +66,7 @@
     {
       "type":"shell",
       "environment_vars": [ "VM_HOSTNAME={{ user `vm_hostname` }}" ],
-      "script": "db/bootstrap/debian/10.7/bootstrap.sh"
+      "script": "bootstrap.sh"
     }
    ]
 }

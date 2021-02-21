@@ -6,12 +6,11 @@
     "esx_build_username": "{{ env `ESX_BUILD_USERNAME` }}",
     "esx_build_password": "{{ env `ESX_BUILD_PASSWORD` }}",
     "vm_cpus": "8",
-    "vm_memory": "8192",
+    "vm_memory": "32768",
     "vm_disk_os_size": "102400",
-    "vm_disk_data_size": "102400",
     "vm_guest_username": "{{ env `VM_GUEST_USERNAME` }}",
     "vm_guest_password": "{{ env `VM_GUEST_PASSWORD` }}",
-    "vm_shutdown_command": "sudo poweroff",
+    "vm_shutdown_command": "poweroff",
     "vm_disk_adapter_type": "nvme"
   },
   "builders": [{
@@ -20,9 +19,9 @@
             "<wait>",
             "set http_ip {{ .HTTPIP }}<enter>",
             "set http_port {{ .HTTPPort }}<enter>",
-            "dhcp && chain http://${http_ip}:${http_port}/ubuntu/20.04/20.04.ipxe<enter>"
+            "dhcp && chain http://${http_ip}:${http_port}/6.7u3.ipxe<enter>"
           ],
-          "http_directory": "db/httpdir",
+          "http_directory": "httpdir",
           "iso_url": "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso",
           "iso_checksum":"aed2f5c2a15ebf31a4a2782943bb0cabf59c4f0ccc8c9277822573d7bd6e5adb",
           "vm_name": "{{ user `vm_hostname` }}",
@@ -38,7 +37,7 @@
           "remote_datastore": "{{ user `esx_build_datastore` }}",
           "remote_cache_datastore": "{{ user `esx_build_datastore` }}",
           "remote_cache_directory": "packer_cache/{{ user `vm_hostname` }}",
-          "guest_os_type": "ubuntu-64",
+          "guest_os_type": "vmkernel65",
           "cpus": "{{ user `vm_cpus` }}",
           "memory": "{{ user `vm_memory` }}",
           "version": "15",
@@ -49,11 +48,12 @@
               "numa.autosize" : "true",
               "mem.hotadd" : "true",
               "vcpu.hotadd" : "true",
-              "vmxnet3.rev.30": "false"
+              "vmxnet3.rev.30": "false",
+              "vhv.enable": "true",
+              "hpet0.present": "true"
           },
           "disk_adapter_type": "{{ user `vm_disk_adapter_type` }}",
           "disk_size": "{{ user `vm_disk_os_size` }}",
-          "disk_additional_size": [ "{{ user `vm_disk_data_size` }}" ],
           "keep_registered": "true",
           "skip_export": "true",
           "disk_type_id": "thin",
@@ -67,7 +67,7 @@
     {
       "type":"shell",
       "environment_vars": [ "VM_HOSTNAME={{ user `vm_hostname` }}" ],
-      "script": "db/bootstrap/ubuntu/20.04/bootstrap.sh"
+      "script": "bootstrap.sh"
     }
    ]
 }
