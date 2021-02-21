@@ -20,6 +20,7 @@ ESX Build Datastore | The datastore name on which to create virtual machine fold
 ESX Build Network | The ESXi port group on which to place the vmnic of the virtual machine.
 ESX Build Username | An ESXi user that can build virtual machines on the ESXi host.
 ESX Build Password | The password for the given ESX Build Username.
+VM Guest Username | The username to SSH into the built virtual machine.
 VM Guest Password | The password to SSH into the built virtual machine.
 
 Example `setup_env.sh` output:
@@ -30,6 +31,7 @@ ESX Build Datastore: nvme1
 ESX Build Network: VM Network
 ESX Build Username: builder
 ESX Build Password:
+VM Guest Username: sysuser
 VM Guest Password:
 Creating .env file
 ```
