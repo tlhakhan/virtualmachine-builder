@@ -3,8 +3,6 @@
 - name: Build a virtual machine
   hosts: 127.0.0.1
   vars:
-    os: ubuntu
-    version: 20.04
     packer_env_folder: packer_env
     packer_env:
       ESX_BUILD_SERVER:
@@ -17,7 +15,15 @@
 
   vars_prompt:
     - name: vm_hostname
-      prompt: New virtual machine name?
+      prompt: New virtual machine hostname?
+      private: no
+
+    - name: vm_os
+      prompt: Operating system?
+      private: no
+
+    - name: vm_version
+      prompt: Version?
       private: no
 
   pre_tasks:
@@ -35,9 +41,9 @@
         file: '{{ packer_env_folder }}/.packer_env.yml'
         name: packer_env
 
-    - name: Stat '{{ os }}/{{ version }}' folder
+    - name: Stat '{{ vm_os }}/{{ vm_version }}' folder
       stat:
-        path: 'templates/{{ os }}/{{ version }}'
+        path: 'templates/{{ vm_os }}/{{ vm_version }}'
       register: packer_template_folder
 
     - name: Validate vars 
@@ -55,7 +61,7 @@
           - packer_env.VM_GUEST_PASSWORD is defined
                   
   tasks:
-    - name: Validate packer template for {{ os }}/{{ version }}
+    - name: Validate packer template for {{ vm_os }}/{{ vm_version }}
       command:
         argv:
           - packer
@@ -63,7 +69,7 @@
           - --var=vm_hostname={{vm_hostname | quote}}
           - vm.json
       args:
-        chdir: 'templates/{{ os }}/{{ version }}'
+        chdir: 'templates/{{ vm_os }}/{{ vm_version }}'
       environment: '{{ packer_env }}'
       changed_when: false
       register: packer_validate
@@ -72,7 +78,7 @@
         msg: 'Packer template is valid'
       when: packer_validate.rc == 0
 
-    - name: Build virtual machine {{ os }}/{{ version }} {{ vm_hostname }}
+    - name: Build virtual machine {{ vm_os }}/{{ vm_version }} {{ vm_hostname }}
       command:
         argv:
           - packer
@@ -80,7 +86,7 @@
           - --var=vm_hostname={{vm_hostname | quote}}
           - vm.json
       args:
-        chdir: 'templates/{{ os }}/{{ version }}'
+        chdir: 'templates/{{ vm_os }}/{{ vm_version }}'
       environment: '{{ packer_env }}'
       changed_when: false
       register: packer_build
