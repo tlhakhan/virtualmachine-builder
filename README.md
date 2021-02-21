@@ -1,5 +1,4 @@
-# README
-This repo helps build virtual machines using packer on ESXi hosts.
+# README This repo helps build virtual machines using packer on ESXi hosts.
 [x] Requires only a simple DHCP server, no need for additional configuration. 
 [x] Doesn't use TFTP server for netbooting.
 [x] Doesn't use a separate HTTP server.
@@ -14,6 +13,17 @@ file | description
 `docker_run.sh` | A helper script to start packer-esxi container run-time.
 `Dockerfile` | A Dockerfile to build a container image of the run-time environment.
 `packages` | A list of packages needed in a Debian/Ubuntu run-time environment.
+
+## Getting started
+1. Get the ISO files or vendor files.  Each `os/version` folder in `templates` has a README for additional reference.
+1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso` folder.
+
+### Container method
+1. Run `docker_run.sh`.  It will build a container with all the run-time dependencies.  It will create a named volume `packer_env` and mount it to `/packer_env` in the container.  It will then run the ansible-playbook `build.yml`.  Any additional arguments given to `docker_run.sh` is passed to the ansible-playbook process.  This can be used to override vars using `-e` extra vars flag.
+
+### Non-container method
+1. Get run-time package dependencies listed in `packages` file.  
+1. Run `ansible-playbook build.yml`.  A `packer_env` folder is created to store the packer env vars, it is gitignored by default.
 
 # Appendix
 document | link
