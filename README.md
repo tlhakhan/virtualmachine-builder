@@ -4,8 +4,9 @@ This repo helps build virtual machines using packer on ESXi hosts.
 file | description
 --- | ---
 `build.sh` | A helper script used to build virtual machines.
-`db` | A folder that contains the set of files needed for building virtual machines.
-`templates` | A symlink to `db/templates`, it serves as an ease of access with the `build.sh` script.
+`templates` | The folder that contains packer templates and its dependent files.
+`mount_iso_folders.sh` | A helper script to mount ISO files onto a path local `iso` directory.
+`unmount_iso_folders.sh` | A helper script to unmount ISO files from path local `iso` directory.
 `get_packer.sh` | A helper script to install the latest Packer.
 
 
