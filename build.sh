@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-VM_TEMPLATE_FILE=$1
+VM_TEMPLATE_FILEPATH=$1
 VM_HOSTNAME=$2
 
-if [[ -z $VM_TEMPLATE_FILE || -z $VM_HOSTNAME ]]
+if [[ -z $VM_TEMPLATE_FILEPATH || -z $VM_HOSTNAME ]]
 then
   echo "Usage: $0 [ vm template file ] [ vm name ]"
   exit 1
@@ -19,8 +19,13 @@ else
   exit 1
 fi
 
-echo Validating virtual machine configuration for $VM_TEMPLATE_FILE.
-packer validate --var="vm_hostname=${VM_HOSTNAME}" $VM_TEMPLATE_FILE
+WORKDIR=$PWD
+VM_TEMPLATE_FOLDER=$(dirname $VM_TEMPLATE_FILEPATH)
+VM_TEMPLATE_FILE=$(basename $VM_TEMPLATE_FILEPATH)
 
-echo Performing virtual machine build for $VM_TEMPLATE_FILE.
+cd $VM_TEMPLATE_FOLDER
+echo Validating virtual machine configuration for $VM_TEMPLATE_FILEPATH.
+packer validate --var="vm_hostname=${VM_HOSTNAME}" $VM_TEMPLATE_FILE
+echo Performing virtual machine build for $VM_TEMPLATE_FILEPATH.
 packer build --var="vm_hostname=${VM_HOSTNAME}" $VM_TEMPLATE_FILE
+cd $WORKDIR
