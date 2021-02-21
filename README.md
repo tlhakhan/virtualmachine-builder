@@ -1,4 +1,5 @@
-# README This repo helps build virtual machines using packer on ESXi hosts.
+# README
+This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Requires only a simple DHCP server, no need for additional configuration. 
 - [x] Doesn't use TFTP server for netbooting.
 - [x] Doesn't use a separate HTTP server.
