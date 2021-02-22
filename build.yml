@@ -1,7 +1,7 @@
 #!/bin/ansible-playbook
 ---
 - name: Build a virtual machine
-  hosts: 127.0.0.1
+  hosts: localhost
   vars:
     packer_env_folder: packer_env
     packer_env:
