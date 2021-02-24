@@ -8,6 +8,14 @@ This repo helps build virtual machines using packer on ESXi hosts.
 **Pre-requisites**
 - vSphere ESXi host with SSH enabled.
 
+**Supported VM Build Automation**
+operating system | version | machine specs
+| --- | --- | ---|
+debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+
 ## Getting started
 1. Get the ISO files or vendor files.  Each `<os>/<version>` folder in `templates` has a README document for additional reference.
 1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso` folder.
