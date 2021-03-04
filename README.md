@@ -50,8 +50,8 @@ blob:
 ```
 
 ### 🥅 TODOs
-[] Use Makefile.
-[] Handle `*.iso` mount and unmount without helper scripts.
+- [ ] Use Makefile for Go binary build.
+- [ ] Handle `*.iso` mount and unmount without helper scripts.
 
 ## 👏 Appendix
 description | link 
