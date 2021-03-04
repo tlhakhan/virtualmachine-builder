@@ -2,22 +2,22 @@ package main
 
 import (
 	"flag"
+	"github.com/tlhakhan/packer-esxi/builder"
 	"os"
-  "os/signal"
-  "github.com/tlhakhan/packer-esxi/builder"
+	"os/signal"
 )
 
 // required fields
 var (
-  configFilePath string
+	configFilePath         string
 	virtualMachineName     string
-	operatingSystem string
+	operatingSystem        string
 	operatingSystemVersion string
 )
 
 func main() {
 
-  // parse flags
+	// parse flags
 	flag.StringVar(&configFilePath, "c", "", "config file")
 	flag.StringVar(&virtualMachineName, "n", "", "virtual machine name")
 	flag.StringVar(&operatingSystem, "o", "", "operating system")
@@ -33,13 +33,13 @@ func main() {
 		os.Exit(1)
 	}
 
-  // this command needs to ignore/mask os.Interrupt
-  // packer will get the interrupt signal passed down and gracefully halt
-  signal.Ignore(os.Interrupt)
+	// this command needs to ignore/mask os.Interrupt
+	// packer will get the interrupt signal passed down and gracefully halt
+	signal.Ignore(os.Interrupt)
 
-  // create a builder instance
-  b := builder.New(configFilePath, virtualMachineName, operatingSystem, operatingSystemVersion)
+	// create a builder instance
+	b := builder.New(configFilePath, virtualMachineName, operatingSystem, operatingSystemVersion)
 
-  // perform build
-  b.Build()
+	// perform build
+	b.Build()
 }
