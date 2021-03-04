@@ -5,6 +5,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Doesn't use a separate HTTP server.
 - [x] Built-in HTTP templating server.
 - [x] Build a working container.
+- [x] Gracefully handle CTRL+C.
 
 **Pre-requisites**
 - vSphere ESXi host with SSH enabled.
