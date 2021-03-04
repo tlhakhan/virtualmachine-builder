@@ -14,8 +14,18 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 RUN apt-get install -y packer
 
+# get go
+RUN curl -fsSL https://golang.org/dl/go1.16.linux-amd64.tar.gz | tar -C /usr/local/ -zxvf-
+ENV PATH=$PATH:/usr/local/go/bin
+
 # setup build area
 WORKDIR /build
+COPY cmd cmd
+COPY builder builder
+COPY go.mod .
+COPY go.sum .
+
+RUN go build -o go-builder cmd/builder/main.go
 
 STOPSIGNAL SIGINT
-# ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["./go-builder", "-c", "config.yml"]
