@@ -14,10 +14,10 @@ This repo helps build virtual machines using packer on ESXi hosts.
 **Supported VM Build Automation**
 status | os | version | machine specs
 ---| --- | --- | ---
-💯 | debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
-💯 | ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
-💯 | vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
-💯 | vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+👍 | debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+👍 | ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+👍 | vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+👍 | vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 
 # Getting started
 1. Setup the `blob` folder with vendor files.
