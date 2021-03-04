@@ -1,4 +1,4 @@
-# 📖 READ ME
+# 📖 README
 This repo helps build virtual machines using packer on ESXi hosts.
 
 - [x] Build on a simple network with DHCP and DNS. 
@@ -48,6 +48,10 @@ blob:
   
 ...
 ```
+
+### 🥅 TODOs
+[] Use Makefile.
+[] Handle `*.iso` mount and unmount without helper scripts.
 
 ## 👏 Appendix
 description | link 
