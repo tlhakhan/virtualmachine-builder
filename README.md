@@ -30,7 +30,7 @@ status | os | version | machine specs
 1. It will start the virtual machine build process.
 
 ## config.yml
-The `config.yml` file is used by the 
+The `config.yml` file is used by the virtual machine build process.
 
 ```yaml
 ---
