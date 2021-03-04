@@ -5,6 +5,8 @@
     "esx_build_network": "{{ env `ESX_BUILD_NETWORK` }}",
     "esx_build_username": "{{ env `ESX_BUILD_USERNAME` }}",
     "esx_build_password": "{{ env `ESX_BUILD_PASSWORD` }}",
+    "http_ip": "{{ env `HTTP_IP` }}",
+    "http_port": "{{ env `HTTP_PORT` }}",
     "vm_cpus": "8",
     "vm_memory": "8192",
     "vm_disk_os_size": "102400",
@@ -17,11 +19,10 @@
           "type": "vmware-iso",
           "boot_command": [ 
             "<wait>",
-            "set http_ip {{ .HTTPIP }}<enter>",
-            "set http_port {{ .HTTPPort }}<enter>",
+            "set http_ip {{ user `http_ip` }}<enter>",
+            "set http_port {{ user `http_port` }}<enter>",
             "dhcp && chain http://${http_ip}:${http_port}/20.04.ipxe<enter>"
           ],
-          "http_directory": "httpdir",
           "iso_url": "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso",
           "iso_checksum":"aed2f5c2a15ebf31a4a2782943bb0cabf59c4f0ccc8c9277822573d7bd6e5adb",
           "vm_name": "{{ user `vm_hostname` }}",
