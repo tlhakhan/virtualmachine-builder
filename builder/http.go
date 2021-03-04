@@ -13,10 +13,10 @@ import (
 	"text/template"
 )
 
+// openssl needed to generate password crypt
 const opensslPath = "/usr/bin/openssl"
 
 // init is called on library initialization
-// check if openssl exists
 func init() {
 	// check if openssl exists
 	_, err := os.ReadFile(opensslPath)
@@ -25,7 +25,7 @@ func init() {
 		log.Fatalf("error message: %s", err)
 	}
 
-	// try the packer binary by getting its version
+	// try the openssl binary by getting its version
 	out, err := exec.Command(opensslPath, "version").CombinedOutput()
 	if err != nil {
 		log.Printf("unable to get openssl version")
@@ -34,6 +34,7 @@ func init() {
 	log.Printf("openssl version: %s", out)
 }
 
+// installerVars struct is a variable bag passed to a template.
 type installerVars struct {
 	VirtualMachineName string
 	HTTPAddr           string
@@ -41,6 +42,10 @@ type installerVars struct {
 	GuestPassword      string
 }
 
+// installerHandler processes requests with the path prefix /installer/ and runs against a given templateDirPath for any matching template file.
+// templates - an embedded directory of installer_templates.
+// templateDirPath - process requests matching against a specific templateDirPath.
+// vars - is a variable bag given to the template being executed.
 func (b *Builder) installerHandler(templates embed.FS, templateDirPath string, vars installerVars) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// try to find the requested file in the installer_templates embed.FS
@@ -61,9 +66,7 @@ func (b *Builder) installerHandler(templates embed.FS, templateDirPath string, v
 	}
 }
 
-// set a local http template engine here
-// serve <os>/<version>/httpdir on /
-// serve blobDirPath/<os>/<version> on /blob/
+// launchHTTPServer is the http template engine.  The HTTP server is launched on a random port.  The server process is backgrounded as a go routine.
 func (b *Builder) launchHTTPServer(templates embed.FS) {
 	// make an outbound connection
 	conn, err := net.Dial("udp", "0.0.0.1:0")
@@ -127,12 +130,13 @@ func (b *Builder) launchHTTPServer(templates embed.FS) {
 	}()
 }
 
+// generateCryptedPassword uses the openssl binary to determine the crypt hash, the plain text password is passed via stdin.
 func generateCryptedPassword(password string) (string, error) {
 	// prepare command
 	cmd := exec.Command(opensslPath, "passwd", "-6", "-stdin")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		log.Print("unable to open stdin")
+		log.Print("unable to open stdin to openssl")
 		return "", err
 	}
 
@@ -145,7 +149,7 @@ func generateCryptedPassword(password string) (string, error) {
 	// run command
 	out, err := cmd.Output()
 	if err != nil {
-		log.Printf("failed to run")
+		log.Printf("failed to run openssl")
 		return "", err
 	}
 
