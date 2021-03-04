@@ -47,4 +47,5 @@ vm:
 
 blob:
   dir: blob # the folder path of the vendor files
+...
 ```
