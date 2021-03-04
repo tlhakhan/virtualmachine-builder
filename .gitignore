@@ -1,4 +1,3 @@
-**/iso/*
-**/*.iso
+vendor
 packer_cache
-packer_env
+config.yml
