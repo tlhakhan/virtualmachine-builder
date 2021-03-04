@@ -35,9 +35,9 @@ The `config.yml` file is used by the virtual machine build process.
 ```yaml
 ---
 build:
-  server: vsphere-1  # esx host
-  user: builder # esx user with admin permissions
-  password: password # esx user's password
+  server: vsphere-1  # ESX host
+  user: builder # ESX user with admin permissions
+  password: password # ESX user's password
   network: VM Network # virtual network to create the VM on
   datastore: nvme1 # the datastore to create the VM on
 
@@ -47,5 +47,6 @@ vm:
 
 blob:
   dir: blob # the folder path of the vendor files
+  
 ...
 ```
