@@ -9,9 +9,9 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Gracefully handle CTRL+C.
 
 **Pre-requisites**
-- vSphere ESXi host with SSH enabled.
+- vSphere 6.7u3 or 7.0b ESXi host with SSH enabled.
 
-**Supported VM Build Automation**
+**Supported VM Builds**
 status | os | version | machine specs
 ---| --- | --- | ---
 👍 | debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
@@ -19,17 +19,15 @@ status | os | version | machine specs
 👍 | vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 👍 | vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 
-# Getting started
+# 🌱 Getting started
 1. Setup the `blob` folder with vendor files.
 1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso_contents` folder.
 1. Create a `config.yml` file.
-
-## Running `build.sh`
 1. Run `build.sh` script with extra arguments `-o`, `-v`, and `-n`.
 1. It will build a container image and map into the volume the `config.yml` and the `blob` directory.
 1. It will start the virtual machine build process.
 
-## config.yml
+## ⚙️ config.yml
 The `config.yml` file is used by the virtual machine build process.
 
 ```yaml
