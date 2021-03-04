@@ -1,5 +1,6 @@
 # README
 This repo helps build virtual machines using packer on ESXi hosts.
+
 - [x] Build on a simple network with a basic DHCP server, no need for additional configuration. 
 - [x] Doesn't use TFTP server for netbooting.
 - [x] Doesn't use a separate HTTP server.
@@ -11,12 +12,12 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - vSphere ESXi host with SSH enabled.
 
 **Supported VM Build Automation**
-operating system | version | machine specs
-| --- | --- | ---|
-debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
-ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
-vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
-vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+status | os | version | machine specs
+---| --- | --- | ---
+💯 | debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+💯 | ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+💯 | vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
+💯 | vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 
 # Getting started
 1. Setup the `blob` folder with vendor files.
