@@ -1,0 +1,37 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  early-commands:
+    - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+
+  network:
+    network:
+      version: 2
+      ethernets:
+        eth0:
+          dhcp4: yes
+          dhcp-identifier: mac
+
+  ssh:
+    install-server: yes
+
+  identity:
+    hostname: {{.VirtualMachineName}}
+    password: {{.GuestPassword}}
+    username: {{.GuestUser}} # root doesn't work
+
+  storage:
+    layout:
+      name: lvm
+
+  packages:
+    - open-vm-tools
+
+  user-data:
+    disable_root: false 
+
+  late-commands:
+    - echo '{{.GuestUser}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUser}}
+    - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /target/etc/default/grub
+    - curtin in-target --target /target update-grub2
