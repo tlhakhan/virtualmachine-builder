@@ -100,6 +100,7 @@ blob:
 ### 🥅 TODOs
 - [ ] Use Makefile for Go binary build.
 - [ ] Handle `*.iso` mount and unmount without helper scripts.
+- [ ] Can this be a Caddy plugin?
 
 ## 👏 Appendix
 description | link 
