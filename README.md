@@ -26,7 +26,7 @@ status | os | version | machine specs
 1. Perform `make`, the `builder` binary will be placed in the `./bin` folder.
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
-## config.yml
+## ⚙️ config.yml
 The `config.yml` file is used by the virtual machine build process.
 
 ```yaml
