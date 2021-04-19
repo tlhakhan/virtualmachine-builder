@@ -6,33 +6,11 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"os/exec"
 	"path"
 	"strings"
 	"text/template"
 )
-
-// openssl needed to generate password crypt
-const opensslPath = "/usr/bin/openssl"
-
-// init is called on library initialization
-func init() {
-	// check if openssl exists
-	_, err := os.ReadFile(opensslPath)
-	if err != nil {
-		log.Printf("%s binary was not found", opensslPath)
-		log.Fatalf("error message: %s", err)
-	}
-
-	// try the openssl binary by getting its version
-	out, err := exec.Command(opensslPath, "version").CombinedOutput()
-	if err != nil {
-		log.Printf("unable to get openssl version")
-		log.Fatalf("error message: %s", err)
-	}
-	log.Printf("openssl version: %s", out)
-}
 
 // installerVars struct is a variable bag passed to a template.
 type installerVars struct {

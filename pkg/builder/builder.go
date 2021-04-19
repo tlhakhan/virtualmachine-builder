@@ -7,13 +7,8 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
 )
-
-// path where packer should be
-// discovered by performing a package install
-const packerPath = "/usr/bin/packer"
 
 //go:embed installer_templates
 var templates embed.FS
@@ -51,42 +46,7 @@ type blob struct {
 // HTTPServer that holds the <ip address>:<port> value.
 type Builder struct {
 	*config
-  HTTPAddr string
-  HTTPIP string
-  HTTPPort string
-}
-
-// init is called on library initialization
-// check if packer exists
-func init() {
-  var err error
-
-	// check if packer exists
-	_, err := os.ReadFile(packerPath)
-	if err != nil {
-		log.Printf("%s not found", packerPath)
-		log.Fatalln(err)
-	}
-
-	// try the packer binary by getting its version
-  {
-    cmd := exec.Command(packerPath, "version")
-    cmdString = getCommandString(cmd)
-
-    stdout, err := cmd.StdoutPipe()
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    stderr, err := cmd.StderrPipe()
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    cmd.Start()
-    <-logPipe(stdout, "%s out", cmdString)
-    <-logPipe(stderr, "%s err", cmdString)
-  }
+	HTTPAddr string
 }
 
 // New creates a builder type
@@ -96,18 +56,18 @@ func New(configFilePath, virtualMachineName, operatingSystem, operatingSystemVer
 	c, err := parseConfigFile(configFilePath)
 	if err != nil {
 		log.Printf("unable to parse config file [ %s ]", configFilePath)
-		log.Fatalf("error message: %s", err)
+		log.Fatalln(err)
 	}
 
 	// validate the config
 	if err = validateConfig(c); err != nil {
 		log.Printf("unable to parse config file [ %s ]", configFilePath)
-		log.Fatalf("error message: %s", err)
+		log.Fatalln(err)
 	}
 
 	// create builder type
 	b := Builder{
-		config:   c
+		config: c,
 	}
 
 	// attach the vm details
@@ -152,7 +112,7 @@ func (b *Builder) getPackerEnv() []string {
 		fmt.Sprintf("VM_NAME=%s", b.VirtualMachine.Name),
 		fmt.Sprintf("VM_USER=%s", b.VirtualMachine.User),
 		fmt.Sprintf("VM_PASSWORD=%s", b.VirtualMachine.Password),
-		fmt.Sprintf("HTTP_ADDR=%s", b.HTTPAddr),
+		fmt.Sprintf("HTTP_ADDRESS=%s", b.HTTPAddr),
 		"PATH=/usr/bin",
 	}
 }
