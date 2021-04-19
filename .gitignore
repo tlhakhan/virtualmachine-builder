@@ -1,3 +1,5 @@
 vendor
 packer_cache
 config.yml
+*.swp
+bin
