@@ -5,7 +5,7 @@
     "build_network": "{{ env `BUILD_NETWORK` }}",
     "build_user": "{{ env `BUILD_USER` }}",
     "build_password": "{{ env `BUILD_PASSWORD` }}",
-    "http_addr": "{{ env `HTTP_ADDR` }}",
+    "http_address": "{{ env `HTTP_ADDRESS` }}",
     "vm_cpus": "8",
     "vm_memory": "32768",
     "vm_disk_os_size": "102400",
@@ -19,7 +19,7 @@
           "type": "vmware-iso",
           "boot_command": [ 
             "<wait>",
-            "dhcp && chain http://{{ user `http_addr` }}/installer/ipxe.sh<enter>"
+            "dhcp && chain http://{{ user `http_address` }}/installer/ipxe.sh<enter>"
           ],
           "http_directory": "httpdir",
           "iso_url": "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso",
