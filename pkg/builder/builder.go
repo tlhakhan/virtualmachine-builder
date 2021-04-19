@@ -18,7 +18,9 @@ const packerPath = "/usr/bin/packer"
 //go:embed installer_templates
 var templates embed.FS
 
-// struct for build env file
+// config struct will hold the buildHost, virtualMachine and blob types
+// the buildHost, virtualMachine and blob types are pieces of the yaml
+// configuration.
 type config struct {
 	BuildHost      buildHost      `yaml:"build"`
 	VirtualMachine virtualMachine `yaml:"vm"`
@@ -45,28 +47,46 @@ type blob struct {
 	DirPath string `yaml:"dir"`
 }
 
+// Builder struct that holds a pointer to the parsed config type and a string
+// HTTPServer that holds the <ip address>:<port> value.
 type Builder struct {
 	*config
-	HTTPAddr string
+  HTTPAddr string
+  HTTPIP string
+  HTTPPort string
 }
 
 // init is called on library initialization
 // check if packer exists
 func init() {
+  var err error
+
 	// check if packer exists
 	_, err := os.ReadFile(packerPath)
 	if err != nil {
-		log.Printf("%s binary was not found", packerPath)
-		log.Fatalf("error message: %s", err)
+		log.Printf("%s not found", packerPath)
+		log.Fatalln(err)
 	}
 
 	// try the packer binary by getting its version
-	out, err := exec.Command(packerPath, "version").CombinedOutput()
-	if err != nil {
-		log.Printf("unable to get packer version")
-		log.Fatalf("error message: %s", err)
-	}
-	log.Printf("packer version: %s", out)
+  {
+    cmd := exec.Command(packerPath, "version")
+    cmdString = getCommandString(cmd)
+
+    stdout, err := cmd.StdoutPipe()
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    stderr, err := cmd.StderrPipe()
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    cmd.Start()
+    <-logPipe(stdout, "%s out", cmdString)
+    <-logPipe(stderr, "%s err", cmdString)
+  }
 }
 
 // New creates a builder type
@@ -87,8 +107,7 @@ func New(configFilePath, virtualMachineName, operatingSystem, operatingSystemVer
 
 	// create builder type
 	b := Builder{
-		config:   c,
-		HTTPAddr: "0.0.0.0:0",
+		config:   c
 	}
 
 	// attach the vm details

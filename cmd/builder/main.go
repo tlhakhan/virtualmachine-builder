@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/tlhakhan/packer-esxi/builder"
+	"github.com/tlhakhan/packer-esxi/pkg/builder"
 	"os"
 	"os/signal"
 )
