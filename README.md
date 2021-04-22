@@ -14,8 +14,9 @@ This repo helps build virtual machines using packer on ESXi hosts.
 **Supported VM Builds**
 status | os | version | machine specs
 ---| --- | --- | ---
-👍 | debian | 10.7 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
-👍 | ubuntu | 20.04 | 8 vCPU, 8 GiB vRAM, 100 GiB NVMe vDisk
+👍 | centos | 8-stream | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
+👍 | debian | 10.7 | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
+👍 | ubuntu | 20.04 | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
 👍 | vsphere | 6.7u3 | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 👍 | vsphere | 7.0b | 8 vCPU, 32 GiB vRAM, 100 GiB NVMe vDisk
 
