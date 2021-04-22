@@ -101,8 +101,8 @@ func validateConfig(c *config) error {
 	return nil
 }
 
-// getPackerEnv return a string array of key=val environment variables for packer command
-func (b *Builder) getPackerEnv() []string {
+// packerEnv return a string array of key=val environment variables for packer command
+func (b *Builder) packerEnv() []string {
 	return []string{
 		fmt.Sprintf("BUILD_SERVER=%s", b.BuildHost.Server),
 		fmt.Sprintf("BUILD_NETWORK=%s", b.BuildHost.Network),
@@ -153,8 +153,9 @@ func (b *Builder) validatePackerTemplate(packerTemplate []byte) error {
 
 	// form the command
 	cmd := exec.Command(packerPath, "validate", "-")
-	// setup the enviroment
-	cmd.Env = b.getPackerEnv()
+
+	// generate the enviroment for packer exec
+	cmd.Env = b.packerEnv()
 
 	// create the stdin pipe to the command
 	stdin, err := cmd.StdinPipe()
@@ -187,7 +188,7 @@ func (b *Builder) buildPackerTemplate(packerTemplate []byte) error {
 	cmd := exec.Command(packerPath, "build", "-")
 
 	// setup the enviroment
-	cmd.Env = b.getPackerEnv()
+	cmd.Env = b.packerEnv()
 
 	// create the stdin pipe to the command
 	stdin, err := cmd.StdinPipe()
