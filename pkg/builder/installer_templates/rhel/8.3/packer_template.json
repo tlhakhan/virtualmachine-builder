@@ -36,7 +36,7 @@
           "remote_datastore": "{{ user `build_datastore` }}",
           "remote_cache_datastore": "{{ user `build_datastore` }}",
           "remote_cache_directory": "packer_cache/{{ user `vm_name` }}",
-          "guest_os_type": "centos8-64",
+          "guest_os_type": "rhel8-64",
           "cpus": "{{ user `vm_cpus` }}",
           "memory": "{{ user `vm_memory` }}",
           "version": "15",
