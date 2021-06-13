@@ -4,14 +4,14 @@ autoinstall:
 
   early-commands:
     - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+    - hostnamectl set-hostname {{.VirtualMachineName}} # update hostname quickly
+    - dhclient # re-register the updated hostname
 
   network:
-    network:
-      version: 2
-      ethernets:
-        eth0:
-          dhcp4: yes
-          dhcp-identifier: mac
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: yes
 
   ssh:
     install-server: yes
@@ -32,6 +32,6 @@ autoinstall:
     disable_root: false 
 
   late-commands:
-    - echo '{{.GuestUser}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUser}}
+    - echo '{{.GuestUser}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUser}} # allow sudo without password
     - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /target/etc/default/grub
     - curtin in-target --target /target update-grub2
