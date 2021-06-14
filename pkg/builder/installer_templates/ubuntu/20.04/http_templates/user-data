@@ -27,6 +27,8 @@ autoinstall:
 
   packages:
     - open-vm-tools
+    - ansible
+    - git
 
   user-data:
     disable_root: false 
