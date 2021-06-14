@@ -29,6 +29,8 @@ autoinstall:
     - open-vm-tools
     - ansible
     - git
+    - zfsutils-linux
+    - nvme-cli
 
   user-data:
     disable_root: false 
