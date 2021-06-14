@@ -26,7 +26,7 @@ status | os | version | machine specs
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
 ## ⚙️ config.yml
-The `config.yml` file is used by the virtual machine build process.
+The `config.yml` file is used by the builder to connect to a vSphere host to build VMs.
 
 ```yaml
 ---
@@ -55,5 +55,4 @@ description | link
 --- | ---
 iPXE CD used in the virtual machine build process | <https://github.com/tlhakhan/ipxe-iso>
 hashicorp/packer releases | <https://github.com/hashicorp/packer/releases>
-Install Packer doc |
-<https://learn.hashicorp.com/tutorials/packer/getting-started-install>
+Install Packer doc | <https://learn.hashicorp.com/tutorials/packer/getting-started-install>
