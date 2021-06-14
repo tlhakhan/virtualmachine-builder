@@ -47,7 +47,7 @@ func (b *Builder) installerHandler(templates embed.FS, templateDirPath string, v
 // launchHTTPServer is the http template engine.  The HTTP server is launched on a random port.  The server process is backgrounded as a go routine.
 func (b *Builder) launchHTTPServer(templates embed.FS) {
 	// make an outbound connection
-	conn, err := net.Dial("udp", "0.0.0.1:0")
+	conn, err := net.Dial("udp", "8.8.8.8:53")
 	if err != nil {
 		log.Printf("unable to find host ip")
 		log.Fatalf("error message: %s", err)
