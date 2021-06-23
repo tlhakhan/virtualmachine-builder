@@ -2,4 +2,3 @@ vendor
 packer_cache
 *.swp
 bin
-config
