@@ -5,13 +5,8 @@
   connection: local
   gather_facts: no
   vars:
-    iso_state:
-  pre_tasks:
-    - assert:
-        that:
-          - iso_state == "mounted" or iso_state == "unmounted"
-        fail_msg: Pass in playbook variable 'iso_state' with value 'mounted' or 'unmounted'.
-        success_msg:  The ISOs found in this directory and sub-directories will be '{{ iso_state }}'.
+    iso_state: mounted # can be overridden by passing in -e iso_state=<value> to playbook
+
   tasks:
     - name: Run command
       mount:
