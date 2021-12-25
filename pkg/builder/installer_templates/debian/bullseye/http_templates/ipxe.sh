@@ -1,6 +1,6 @@
 #!ipxe
 #
-# Debian 10.7
+# Debian Installer
 #
 set preseed_url http://{{.HTTPAddr}}/installer/preseed.cfg 
 set linux_url http://{{.HTTPAddr}}/blob/linux
