@@ -1,0 +1,25 @@
+#!/usr/bin/ansible-playbook -i localhost,
+---
+- name: Mount ISO files
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    iso_state:
+  pre_tasks:
+    - assert:
+        that:
+          - iso_state == "mounted" or iso_state == "unmounted"
+        fail_msg: Pass in playbook variable 'iso_state' with value 'mounted' or 'unmounted'.
+        success_msg:  The ISOs found in this directory and sub-directories will be '{{ iso_state }}'.
+  tasks:
+    - name: Run command
+      mount:
+        path: '{{ iso_file | dirname }}/iso_contents'
+        src: '{{ iso_file }}'
+        fstype: iso9660
+        state: '{{ iso_state }}'
+      with_lines:
+        - "find {{ playbook_dir }} -type f -name '*.iso'"
+      loop_control:
+        loop_var: iso_file

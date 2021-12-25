@@ -1,0 +1,35 @@
+#!/usr/bin/ansible-playbook -i localhost,
+---
+- name: Playbook to get installer files
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    iso_files:
+      - folder: centos/8-stream
+        url: http://isoredirect.centos.org/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-latest-boot.iso
+
+      - folder: debian/buster
+        url: https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
+  
+      - folder: debian/buster
+        url: https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+  
+      - folder: debian/bullseye
+        url: https://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
+
+      - folder: debian/bullseye
+        url: https://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+ 
+      - folder: ubuntu/20.04
+        url: http://releases.ubuntu.com/focal/ubuntu-20.04.3-live-server-amd64.iso
+ 
+  tasks:
+    - name: Get installer files
+      get_url:
+        url: '{{ iso_file.url }}'
+        dest: '{{ playbook_dir }}/{{ iso_file.folder }}/{{ iso_file.url | basename }}'
+        force: no
+      loop: '{{ iso_files }}'
+      loop_control:
+        loop_var: iso_file
