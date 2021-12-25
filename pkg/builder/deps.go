@@ -8,7 +8,7 @@ import (
 
 // path where packer should be
 // discovered by performing a package install
-const packerPath = "/usr/bin/packer"
+const packerPath = "/usr/local/bin/packer"
 
 // openssl needed to generate password crypt
 const opensslPath = "/usr/bin/openssl"
