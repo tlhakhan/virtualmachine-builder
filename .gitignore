@@ -1,4 +1,4 @@
 vendor
-packer_cache
+.cache
 *.swp
 bin
