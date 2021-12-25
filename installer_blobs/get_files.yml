@@ -21,7 +21,7 @@
       - folder: debian/bullseye
         url: https://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
  
-      - folder: ubuntu/20.04
+      - folder: ubuntu/focal
         url: http://releases.ubuntu.com/focal/ubuntu-20.04.3-live-server-amd64.iso
  
   tasks:
