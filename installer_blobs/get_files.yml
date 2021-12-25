@@ -5,6 +5,12 @@
   connection: local
   gather_facts: no
   vars:
+    iso_folders:
+      - centos/8-stream
+      - debian/buster
+      - debian/bullseye
+      - ubuntu/focal
+
     iso_files:
       - folder: centos/8-stream
         url: http://isoredirect.centos.org/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-latest-boot.iso
@@ -25,6 +31,14 @@
         url: http://releases.ubuntu.com/focal/ubuntu-20.04.3-live-server-amd64.iso
  
   tasks:
+    - name: Create installer folders
+      file:
+        path: '{{ iso_folder }}'
+        state: directory
+      loop: '{{ iso_folders }}'
+      loop_control:
+        loop_var: iso_folder
+
     - name: Get installer files
       get_url:
         url: '{{ iso_file.url }}'
