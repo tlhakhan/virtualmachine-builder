@@ -1,8 +1,8 @@
 # README
-This folder is used to store vendor files of various operating systems and versions.
+This folder is used to store installer blob files of operating systems.
 Before building any virtual machine, it is **necessary** to setup this folder with the required vendor files.
 
 file | description
 ---|---
-`mount_iso_folders.sh` | A helper script to mount found `**/*.iso` files to a path local `iso_contents` folder.
-`unmount_iso_folders.sh` | A helper script to unmount found `**/iso_contents` folder.
+`get_files.yml` | A helper ansible playbook to download all the needed ISO files.
+`mount_iso_folders.yml` | A helper ansible playbook that will mount the ISO files to directories.

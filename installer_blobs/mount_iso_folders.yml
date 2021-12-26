@@ -1,4 +1,8 @@
 #!/usr/bin/ansible-playbook -i localhost,
+#
+# Description:  Mounts ISO files found in sub-directories to a local iso_contents folder.
+# Passing `-e iso_state=unmounted` will unmount the ISO files.
+#
 ---
 - name: Mount ISO files
   hosts: localhost
@@ -8,7 +12,7 @@
     iso_state: mounted # can be overridden by passing in -e iso_state=<value> to playbook
 
   tasks:
-    - name: Run command
+    - name: Run command to mount ISO file to local iso_contents folder
       mount:
         path: '{{ iso_file | dirname }}/iso_contents'
         src: '{{ iso_file }}'
