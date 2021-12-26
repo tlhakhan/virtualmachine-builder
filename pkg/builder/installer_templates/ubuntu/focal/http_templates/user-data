@@ -27,7 +27,6 @@ autoinstall:
 
   packages:
     - open-vm-tools
-    - nvme-cli
     - ansible
     - git
 
