@@ -7,7 +7,6 @@
   vars:
     iso_folders:
       - centos/8-stream
-      - debian/buster
       - debian/bullseye
       - ubuntu/focal
 
@@ -15,12 +14,6 @@
       - folder: centos/8-stream
         url: http://isoredirect.centos.org/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-latest-boot.iso
 
-      - folder: debian/buster
-        url: https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
-  
-      - folder: debian/buster
-        url: https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
-  
       - folder: debian/bullseye
         url: https://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
 
