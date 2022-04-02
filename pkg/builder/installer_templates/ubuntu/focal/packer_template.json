@@ -8,7 +8,7 @@
     "http_address": "{{ env `HTTP_ADDRESS` }}",
     "vm_cpus": "4",
     "vm_memory": "6144",
-    "vm_disk_os_size": "20480",
+    "vm_disk_os_size": "102400",
     "vm_name": "{{ env `VM_NAME` }}",
     "vm_user": "{{ env `VM_USER` }}",
     "vm_password": "{{ env `VM_PASSWORD` }}",
