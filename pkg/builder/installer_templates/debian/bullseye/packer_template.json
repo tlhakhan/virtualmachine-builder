@@ -36,10 +36,10 @@
           "remote_datastore": "{{ user `build_datastore` }}",
           "remote_cache_datastore": "{{ user `build_datastore` }}",
           "remote_cache_directory": "packer_cache/{{ user `vm_name` }}",
-          "guest_os_type": "debian10-64",
+          "guest_os_type": "debian11-64",
           "cpus": "{{ user `vm_cpus` }}",
           "memory": "{{ user `vm_memory` }}",
-          "version": "15",
+          "version": "19",
           "network_adapter_type": "vmxnet3",
           "vmx_data": {
               "ethernet0.networkName": "{{ user `build_network` }}",
