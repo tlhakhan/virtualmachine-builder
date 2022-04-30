@@ -8,21 +8,20 @@ This repo helps build virtual machines using packer on ESXi hosts.
 - [x] Gracefully handle CTRL+C.
 
 **Requirements**
-- vSphere 6.7u3 or 7.0b ESXi host with SSH enabled.
-- A control machine with `hashicorp/packer` and `openssl` binaries.
+- vSphere 7.0U3 ESXi host with SSH access enabled.
+- A control machine with `ansible`, `hashicorp/packer` and `openssl` packages.
 
 **Supported VM Builds**
 status | os | version | machine specs
 ---| --- | --- | ---
-👍 | centos | 8-stream | 1 vCPU, 4 GiB vRAM, 20 GiB NVMe vDisk
-👍 | debian | bullseye | 1 vCPU, 4 GiB vRAM, 20 GiB NVMe vDisk
-👍 | ubuntu | focal | 4 vCPU, 6 GiB vRAM, 20 GiB NVMe vDisk
+👍 | centos | 8-stream | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
+👍 | debian | bullseye | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
+👍 | ubuntu | focal | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
 
 # 🌱 Getting started
-1. Setup the `blob` folder with vendor files.  See `README.md` located inside of folder.
-1. Run `mount_iso_folders.sh` to mount ISO files to a path local `iso_contents` folder.
+1. Setup the `installer_blobs` folder with vendor files.
 1. Create a `config.yml` file.
-1. Perform `make`, the `builder` binary will be placed in the `./bin` folder.
+1. Perform `make`, the `builder` binary will be placed repository root folder.
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
 ## ⚙️ config.yml
@@ -31,19 +30,18 @@ The `config.yml` file is used by the builder to connect to a vSphere host to bui
 ```yaml
 ---
 build:
-  server: vsphere-1  # ESX host
+  server: vs-2  # ESX host
   user: builder # ESX user with admin permissions
-  password: password # ESX user's password
+  password: Secret123 # ESX user's password
   network: VM Network # virtual network to create the VM on
   datastore: nvme1 # the datastore to create the VM on
 
 vm:
-  user: guest # the VM user
-  password: password # the VM password
+  user: sysuser # the VM user
+  password: Welcome123 # the VM password
 
 blob:
-  dir: blob # the folder path of the vendor files
-  
+  dir: installer_blobs # the folder path of the vendor files
 ...
 ```
 ## 👏 Appendix

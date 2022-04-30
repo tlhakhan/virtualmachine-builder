@@ -1,4 +1,4 @@
 vendor
 .cache
 *.swp
-bin
+builder

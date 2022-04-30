@@ -1,11 +1,21 @@
+# Makefile for building CoreDNS
+GITCOMMIT:=$(shell git describe --dirty --always)
+BUILD_DATE:=$(shell date '+%Y%m%d-%H%M%S')
+BINARY:=builder
+BUILDOPTS:=-v
+CGO_ENABLED?=0
 
-all: gofmt build
+.PHONY: all
+all: build
 
+.PHONY: clean
 clean:
-	rm -f ./bin/builder
+	rm -f builder
 
+.PHONY: gofmt
 gofmt:
-	find ./pkg ./cmd -name "*.go"  | xargs -n1 -t go fmt
+	find . -name '*.go' | xargs -n1 -t go fmt
 
+.PHONY: build
 build:
-	go build -o ./bin/builder ./cmd/builder/main.go
+	CGO_ENABLED=$(CGO_ENABLED) $(SYSTEM) go build $(BUILDOPTS) -ldflags="-s -w -X main.gitCommit=$(GITCOMMIT)" -o $(BINARY) builder.go
