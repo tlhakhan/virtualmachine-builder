@@ -67,8 +67,7 @@ func main() {
 
 // showVersion prints the version that is starting.
 func showVersion() {
-	fmt.Print(versionString())
-	fmt.Print(releaseString())
+	fmt.Printf("%s %s", versionString(), releaseString())
 }
 
 // versionString returns the version as a string.

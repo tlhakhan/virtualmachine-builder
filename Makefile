@@ -18,4 +18,4 @@ gofmt:
 
 .PHONY: build
 build:
-	CGO_ENABLED=$(CGO_ENABLED) $(SYSTEM) go build $(BUILDOPTS) -ldflags="-s -w -X main.gitCommit=$(GITCOMMIT)" -o $(BINARY) builder.go
+	CGO_ENABLED=$(CGO_ENABLED) $(SYSTEM) go build $(BUILDOPTS) -ldflags="-s -w -X main.buildDate=$(BUILD_DATE) -X main.gitCommit=$(GITCOMMIT)" -o $(BINARY) builder.go
