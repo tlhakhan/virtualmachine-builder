@@ -7,8 +7,8 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
-  "os"
 )
 
 //go:embed installer_templates
@@ -53,7 +53,7 @@ type Builder struct {
 // New creates a builder type
 func New(configFilePath, virtualMachineName, operatingSystem, operatingSystemVersion string) *Builder {
 
-  preflightChecks()
+	preflightChecks()
 
 	// parse the given config at file path
 	c, err := parseConfigFile(configFilePath)

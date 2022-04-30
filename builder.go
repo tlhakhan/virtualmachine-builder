@@ -1,26 +1,26 @@
 package main
 
 import (
-	"github.com/tlhakhan/packer-esxi/pkg/builder"
-	"os/signal"
-	"os"
 	"flag"
-  "fmt"
-  "runtime"
+	"fmt"
+	"github.com/tlhakhan/packer-esxi/pkg/builder"
+	"os"
+	"os/signal"
+	"runtime"
 )
 
 const (
-  appName = "builder"
-  appVersion = "1.0"
+	appName    = "builder"
+	appVersion = "1.0"
 )
 
 var (
-  gitCommit string
-  buildDate string
+	gitCommit string
+	buildDate string
 )
 
 var (
-  version bool
+	version                bool
 	configFilePath         string
 	virtualMachineName     string
 	operatingSystem        string
@@ -33,7 +33,7 @@ func init() {
 	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name.")
 	flag.StringVar(&operatingSystem, "o", "", "Operating system.")
 	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name.")
-  flag.BoolVar(&version, "version", false, "Print program version.")
+	flag.BoolVar(&version, "version", false, "Print program version.")
 }
 
 func main() {
