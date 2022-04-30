@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/tlhakhan/packer-esxi/pkg/builder"
+	"github.com/tenzin-io/vm-builder/pkg/builder"
 	"os"
 	"os/signal"
 	"runtime"
