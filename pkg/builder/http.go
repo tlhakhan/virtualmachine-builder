@@ -18,6 +18,7 @@ type installerVars struct {
 	HTTPAddr           string
 	GuestUser          string
 	GuestPassword      string
+  GuestPublicKey     string
 }
 
 // installerHandler processes requests with the path prefix /installer/ and runs against a given templateDirPath for any matching template file.
@@ -82,6 +83,7 @@ func (b *Builder) launchHTTPServer(templates embed.FS) {
 		VirtualMachineName: b.VirtualMachine.Name,
 		GuestUser:          b.VirtualMachine.User,
 		GuestPassword:      string(guestPasswordCrypted),
+		GuestPublicKey:      b.VirtualMachine.PublicKey,
 		HTTPAddr:           b.HTTPAddr,
 	}
 

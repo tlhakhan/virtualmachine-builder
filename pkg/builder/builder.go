@@ -34,6 +34,7 @@ type buildHost struct {
 type virtualMachine struct {
 	User                   string `yaml:"user"`
 	Password               string `yaml:"password"`
+  PublicKey               string `yaml:"ssh_pub_key"`
 	Name                   string
 	OperatingSystem        string
 	OperatingSystemVersion string
