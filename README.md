@@ -17,6 +17,7 @@ status | os | version | machine specs
 👍 | centos | 8-stream | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
 👍 | debian | bullseye | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
 👍 | ubuntu | focal | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
+👍 | ubuntu | jammy | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
 
 # 🌱 Getting started
 1. Setup the `installer_blobs` folder with vendor files.
@@ -44,6 +45,22 @@ blob:
   dir: installer_blobs # the folder path of the vendor files
 ...
 ```
+
+## Usage
+```
+Usage of ./builder:
+  -c string
+        Config file path.
+  -n string
+        Virtual machine name.
+  -o string
+        Operating system. Examples: debian, centos, ubuntu
+  -r string
+        Operating system release name. Examples: bullseye, 8-stream, focal, jammy
+  -version
+        Print program version.
+```
+
 ## 👏 Appendix
 description | link 
 --- | ---

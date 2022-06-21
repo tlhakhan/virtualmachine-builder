@@ -32,7 +32,7 @@ func init() {
 	flag.StringVar(&configFilePath, "c", "", "Config file path.")
 	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name.")
 	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu")
-	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal")
+	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy")
 	flag.BoolVar(&version, "version", false, "Print program version.")
 }
 
