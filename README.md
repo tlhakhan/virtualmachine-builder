@@ -46,7 +46,7 @@ blob:
 ...
 ```
 
-## Usage
+## ⭐️ Usage
 ```
 Usage of ./builder:
   -c string
