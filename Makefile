@@ -1,4 +1,3 @@
-# Makefile for building CoreDNS
 GITCOMMIT:=$(shell git describe --dirty --always)
 BUILD_DATE:=$(shell date '+%Y%m%d-%H%M%S')
 BINARY:=builder
