@@ -15,7 +15,7 @@ set initrd_url http://{{.HTTPAddr}}/blob/iso_contents/casper/initrd
 
 #
 # The $iso_url points to the live-server iso file
-set iso_url http://{{.HTTPAddr}}/blob/ubuntu-22.04-live-server-amd64.iso
+set iso_url http://{{.HTTPAddr}}/blob/ubuntu-22.04.1-live-server-amd64.iso
 
 kernel ${vmlinuz_url} autoinstall url=${iso_url} net.ifnames=0 biosdevname=0 ip=::::{{.VirtualMachineName}}::dhcp ds=nocloud-net;s=${seed_url}
 initrd ${initrd_url}

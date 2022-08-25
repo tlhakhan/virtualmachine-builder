@@ -25,7 +25,7 @@
         url: http://releases.ubuntu.com/focal/ubuntu-20.04.4-live-server-amd64.iso
 
       - folder: ubuntu/jammy
-        url: https://releases.ubuntu.com/jammy/ubuntu-22.04-live-server-amd64.iso
+        url: https://releases.ubuntu.com/jammy/ubuntu-22.04.1-live-server-amd64.iso
  
   tasks:
     - name: Create installer folders
