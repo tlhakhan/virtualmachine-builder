@@ -1,5 +1,0 @@
-package builder
-
-import (
-	"testing"
-)
