@@ -25,12 +25,12 @@ status | os | version | machine specs
 1. Perform `make`, the `builder` binary will be placed at the root of the repository folder.
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
-## `esx_server.pkrvars.hcl`
-The `esx_server.pkrvars.hcl` file is used by the builder to connect to VMware ESXi host to build VMs.
+## ⚙️ `esx_server.pkrvars.hcl`
+The `installers/esx_server.pkrvars.hcl` file is used by the builder to connect to VMware ESXi host to build VMs.
 
 ```hcl2
 esx_server    = "" # ESX host
-esx_user      = "" # ESX user with admin and SSH access
+esx_username      = "" # ESX user with admin and SSH access
 esx_password  = "" # ESX user password
 esx_network   = "" # ESX virtual network name for the VM
 esx_datastore = "" # ESX datastore name to place the VM's VMDK files
