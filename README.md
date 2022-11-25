@@ -30,7 +30,7 @@ The `installers/esx_server.pkrvars.hcl` file is used by the builder to connect t
 
 ```hcl2
 esx_server    = "" # ESX host
-esx_username      = "" # ESX user with admin and SSH access
+esx_username  = "" # ESX user with admin and SSH access
 esx_password  = "" # ESX user password
 esx_network   = "" # ESX virtual network name for the VM
 esx_datastore = "" # ESX datastore name to place the VM's VMDK files
