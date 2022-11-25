@@ -1,0 +1,39 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  early-commands:
+    - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+    - hostnamectl set-hostname {{.VirtualMachineName}} # update hostname quickly
+    - dhclient # re-register the updated hostname
+
+  network:
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: yes
+
+  ssh:
+    install-server: yes
+
+  identity:
+    hostname: {{.VirtualMachineName}}
+    password: {{.GuestPassword}}
+    username: {{.GuestUserName}} # root doesn't work
+
+  storage:
+    layout:
+      name: lvm
+
+  packages:
+    - open-vm-tools
+    - ansible
+    - git
+
+  user-data:
+    disable_root: false 
+
+  late-commands:
+    - echo '{{.GuestUserName}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUserName}} # allow sudo without password
+    - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /target/etc/default/grub
+    - curtin in-target --target /target update-grub2

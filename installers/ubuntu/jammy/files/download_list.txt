@@ -1,0 +1,1 @@
+https://releases.ubuntu.com/jammy/ubuntu-22.04.1-live-server-amd64.iso
