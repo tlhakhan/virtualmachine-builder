@@ -4,7 +4,7 @@
 //
 variable "esx_datastore" {
   type    = string
-  default = "nvme1"
+  default = "datastore1"
 }
 
 variable "esx_network" {
@@ -12,7 +12,7 @@ variable "esx_network" {
   default = "VM Network"
 }
 
-variable "esx_user" {
+variable "esx_username" {
   type    = string
   default = "builder"
 }
@@ -63,6 +63,7 @@ variable "vm_disk_size" {
   type    = string
   default = "10240"
 }
+
 variable "vm_password" {
   type      = string
   default   = "password"
@@ -111,7 +112,7 @@ source "vmware-iso" "virtual_machine" {
   remote_password           = "${var.esx_password}"
   remote_port               = "22"
   remote_type               = "esx5"
-  remote_username           = "${var.esx_user}"
+  remote_username           = "${var.esx_username}"
   shutdown_command          = "${var.vm_shutdown_command}"
   skip_compaction           = "true"
   skip_export               = "true"
