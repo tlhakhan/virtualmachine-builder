@@ -1,0 +1,18 @@
+---
+- name: Get the content of download_list.txt
+  command: 'cat {{ download_list_file_path }}'
+  register: download_list_contents
+  tags:
+    - prepare
+    - download
+
+- name: Download the file
+  get_url:
+    url: '{{ download_url }}'
+    dest: '{{ download_list_file_path | dirname }}'
+  loop: '{{ download_list_contents.stdout_lines }}'
+  loop_control:
+    loop_var: download_url
+  tags:
+    - prepare 
+    - download

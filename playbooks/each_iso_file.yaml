@@ -1,0 +1,29 @@
+---
+- name: Create the iso_contents folder fact
+  set_fact:
+    iso_contents_folder_path: '{{ iso_file_path | dirname }}/iso_contents'
+  tags:
+    - prepare
+    - mount
+    - unmount
+
+- name: Create an iso_contents folder if it doesn't exist
+  file:
+    path: '{{ iso_contents_folder_path }}'
+    state: directory
+  tags:
+    - prepare
+    - mount
+
+- name: Mount the iso_file_path to local iso_contents folder
+  mount:
+    boot: false
+    fstab: '{{ playbook_dir }}/.iso_files_fstab'
+    path: '{{ iso_contents_folder_path }}'
+    src: '{{ iso_file_path }}'
+    fstype: iso9660
+    state: '{{ iso_mount_state }}'
+  tags:
+    - prepare
+    - mount
+    - unmount
