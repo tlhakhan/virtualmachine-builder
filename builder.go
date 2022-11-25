@@ -3,10 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/tenzin-io/vm-builder/pkg/builder"
-	"os"
+	"github.com/tenzin-io/vmware-builder/pkg/templates"
+	"github.com/tenzin-io/vmware-builder/pkg/builder"
+  "os"
 	"os/signal"
+  "log"
 	"runtime"
+  "path/filepath"
 )
 
 const (
@@ -21,19 +24,34 @@ var (
 
 var (
 	version                bool
-	configFilePath         string
 	virtualMachineName     string
+	virtualMachineUserName string
+	virtualMachinePassword string
 	operatingSystem        string
 	operatingSystemRelease string
+  esxPackerVarsPath string
+  installersDirPath string
 )
 
 func init() {
+  // get the binary exec path
+  ex, err := os.Executable()
+  if err != nil {
+      log.Fatalln(err)
+  }
+
+  installersDirPath = fmt.Sprintf("%s/%s", filepath.Dir(ex), "installers")
+
 	// parse flags
-	flag.StringVar(&configFilePath, "c", "", "Config file path.")
-	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name.")
-	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu")
-	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy")
+	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name. (Required)")
+	flag.StringVar(&virtualMachineUserName, "u", "sysuser", "Virtual machine guest username.")
+	flag.StringVar(&virtualMachinePassword, "p", "password", "Virtual machine guest password.")
+	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu. (Required)")
+	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)")
+	flag.StringVar(&esxPackerVarsPath, "c", fmt.Sprintf("%s/esx_server.pkrvars.hcl", installersDirPath), "The path to the Packer variables file for the VMware ESX server.")
 	flag.BoolVar(&version, "version", false, "Print program version.")
+
+
 }
 
 func main() {
@@ -45,24 +63,47 @@ func main() {
 		os.Exit(0)
 	}
 
-	// validate
-	if configFilePath == "" ||
-		virtualMachineName == "" ||
-		operatingSystem == "" ||
-		operatingSystemRelease == "" {
-		flag.Usage()
-		os.Exit(1)
-	}
+  // input guards
+  if virtualMachineName == "" || operatingSystem == "" || operatingSystemRelease == "" || esxPackerVarsPath == "" {
+    flag.Usage()
+    os.Exit(1)
+  }
 
-	// this command needs to ignore/mask os.Interrupt
+	// this binary needs to ignore/mask os.Interrupt
 	// packer will get the interrupt signal passed down and gracefully halt
+  // then we can exit out of main
 	signal.Ignore(os.Interrupt)
 
-	// create a builder instance
-	b := builder.New(configFilePath, virtualMachineName, operatingSystem, operatingSystemRelease)
+  // get the http address
+	httpAddress := templates.LaunchTemplateServer(installersDirPath, operatingSystem, operatingSystemRelease, virtualMachineName, virtualMachineUserName, virtualMachinePassword)
 
-	// perform build
-	b.Build()
+  // construct the packer args
+  packerArgs:= []string{
+    fmt.Sprintf("-var=http_address=%s", httpAddress),
+    fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
+    fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
+    fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
+    fmt.Sprintf("-var-file=%s/%s/%s/virtual_machine.pkrvars.hcl", installersDirPath, operatingSystem, operatingSystemRelease),
+    fmt.Sprintf("-var-file=%s", esxPackerVarsPath),
+   "installers/packer_template.pkr.hcl",
+  }
+
+  // packer validate
+  packerValidateArgs := []string{ "validate"}
+  packerValidateArgs = append(packerValidateArgs, packerArgs...)
+  err := builder.Packer(packerValidateArgs...)
+  if err != nil {
+    log.Fatalln("packer validation failed")
+  }
+
+  // packer build
+  packerBuildArgs := []string{ "build" }
+  packerBuildArgs = append(packerBuildArgs, packerArgs...)
+  err = builder.Packer(packerBuildArgs...)
+  if err != nil {
+    log.Fatalln("packer build failed")
+  }
+
 }
 
 // showVersion prints the version that is starting.

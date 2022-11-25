@@ -1,5 +1,5 @@
 # 📖 README
-This repo helps build virtual machines using packer on ESXi hosts.
+This repo helps build virtual machines using packer on VMware ESXi hosts.
 
 - [x] Build on a simple network with DHCP and DNS. 
 - [x] Doesn't use TFTP server for netbooting.
@@ -9,7 +9,7 @@ This repo helps build virtual machines using packer on ESXi hosts.
 
 **Requirements**
 - vSphere 7.0U3 ESXi host with SSH access enabled.
-- A control machine with `ansible`, `hashicorp/packer` and `openssl` packages.
+- A control machine with `ansible`, `hashicorp/packer` and `openssl` binaries.
 
 **Supported VM Builds**
 status | os | version | machine specs
@@ -20,43 +20,41 @@ status | os | version | machine specs
 👍 | ubuntu | jammy | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
 
 # 🌱 Getting started
-1. Setup the `installer_blobs` folder with vendor files.
-1. Create a `config.yml` file.
-1. Perform `make`, the `builder` binary will be placed repository root folder.
+1. Run the `prepare_installers.yaml` Ansible playbook.
+1. Create a `installers/esx_server.pkrvars.hcl` file.  This file contains Packer variables specific to connecting to the VMware ESXi server.
+1. Perform `make`, the `builder` binary will be placed at the root of the repository folder.
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
-## ⚙️ config.yml
-The `config.yml` file is used by the builder to connect to a vSphere host to build VMs.
+## `esx_server.pkrvars.hcl`
+The `esx_server.pkrvars.hcl` file is used by the builder to connect to VMware ESXi host to build VMs.
 
-```yaml
----
-build:
-  server: vs-2  # ESX host
-  user: builder # ESX user with admin permissions
-  password: Secret123 # ESX user's password
-  network: VM Network # virtual network to create the VM on
-  datastore: nvme1 # the datastore to create the VM on
-
-vm:
-  user: sysuser # the VM user
-  password: Welcome123 # the VM password
-
-blob:
-  dir: installer_blobs # the folder path of the vendor files
-...
+```hcl2
+esx_server    = "" # ESX host
+esx_user      = "" # ESX user with admin and SSH access
+esx_password  = "" # ESX user password
+esx_network   = "" # ESX virtual network name for the VM
+esx_datastore = "" # ESX datastore name to place the VM's VMDK files
 ```
 
 ## ⭐️ Usage
 ```
 Usage of ./builder:
   -c string
-        Config file path.
+        The path to the Packer variables file for the VMware ESX server. (default "/opt/vmware-builder/installers/esx_server.pkrvars.hcl")
   -n string
-        Virtual machine name.
+        Virtual machine name. (Required)
   -o string
-        Operating system. Examples: debian, centos, ubuntu
+        Operating system. Examples: debian, centos, ubuntu. (Required)
+  -openssl-path string
+        The path to the OpenSSL binary. (default "/usr/bin/openssl")
+  -p string
+        Virtual machine guest password. (default "password")
+  -packer-path string
+        The path to the Hashicorp Packer binary. (default "/usr/local/bin/packer")
   -r string
-        Operating system release name. Examples: bullseye, 8-stream, focal, jammy
+        Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)
+  -u string
+        Virtual machine guest username. (default "sysuser")
   -version
         Print program version.
 ```

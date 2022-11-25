@@ -1,4 +1,2 @@
-vendor
-.cache
-*.swp
 builder
+.iso_files_fstab

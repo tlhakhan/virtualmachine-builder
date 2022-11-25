@@ -1,4 +1,4 @@
-module github.com/tenzin-io/vm-builder
+module github.com/tenzin-io/vmware-builder
 
 go 1.16
 
