@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/tenzin-io/vmware-builder/pkg/templates"
 	"github.com/tenzin-io/vmware-builder/pkg/builder"
-  "os"
+	"github.com/tenzin-io/vmware-builder/pkg/templates"
+	"log"
+	"os"
 	"os/signal"
-  "log"
+	"path/filepath"
 	"runtime"
-  "path/filepath"
 )
 
 const (
@@ -29,18 +29,18 @@ var (
 	virtualMachinePassword string
 	operatingSystem        string
 	operatingSystemRelease string
-  esxPackerVarsPath string
-  installersDirPath string
+	esxPackerVarsPath      string
+	installersDirPath      string
 )
 
 func init() {
-  // get the binary exec path
-  ex, err := os.Executable()
-  if err != nil {
-      log.Fatalln(err)
-  }
+	// get the binary exec path
+	ex, err := os.Executable()
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-  installersDirPath = fmt.Sprintf("%s/%s", filepath.Dir(ex), "installers")
+	installersDirPath = fmt.Sprintf("%s/%s", filepath.Dir(ex), "installers")
 
 	// parse flags
 	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name. (Required)")
@@ -50,7 +50,6 @@ func init() {
 	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)")
 	flag.StringVar(&esxPackerVarsPath, "c", fmt.Sprintf("%s/esx_server.pkrvars.hcl", installersDirPath), "The path to the Packer variables file for the VMware ESX server.")
 	flag.BoolVar(&version, "version", false, "Print program version.")
-
 
 }
 
@@ -63,46 +62,46 @@ func main() {
 		os.Exit(0)
 	}
 
-  // input guards
-  if virtualMachineName == "" || operatingSystem == "" || operatingSystemRelease == "" || esxPackerVarsPath == "" {
-    flag.Usage()
-    os.Exit(1)
-  }
+	// input guards
+	if virtualMachineName == "" || operatingSystem == "" || operatingSystemRelease == "" || esxPackerVarsPath == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
 
 	// this binary needs to ignore/mask os.Interrupt
 	// packer will get the interrupt signal passed down and gracefully halt
-  // then we can exit out of main
+	// then we can exit out of main
 	signal.Ignore(os.Interrupt)
 
-  // get the http address
+	// get the http address
 	httpAddress := templates.LaunchTemplateServer(installersDirPath, operatingSystem, operatingSystemRelease, virtualMachineName, virtualMachineUserName, virtualMachinePassword)
 
-  // construct the packer args
-  packerArgs:= []string{
-    fmt.Sprintf("-var=http_address=%s", httpAddress),
-    fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
-    fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
-    fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
-    fmt.Sprintf("-var-file=%s/%s/%s/virtual_machine.pkrvars.hcl", installersDirPath, operatingSystem, operatingSystemRelease),
-    fmt.Sprintf("-var-file=%s", esxPackerVarsPath),
-   "installers/packer_template.pkr.hcl",
-  }
+	// construct the packer args
+	packerArgs := []string{
+		fmt.Sprintf("-var=http_address=%s", httpAddress),
+		fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
+		fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
+		fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
+		fmt.Sprintf("-var-file=%s/%s/%s/virtual_machine.pkrvars.hcl", installersDirPath, operatingSystem, operatingSystemRelease),
+		fmt.Sprintf("-var-file=%s", esxPackerVarsPath),
+		"installers/packer_template.pkr.hcl",
+	}
 
-  // packer validate
-  packerValidateArgs := []string{ "validate"}
-  packerValidateArgs = append(packerValidateArgs, packerArgs...)
-  err := builder.Packer(packerValidateArgs...)
-  if err != nil {
-    log.Fatalln("packer validation failed")
-  }
+	// packer validate
+	packerValidateArgs := []string{"validate"}
+	packerValidateArgs = append(packerValidateArgs, packerArgs...)
+	err := builder.Packer(packerValidateArgs...)
+	if err != nil {
+		log.Fatalln("packer validation failed")
+	}
 
-  // packer build
-  packerBuildArgs := []string{ "build" }
-  packerBuildArgs = append(packerBuildArgs, packerArgs...)
-  err = builder.Packer(packerBuildArgs...)
-  if err != nil {
-    log.Fatalln("packer build failed")
-  }
+	// packer build
+	packerBuildArgs := []string{"build"}
+	packerBuildArgs = append(packerBuildArgs, packerArgs...)
+	err = builder.Packer(packerBuildArgs...)
+	if err != nil {
+		log.Fatalln("packer build failed")
+	}
 
 }
 
