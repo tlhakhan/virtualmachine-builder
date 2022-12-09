@@ -36,7 +36,7 @@ autoinstall:
 
   packages:
     - open-vm-tools
-    - ansible-core
+    - ansible
 
   user-data:
     disable_root: false 
