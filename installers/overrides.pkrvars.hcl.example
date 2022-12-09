@@ -1,5 +1,21 @@
+#
+# ESX variables
+#
 esx_server    = "" # ESX host
 esx_username  = "" # ESX user with admin and SSH access 
 esx_password  = "" # ESX user password
 esx_network   = "" # ESX virtual network name for the VM
 esx_datastore = "" # ESX datastore name to place the VM's VMDK files
+
+#
+# VM variables
+#
+ssh_keys_url = ""
+
+#
+# Important
+# The following variables cannot be overriden and should be passed through the `builder` binary.
+# vm_username
+# vm_password
+# vm_linux_distro
+# vm_linux_distro_release

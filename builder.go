@@ -23,14 +23,14 @@ var (
 )
 
 var (
-	version                bool
-	virtualMachineName     string
-	virtualMachineUserName string
-	virtualMachinePassword string
-	operatingSystem        string
-	operatingSystemRelease string
-	esxPackerVarsPath      string
-	installersDirPath      string
+	version                 bool
+	virtualMachineName      string
+	virtualMachineUserName  string
+	virtualMachinePassword  string
+	operatingSystem         string
+	operatingSystemRelease  string
+	overridesPackerVarsPath string
+	installersDirPath       string
 )
 
 func init() {
@@ -48,7 +48,7 @@ func init() {
 	flag.StringVar(&virtualMachinePassword, "p", "password", "Virtual machine guest password.")
 	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu. (Required)")
 	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)")
-	flag.StringVar(&esxPackerVarsPath, "c", fmt.Sprintf("%s/esx_server.pkrvars.hcl", installersDirPath), "The path to the Packer variables file for the VMware ESX server.")
+	flag.StringVar(&overridesPackerVarsPath, "c", fmt.Sprintf("%s/overrides.pkrvars.hcl", installersDirPath), "The path to a Packer variables file that can override the default Packer variable values.")
 	flag.BoolVar(&version, "version", false, "Print program version.")
 
 }
@@ -63,7 +63,7 @@ func main() {
 	}
 
 	// input guards
-	if virtualMachineName == "" || operatingSystem == "" || operatingSystemRelease == "" || esxPackerVarsPath == "" {
+	if virtualMachineName == "" || operatingSystem == "" || operatingSystemRelease == "" || overridesPackerVarsPath == "" {
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -82,8 +82,10 @@ func main() {
 		fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
 		fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
 		fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
+		fmt.Sprintf("-var=vm_linux_distro=%s", operatingSystem),
+		fmt.Sprintf("-var=vm_linux_distro_release=%s", operatingSystemRelease),
 		fmt.Sprintf("-var-file=%s/%s/%s/virtual_machine.pkrvars.hcl", installersDirPath, operatingSystem, operatingSystemRelease),
-		fmt.Sprintf("-var-file=%s", esxPackerVarsPath),
+		fmt.Sprintf("-var-file=%s", overridesPackerVarsPath),
 		"installers/packer_template.pkr.hcl",
 	}
 

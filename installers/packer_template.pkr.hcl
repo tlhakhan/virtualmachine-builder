@@ -91,6 +91,20 @@ variable "vm_guest_os_type" {
   default = "otherlinux-64"
 }
 
+variable "vm_linux_distro" {
+  type    = string
+  default = "Linux"
+}
+
+variable "vm_linux_distro_release" {
+  type    = string
+  default = "Generic"
+}
+
+variable "ssh_keys_url" {
+  type = string
+}
+
 source "vmware-iso" "virtual_machine" {
   boot_command              = ["<wait>", "dhcp && chain http://${var.http_address}/templates/ipxe.sh<enter>"]
   cpus                      = "${var.vm_cpus}"
@@ -135,4 +149,14 @@ source "vmware-iso" "virtual_machine" {
 
 build {
   sources = ["source.vmware-iso.virtual_machine"]
+
+  provisioner "ansible-local" {
+    playbook_file  = "installers/${var.vm_linux_distro}/${var.vm_linux_distro_release}/playbook.yaml"
+    inventory_file = "installers/${var.vm_linux_distro}/${var.vm_linux_distro_release}/inventory"
+    extra_arguments = [
+      "--limit", "localhost",
+      "--extra-vars", "\"vm_password=${var.vm_password} ssh_keys_url=${var.ssh_keys_url}\""
+    ]
+  }
+
 }
