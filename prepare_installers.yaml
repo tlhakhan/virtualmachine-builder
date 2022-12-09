@@ -15,7 +15,7 @@
         - download
 
     - name: Download the files
-      include_tasks: '{{ playbook_dir }}/playbooks/each_download_list.yaml'
+      include_tasks: '{{ playbook_dir }}/.prepare_installers.d/each_download_list.yaml'
       loop: '{{ find_download_list_files.stdout_lines }}'
       loop_control:
         loop_var: download_list_file_path
@@ -51,7 +51,7 @@
         - mount
 
     - name: Mount the *.iso files
-      include_tasks: '{{ playbook_dir }}/playbooks/each_iso_file.yaml'
+      include_tasks: '{{ playbook_dir }}/.prepare_installers.d/each_iso_file.yaml'
       loop: '{{ find_iso_files.stdout_lines }}'
       loop_control:
         loop_var: iso_file_path
