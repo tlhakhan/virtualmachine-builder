@@ -66,17 +66,17 @@ func templatesHandler(templateDirPath string, vars templateVars) func(http.Respo
 
 func LaunchTemplateServer(installersDirPath string, operatingSystem string, operatingSystemRelease string, virtualMachineName string, virtualMachineUserName string, virtualMachinePassword string) string {
 
-	// make an outbound connection
+	// attempt an outbound connection
 	conn, err := net.Dial("udp", "1.1.1.1:53")
 	if err != nil {
 		log.Printf("unable to find host ip")
 		log.Fatalf("error message: %s", err)
 	}
 
-	// retrieve host ip address
+	// retrieve host address from which we attempted an outbound connection
 	localIP := conn.LocalAddr().(*net.UDPAddr).IP
 
-	// setup tcp listener for http listen
+	// setup tcp listener on the host address
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:0", localIP))
 	if err != nil {
 		log.Println("unable to start tcp listener")
@@ -99,7 +99,7 @@ func LaunchTemplateServer(installersDirPath string, operatingSystem string, oper
 	tv := templateVars{
 		VirtualMachineName: virtualMachineName,
 		GuestUserName:      virtualMachineUserName,
-		GuestPassword:      string(guestPasswordCrypted),
+		GuestPassword:      guestPasswordCrypted,
 		HTTPAddress:        listener.Addr().String(),
 	}
 
@@ -128,73 +128,7 @@ func LaunchTemplateServer(installersDirPath string, operatingSystem string, oper
 
 }
 
-// launchHTTPServer is the http template engine.  The HTTP server is launched on a random port.  The server process is backgrounded as a go routine.
-// func (b *Builder) launchHTTPServer(templates embed.FS) {
-// 	// make an outbound connection
-// 	conn, err := net.Dial("udp", "8.8.8.8:53")
-// 	if err != nil {
-// 		log.Printf("unable to find host ip")
-// 		log.Fatalf("error message: %s", err)
-// 	}
-//
-// 	// retrieve host ip address
-// 	localIP := conn.LocalAddr().(*net.UDPAddr).IP
-//
-// 	// setup tcp listener
-// 	l, err := net.Listen("tcp", fmt.Sprintf("%s:0", localIP))
-// 	if err != nil {
-// 		log.Println("unable to start tcp listener")
-// 		log.Fatalf("error message: %s", err)
-// 	}
-// 	log.Printf("http server: %s", l.Addr().String())
-//
-// 	// store http addr
-// 	b.HTTPAddr = l.Addr().String()
-//
-// 	// setup http server
-// 	mux := http.NewServeMux()
-//
-// 	// the plain text password needs to be crypted for template use
-// 	guestPasswordCrypted, err := generateCryptedPassword(b.VirtualMachine.Password)
-// 	if err != nil {
-// 		log.Println("unable to bcrypt password")
-// 		log.Fatalf("error message: %s", err)
-// 	}
-//
-// 	// setup a installerVars struct to hold variables needed for the installer template file
-// 	vars := installerVars{
-// 		VirtualMachineName: b.VirtualMachine.Name,
-// 		GuestUser:          b.VirtualMachine.User,
-// 		GuestPassword:      string(guestPasswordCrypted),
-// 		GuestPublicKey:      b.VirtualMachine.PublicKey,
-// 		HTTPAddr:           b.HTTPAddr,
-// 	}
-//
-// 	// setup installer handler
-// 	// installer => installer/os/version/http_templates
-// 	templateDirPath := fmt.Sprintf("installer_templates/%s/%s/http_templates", b.VirtualMachine.OperatingSystem, b.VirtualMachine.OperatingSystemVersion)
-// 	mux.HandleFunc("/installer/", b.installerHandler(templates, templateDirPath, vars))
-//
-// 	// setup blobs handler
-// 	// blob => blob/os/version/
-// 	blobDirPath := fmt.Sprintf("%s/%s/%s", b.Blob.DirPath, b.VirtualMachine.OperatingSystem, b.VirtualMachine.OperatingSystemVersion)
-// 	mux.Handle("/blob/", http.StripPrefix("/blob/", http.FileServer(http.Dir(blobDirPath))))
-//
-// 	// setup the default route to use mux router
-// 	http.Handle("/", mux)
-//
-// 	// start up http server
-// 	go func() {
-// 		err = http.Serve(l, nil)
-// 		if err != nil {
-// 			log.Println("failed to serve http")
-// 			log.Fatalf("error message: %s", err)
-// 		}
-// 	}()
-// }
-
 // generateCryptedPassword uses the openssl binary to determine the crypt hash, the plain text password is passed via stdin.
-
 func generateCryptedPassword(password string) (string, error) {
 
 	// prepare command
