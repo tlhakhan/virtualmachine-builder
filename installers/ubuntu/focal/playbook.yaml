@@ -1,0 +1,94 @@
+---
+- name: VM post provisioning steps 
+  hosts: localhost
+  connection: local
+  become: True
+  become_user: root
+  gather_facts: False
+
+  pre_tasks:
+    - name: Assert required variables
+      assert:
+        that:
+          - ssh_keys_url is defined
+          - vm_password is defined
+        fail_msg: 'A required variable was not defined'
+        success_msg: 'All required variables were defined'
+
+  tasks:
+    - name: Update password for system user
+      user:
+        name: "{{ lookup('env', 'USER') }}"
+        password: "{{ vm_password | password_hash }}"
+
+    - name: Update password for root user
+      user:
+        name: root
+        password: "{{ vm_password | password_hash }}"
+
+    - name: Update authorized_keys file of root user
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ authorized_key }}"
+      loop: "{{ lookup('url', ssh_keys_url, wantlist=True) }}"
+      loop_control:
+        loop_var: authorized_key
+
+    - name: Ensure that PasswordAuthentication is set to no
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: PasswordAuthentication no
+
+    - name: Ensure that PermitRootLogin is set to prohibit-password
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: PermitRootLogin prohibit-password
+
+    - name: Install packages
+      package:
+        name: '{{ package }}'
+        state: present
+      loop:
+        - apt-transport-https
+        - sysstat # system stats
+        - tree # directory ascii layout
+        - figlet # ascii art fonts
+        - mosh # always on shell
+        - jq # json pretty format
+        - zip # zip files
+        - hwloc-nox # view hardware topology, no X
+        - smartmontools # access disk reliability stats
+        - apt-file # search for files in packages
+        - curl
+        - gnupg
+        - software-properties-common
+        - lsb-release
+        - ca-certificates
+        - less
+        - ubuntu-dbgsym-keyring
+      loop_control:
+        loop_var: package
+
+    - name: Update .vimrc for root
+      copy:
+        content: |-
+          set tabstop=2 softtabstop=2 expandtab shiftwidth=2
+          colorscheme desert
+
+          set nocompatible
+          syntax enable
+          filetype plugin on
+
+          set number
+
+          set path+=**
+          set wildmenu
+
+          let g:netrw_banner=0
+          let g:netrw_browse_split=4
+          let g:netrw_altv=1
+          let g:netrw_liststyle=3
+        dest: /root/.vimrc

@@ -13,6 +13,15 @@ autoinstall:
       eth0:
         dhcp4: yes
 
+  apt:
+    preserve_sources_list: false
+    primary:
+      - arches: [amd64]
+        uri: "http://archive.ubuntu.com/ubuntu"
+      - arches: [default]
+        uri: "http://ports.ubuntu.com/ubuntu-ports"
+    geoip: true
+
   ssh:
     install-server: yes
 
@@ -27,13 +36,12 @@ autoinstall:
 
   packages:
     - open-vm-tools
-    - ansible
-    - git
+    - ansible-core
 
   user-data:
     disable_root: false 
 
   late-commands:
-    - echo '{{.GuestUserName}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUser}} # allow sudo without password
+    - echo '{{.GuestUserName}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUserName}} # allow sudo without password
     - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /target/etc/default/grub
     - curtin in-target --target /target update-grub2

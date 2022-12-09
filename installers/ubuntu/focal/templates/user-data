@@ -13,6 +13,15 @@ autoinstall:
       eth0:
         dhcp4: yes
 
+  apt:
+    preserve_sources_list: false
+    primary:
+      - arches: [amd64]
+        uri: "http://archive.ubuntu.com/ubuntu"
+      - arches: [default]
+        uri: "http://ports.ubuntu.com/ubuntu-ports"
+    geoip: true
+
   ssh:
     install-server: yes
 
@@ -27,8 +36,7 @@ autoinstall:
 
   packages:
     - open-vm-tools
-    - ansible
-    - git
+    - ansible-core
 
   user-data:
     disable_root: false 
