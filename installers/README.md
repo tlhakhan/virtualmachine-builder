@@ -1,11 +1,13 @@
 # README
 This folder stores the templates and files necessary for the installation of operating systems.
 
-The `packer_template.pkr.hcl` is the generic Packer template and default variables used by the virtual machine `builder` binary.  The default Packer variables are overridden as necessary.  For instance, there are `virtual_machine.pkrvars.hcl` files that overrides specific variables pertaining to things like default CPU, memory, disk size and VMware guest OS type.
+The `packer_template.pkr.hcl` is the main Packer template used by the virtual machine `builder` binary to create the virtual machines.  The default Packer variables can be overridden via `pkrvars.hcl` files and `builder` binary flags.  For instance, there are `virtual_machine.pkrvars.hcl` files that overrides specific variables like default CPU, memory, disk size and VMware guest OS type.
 
-The `overrides.pkrvars.hcl` contains the Packer variable definitions that are needed to connect to the VMware ESXi host.  The variables `vm_username`, `vm_password`, `vm_linux_distro` and `vm_linux_distro_release` cannot be overriden by the `overrides.pkrvars.hcl` file because the `builder` binary will override them by the use of values provided to its flags.
+The `overrides.pkrvars.hcl` should be created to fit your environment, for instance Packer variable values needed to connect to the VMware ESXi host.  Use the `overrides.pkrvars.hcl.example` file as a starting point.
 
-The Operating System folder is structured as follows:
+The Packer variables `vm_username`, `vm_password`, `vm_linux_distro` and `vm_linux_distro_release` cannot be overriden by the `overrides.pkrvars.hcl` file because the `builder` binary passes these variables via its flags options to the Packer process.
+
+The operating system folders are structured as follows:
 
 | File | Description |
 | -- | -- | 
