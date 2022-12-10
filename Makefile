@@ -11,9 +11,10 @@ all: build
 clean:
 	rm -f builder
 
-.PHONY: gofmt
-gofmt:
+.PHONY: fmt
+fmt:
 	find . -name '*.go' | xargs -n1 -t go fmt
+	find . -name '*.hcl' | xargs -n1 -t packer fmt
 
 .PHONY: build
 build:
