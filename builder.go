@@ -31,7 +31,7 @@ var (
 	operatingSystemRelease  string
 	overridesPackerVarsPath string
 	installersDirPath       string
-  packerBuildErrorAction string
+	packerBuildErrorAction  string
 )
 
 func init() {
@@ -101,9 +101,9 @@ func main() {
 
 	// packer build
 	packerBuildArgs := []string{
-    "build",
+		"build",
 		fmt.Sprintf("-on-error=%s", packerBuildErrorAction),
-  }
+	}
 	packerBuildArgs = append(packerBuildArgs, packerArgs...)
 	err = builder.Packer(packerBuildArgs...)
 	if err != nil {
