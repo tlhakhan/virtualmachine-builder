@@ -47,10 +47,17 @@
         regexp: '^PermitRootLogin'
         line: PermitRootLogin prohibit-password
 
+    - name: Ensure that UsePAM is set to no
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^UsePAM'
+        line: UsePAM no
+
     - name: Install packages
-      package:
+      apt:
         name: '{{ package }}'
         state: present
+        update_cache: True
       loop:
         - apt-transport-https
         - sysstat # system stats
@@ -72,6 +79,7 @@
         - vim
         - nfs-common
         - gpg
+        - iftop
       loop_control:
         loop_var: package
 
