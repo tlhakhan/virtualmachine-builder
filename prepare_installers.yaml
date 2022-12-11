@@ -1,4 +1,4 @@
-#!/usr/bin/ansible-playbook
+#!/usr/local/bin/ansible-playbook
 ---
 - name: Playbook to get installer files
   hosts: localhost
