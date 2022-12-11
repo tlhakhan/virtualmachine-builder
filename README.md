@@ -1,11 +1,12 @@
 # 📖 README
 This repo helps build virtual machines using Packer on VMware ESXi hosts.
 
-- [x] Build VMs on a simple network with just DHCP and DNS. 
-- [x] Doesn't use TFTP server for netbooting.
-- [x] Doesn't use a separate HTTP server.
-- [x] Built-in HTTP templating server.
-- [x] Gracefully handle CTRL+C.
+- [x] Build VMs on a simple network with just DHCP and DNS
+- [x] Doesn't use TFTP server for netbooting
+- [x] Doesn't use a separate HTTP server
+- [x] Built-in HTTP templating server
+- [x] Gracefully handle CTRL+C
+- [x] Build VMs in parallel, for instance `xargs -P4 ...`
 
 **Requirements**
 - vSphere 7.0U3 ESXi host with SSH access enabled.
