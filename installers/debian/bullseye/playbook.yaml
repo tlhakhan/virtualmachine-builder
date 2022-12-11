@@ -95,3 +95,13 @@
           let g:netrw_altv=1
           let g:netrw_liststyle=3
         dest: /root/.vimrc
+
+    - name: Setup tcp_bbr
+      copy:
+        dest: /etc/modules-load.d/tcp_bbr.conf
+        content: tcp_bbr
+
+    - name: Setup TCP congestion control
+      sysctl:
+        name: net.ipv4.tcp_congestion_control
+        value: bbr
