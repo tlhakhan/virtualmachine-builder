@@ -20,6 +20,7 @@ status | os | version | machine specs
 👍 | ubuntu | focal | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
 👍 | ubuntu | jammy | 4 vCPU, 6 GiB vRAM, 100 GiB NVMe vDisk
 👍 | photon | 4 | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
+👍 | coreos | stable-stream | 4 vCPU, 4 GiB vRAM, 100 GiB NVMe vDisk
 
 # 🌱 Getting started
 1. Run the `prepare_installers.yaml` Ansible playbook.
