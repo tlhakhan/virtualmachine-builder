@@ -25,8 +25,6 @@ var (
 var (
 	version                 bool
 	virtualMachineName      string
-	virtualMachineUserName  string
-	virtualMachinePassword  string
 	operatingSystem         string
 	operatingSystemRelease  string
 	overridesPackerVarsPath string
@@ -45,8 +43,6 @@ func init() {
 
 	// parse flags
 	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name. (Required)")
-	flag.StringVar(&virtualMachineUserName, "u", "sysuser", "Virtual machine guest username.")
-	flag.StringVar(&virtualMachinePassword, "p", "password", "Virtual machine guest password.")
 	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu. (Required)")
 	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)")
 	flag.StringVar(&overridesPackerVarsPath, "c", fmt.Sprintf("%s/overrides.pkrvars.hcl", installersDirPath), "The path to a Packer variables file that can override the default Packer variable values.")
@@ -78,8 +74,6 @@ func main() {
 	// construct the packer args
 	packerArgs := []string{
 		fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
-		fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
-		fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
 		fmt.Sprintf("-var=vm_linux_distro=%s", operatingSystem),
 		fmt.Sprintf("-var=vm_linux_distro_release=%s", operatingSystemRelease),
 		fmt.Sprintf("-var-file=%s/%s/%s/virtual_machine.pkrvars.hcl", installersDirPath, operatingSystem, operatingSystemRelease),
@@ -106,7 +100,6 @@ func main() {
 		"validate",
 		fmt.Sprintf("-var=http_address=%s", httpAddress),
 	}
-
 	packerValidateArgs = append(packerValidateArgs, packerArgs...)
 	err = builder.Packer(packerValidateArgs...)
 	if err != nil {
