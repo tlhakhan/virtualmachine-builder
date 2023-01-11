@@ -5,7 +5,7 @@ The `packer_template.pkr.hcl` is the main Packer template used by the virtual ma
 
 The `overrides.pkrvars.hcl` should be created to fit your environment, for instance Packer variable values needed to connect to the VMware ESXi host.  Use the `overrides.pkrvars.hcl.example` file as a starting point.
 
-The Packer variables `vm_username`, `vm_password`, `vm_linux_distro` and `vm_linux_distro_release` cannot be overriden by the `overrides.pkrvars.hcl` file because the `builder` binary passes these variables via its flags options to the Packer process.
+The Packer variables `vm_linux_distro` and `vm_linux_distro_release` cannot be overriden by the `overrides.pkrvars.hcl` file because the `builder` binary passes these variables via `-var` flags options to the Packer process.
 
 The operating system folders are structured as follows:
 
