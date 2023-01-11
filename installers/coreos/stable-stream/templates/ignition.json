@@ -1,0 +1,28 @@
+{
+  "ignition": { "version": "3.0.0" },
+  "storage": {
+    "files": [{
+      "path": "/etc/hostname",
+      "mode": 420,
+      "overwrite": true,
+      "contents": { "source": "data:,{{ index .PackerVars "vm_name" }}" }
+    },
+    {
+      "path" : "/etc/ssh/sshd_config.d/20-enable-passwords.conf",
+      "mode": 644,
+      "append": [{ "source": "data:,PasswordAuthentication%20yes" }]
+    }]
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "{{  index .PackerVars "vm_username" }}",
+        "passwordHash": "{{ index .PackerVars "vm_password_crypted" }}",
+        "groups": [ "wheel" ],
+        "sshAuthorizedKeys": [
+          "{{ index .PackerVars "vm_ssh_public_key" }}"
+        ]
+      }
+    ]
+  }
+}
