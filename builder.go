@@ -75,12 +75,8 @@ func main() {
 	// then we can exit out of main
 	signal.Ignore(os.Interrupt)
 
-	// get the http address
-	httpAddress := templates.LaunchTemplateServer(installersDirPath, operatingSystem, operatingSystemRelease, virtualMachineName, virtualMachineUserName, virtualMachinePassword)
-
 	// construct the packer args
 	packerArgs := []string{
-		fmt.Sprintf("-var=http_address=%s", httpAddress),
 		fmt.Sprintf("-var=vm_name=%s", virtualMachineName),
 		fmt.Sprintf("-var=vm_username=%s", virtualMachineUserName),
 		fmt.Sprintf("-var=vm_password=%s", virtualMachinePassword),
@@ -91,10 +87,28 @@ func main() {
 		"installers/packer_template.pkr.hcl",
 	}
 
+	// packer inspect
+	packerInspectArgs := []string{
+		"inspect",
+		"-machine-readable",
+	}
+	packerInspectArgs = append(packerInspectArgs, packerArgs...)
+	packerVars, err := builder.ExtractVars(packerInspectArgs...)
+	if err != nil {
+		log.Fatalln("packer inspect failed")
+	}
+
+	// get the http address
+	httpAddress := templates.LaunchTemplateServer(installersDirPath, packerVars)
+
 	// packer validate
-	packerValidateArgs := []string{"validate"}
+	packerValidateArgs := []string{
+		"validate",
+		fmt.Sprintf("-var=http_address=%s", httpAddress),
+	}
+
 	packerValidateArgs = append(packerValidateArgs, packerArgs...)
-	err := builder.Packer(packerValidateArgs...)
+	err = builder.Packer(packerValidateArgs...)
 	if err != nil {
 		log.Fatalln("packer validation failed")
 	}
@@ -103,6 +117,7 @@ func main() {
 	packerBuildArgs := []string{
 		"build",
 		fmt.Sprintf("-on-error=%s", packerBuildErrorAction),
+		fmt.Sprintf("-var=http_address=%s", httpAddress),
 	}
 	packerBuildArgs = append(packerBuildArgs, packerArgs...)
 	err = builder.Packer(packerBuildArgs...)

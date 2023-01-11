@@ -3,14 +3,13 @@ package templates
 import (
 	"flag"
 	"fmt"
+	"github.com/tenzin-io/vmware-builder/pkg/builder"
 	"io"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	"os/exec"
 	"path"
-	"strings"
 	"text/template"
 )
 
@@ -22,10 +21,8 @@ func init() {
 
 // installerVars struct is a variable bag passed to a template.
 type templateVars struct {
-	VirtualMachineName string
-	GuestUserName      string
-	GuestPassword      string
-	HTTPAddress        string
+	PackerVars  builder.PackerVars
+	HTTPAddress string
 }
 
 func templatesHandler(templateDirPath string, vars templateVars) func(http.ResponseWriter, *http.Request) {
@@ -64,7 +61,7 @@ func templatesHandler(templateDirPath string, vars templateVars) func(http.Respo
 	}
 }
 
-func LaunchTemplateServer(installersDirPath string, operatingSystem string, operatingSystemRelease string, virtualMachineName string, virtualMachineUserName string, virtualMachinePassword string) string {
+func LaunchTemplateServer(installersDirPath string, packerVars builder.PackerVars) string {
 
 	// attempt an outbound connection
 	conn, err := net.Dial("udp", "1.1.1.1:53")
@@ -88,27 +85,18 @@ func LaunchTemplateServer(installersDirPath string, operatingSystem string, oper
 	// setup http mux
 	mux := http.NewServeMux()
 
-	// the plain text password needs to be crypted for template use
-	guestPasswordCrypted, err := generateCryptedPassword(virtualMachinePassword)
-	if err != nil {
-		log.Println("unable to bcrypt password")
-		log.Fatalf("error message: %s", err)
-	}
-
 	// templateVars to give to the templates
 	tv := templateVars{
-		VirtualMachineName: virtualMachineName,
-		GuestUserName:      virtualMachineUserName,
-		GuestPassword:      guestPasswordCrypted,
-		HTTPAddress:        listener.Addr().String(),
+		PackerVars:  packerVars,
+		HTTPAddress: listener.Addr().String(),
 	}
 
 	// setup the templates path
-	templatesDirPath := fmt.Sprintf("%s/%s/%s/templates", installersDirPath, operatingSystem, operatingSystemRelease)
+	templatesDirPath := fmt.Sprintf("%s/%s/%s/templates", installersDirPath, packerVars["vm_linux_distro"], packerVars["vm_linux_distro_release"])
 	mux.HandleFunc("/templates/", templatesHandler(templatesDirPath, tv))
 
 	// setup the files path
-	filesDirPath := fmt.Sprintf("%s/%s/%s/files", installersDirPath, operatingSystem, operatingSystemRelease)
+	filesDirPath := fmt.Sprintf("%s/%s/%s/files", installersDirPath, packerVars["vm_linux_distro"], packerVars["vm_linux_distro_release"])
 	mux.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir(filesDirPath))))
 
 	// give the mux to handle the root path
@@ -126,31 +114,4 @@ func LaunchTemplateServer(installersDirPath string, operatingSystem string, oper
 	// return the HTTP address for use by packer
 	return tv.HTTPAddress
 
-}
-
-// generateCryptedPassword uses the openssl binary to determine the crypt hash, the plain text password is passed via stdin.
-func generateCryptedPassword(password string) (string, error) {
-
-	// prepare command
-	cmd := exec.Command(openSSLPath, "passwd", "-6", "-stdin")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		log.Print("unable to open stdin to openssl")
-		return "", err
-	}
-
-	// start stdin stream
-	go func() {
-		defer stdin.Close()
-		fmt.Fprintf(stdin, password)
-	}()
-
-	// run command
-	out, err := cmd.Output()
-	if err != nil {
-		log.Printf("failed to run openssl")
-		return "", err
-	}
-
-	return strings.TrimSpace(string(out)), nil
 }
