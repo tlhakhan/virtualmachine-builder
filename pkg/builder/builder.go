@@ -51,35 +51,47 @@ func Packer(packerArgs ...string) error {
 
 // Packer
 func ExtractVars(packerArgs ...string) (PackerVars, error) {
+
+	// perform the packer inspect command
 	out, err := exec.Command(packerPath, packerArgs...).Output()
 	if err != nil {
 		return nil, err
 	}
 
-	/*
-	   1673406288,,ui,say,Packer Inspect: HCL2 mode\n
-	   1673406288,,ui,say,> input-variables:\n\nvar.esx_datastore: "datastore1"\nvar.esx_network: "VM Network"\nvar.esx_password: "password"\nvar.esx_server: "vsphere-1"\nvar.esx_username: "builder"\nvar.http_address: "127.0.0.1"\nvar.ssh_keys_url: "<unknown>"\nvar.vm_cpus: "2"\nvar.vm_disk_adapter_type: "nvme"\nvar.vm_disk_size: "10240"\nvar.vm_guest_os_type: "otherlinux-64"\nvar.vm_linux_distro: "Linux"\nvar.vm_linux_distro_release: "Generic"\nvar.vm_memory: "1024"\nvar.vm_name: "machine-00"\nvar.vm_password: "password"\nvar.vm_shutdown_command: "sudo poweroff"\nvar.vm_username: "sysuser"\nvar.vm_version: "19"\n\n> local-variables:\n\n
-	   1673406288,,ui,say,> builds:\n\n  > <unnamed build 0>:\n\n    sources:\n\n      vmware-iso.virtual_machine\n\n    provisioners:\n\n      <no provisioner>\n\n    post-processors:\n\n      <no post-processor>\n
-	*/
+	// create the map to store the kv pairs
 	var p = make(PackerVars)
 	scanner := bufio.NewScanner(bytes.NewReader(out))
+
 	for scanner.Scan() {
+		// the useful message is the last string after split on ,
 		line := strings.Split(scanner.Text(), ",")
 		message := line[len(line)-1]
+
+		// search for input variables or local variables
 		if strings.HasPrefix(message, "> input-variables:") || strings.HasPrefix(message, "> local-variables:") {
+			// the "message" is an escaped string, so convert newlines into real newlines
 			message = strings.Replace(message, `\n`, "\n", -1)
+
+			// run through another scanner
 			kvScanner := bufio.NewScanner(strings.NewReader(message))
 			for kvScanner.Scan() {
 				kv := kvScanner.Text()
+
+				// if the kv text starts with var or local, we want that in our value bag
 				if strings.HasPrefix(kv, "var.") || strings.HasPrefix(kv, "local.") {
 					pair := strings.Split(kv, ":")
+					// strip out var. or local. on the key name
 					key := strings.TrimPrefix(pair[0], "var.")
 					key = strings.TrimPrefix(key, "local.")
+					// get the value, remove double quotes and remove whitespaces
 					value := strings.TrimSpace(strings.Replace(pair[1], `"`, "", -1))
+					// store kv in value bag map
 					p[key] = value
 				}
 			}
 		}
 	}
+
+	// successfully extracted all packer variables
 	return p, nil
 }
