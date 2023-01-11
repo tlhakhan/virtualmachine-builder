@@ -17,6 +17,6 @@ set initrd_url http://{{.HTTPAddress}}/files/iso_contents/casper/initrd
 # The $iso_url points to the live-server iso file
 set iso_url http://{{.HTTPAddress}}/files/ubuntu-20.04.5-live-server-amd64.iso
 
-kernel ${vmlinuz_url} autoinstall url=${iso_url} net.ifnames=0 biosdevname=0 ip=::::{{.VirtualMachineName}}::dhcp ds=nocloud-net;s=${seed_url}
+kernel ${vmlinuz_url} autoinstall url=${iso_url} net.ifnames=0 biosdevname=0 ip=::::{{ index .PackerVars "vm_name" }}::dhcp ds=nocloud-net;s=${seed_url}
 initrd ${initrd_url}
 boot

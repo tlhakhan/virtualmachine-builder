@@ -70,6 +70,11 @@ variable "vm_password" {
   sensitive = true
 }
 
+variable "vm_ssh_public_key" {
+  type    = string
+  default = "ssh-public-key"
+}
+
 variable "vm_shutdown_command" {
   type    = string
   default = "sudo poweroff"
@@ -101,8 +106,8 @@ variable "vm_linux_distro_release" {
   default = "Generic"
 }
 
-variable "ssh_keys_url" {
-  type = string
+locals {
+  vm_password_crypted = bcrypt(var.vm_password)
 }
 
 source "vmware-iso" "virtual_machine" {
@@ -149,14 +154,4 @@ source "vmware-iso" "virtual_machine" {
 
 build {
   sources = ["source.vmware-iso.virtual_machine"]
-
-  provisioner "ansible-local" {
-    playbook_file  = "installers/${var.vm_linux_distro}/${var.vm_linux_distro_release}/playbook.yaml"
-    inventory_file = "installers/${var.vm_linux_distro}/${var.vm_linux_distro_release}/inventory"
-    extra_arguments = [
-      "--limit", "localhost",
-      "--extra-vars", "\"vm_password=${var.vm_password} ssh_keys_url=${var.ssh_keys_url}\""
-    ]
-  }
-
 }

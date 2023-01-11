@@ -4,7 +4,7 @@ autoinstall:
 
   early-commands:
     - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
-    - hostnamectl set-hostname {{.VirtualMachineName}} # update hostname quickly
+    - hostnamectl set-hostname {{ index .PackerVars "vm_name" }} # update hostname quickly
     - dhclient # re-register the updated hostname
 
   network:
@@ -17,9 +17,9 @@ autoinstall:
     install-server: yes
 
   identity:
-    hostname: {{.VirtualMachineName}}
-    password: {{.GuestPassword}}
-    username: {{.GuestUserName}} # root doesn't work
+    hostname: {{ index .PackerVars "vm_name" }}
+    password: {{ index .PackerVars "vm_password_crypted" }}
+    username: {{ index .PackerVars "vm_username" }} # root doesn't work
 
   storage:
     layout:
@@ -32,7 +32,7 @@ autoinstall:
     disable_root: false 
 
   late-commands:
-    - echo '{{.GuestUserName}} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{.GuestUserName}} # allow sudo without password
+    - echo '{{ index .PackerVars "vm_username" }} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/{{ index .PackerVars "vm_username" }} # allow sudo without password
     - curtin in-target --target /target -- sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /etc/default/grub
     - curtin in-target --target /target -- update-grub2
     - curtin in-target --target /target -- apt-get install -y ansible
