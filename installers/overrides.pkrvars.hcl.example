@@ -10,12 +10,6 @@ esx_datastore = "" # ESX datastore name to place the VM's VMDK files
 #
 # VM variables
 #
-ssh_keys_url = ""
-
-#
-# Important
-# The following variables cannot be overriden and should be passed through the `builder` binary.
-# vm_username
-# vm_password
-# vm_linux_distro
-# vm_linux_distro_release
+vm_username       = "" # VM user to create
+vm_password       = "" # VM user's password
+vm_ssh_public_key = "" # SSH public key to place into the VM user's SSH authorized_keys file

@@ -29,16 +29,24 @@ status | os | version | machine specs
 1. Run the `builder` binary.  Use `-h` flag to see the arguments needed.
 
 ## ⚙️ `overrides.pkrvars.hcl`
-The `installers/overrides.pkrvars.hcl` file is used by the builder to pass in Packer variable values that overrides the defaults.
+The `installers/overrides.pkrvars.hcl` file is used by the builder to pass in Packer variable values that overrides the default values.
 
 ```hcl2
+#
+# ESX variables
+#
 esx_server    = "" # ESX host
 esx_username  = "" # ESX user with admin and SSH access
 esx_password  = "" # ESX user password
 esx_network   = "" # ESX virtual network name for the VM
 esx_datastore = "" # ESX datastore name to place the VM's VMDK files
 
-ssh_keys_url  = "" # A URL to SSH public keys. For example: https://github.com/<username>.keys
+#
+# VM variables
+#
+vm_username       = "" # VM user to create
+vm_password       = "" # VM user's password
+vm_ssh_public_key = "" # SSH public key to place into the VM user's SSH authorized_keys file
 ```
 
 ## ⭐️ Usage
@@ -52,16 +60,10 @@ Usage of ./builder:
         Virtual machine name. (Required)
   -o string
         Operating system. Examples: debian, centos, ubuntu. (Required)
-  -openssl-path string
-        The path to the OpenSSL binary. (default "/usr/bin/openssl")
-  -p string
-        Virtual machine guest password. (default "password")
   -packer-path string
         The path to the Hashicorp Packer binary. (default "/usr/local/bin/packer")
   -r string
         Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)
-  -u string
-        Virtual machine guest username. (default "sysuser")
   -version
         Print program version.
 ```
