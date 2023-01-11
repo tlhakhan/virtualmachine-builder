@@ -5,12 +5,17 @@
       "path": "/etc/hostname",
       "mode": 420,
       "overwrite": true,
-      "contents": { "source": "data:,{{ index .PackerVars "vm_name" }}" }
+      "contents": { "source": "http://{{.HTTPAddress}}/templates/hostname" }
     },
     {
       "path" : "/etc/ssh/sshd_config.d/20-enable-passwords.conf",
       "mode": 644,
-      "append": [{ "source": "data:,PasswordAuthentication%20yes" }]
+      "append": [{ "source": "http://{{.HTTPAddress}}/templates/enable-passwords.conf" }]
+    },
+    {
+      "path" : "/etc/sudoers.d/{{ index .PackerVars "vm_username" }}",
+      "mode": 644,
+      "append": [{ "source": "http://{{.HTTPAddress}}/templates/sudoers" }]
     }]
   },
   "passwd": {
