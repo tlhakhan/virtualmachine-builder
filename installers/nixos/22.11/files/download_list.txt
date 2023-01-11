@@ -1,1 +1,0 @@
-https://channels.nixos.org/nixos-22.11/latest-nixos-minimal-x86_64-linux.iso
