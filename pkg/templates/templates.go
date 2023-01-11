@@ -1,7 +1,6 @@
 package templates
 
 import (
-	"flag"
 	"fmt"
 	"github.com/tenzin-io/vmware-builder/pkg/builder"
 	"io"
@@ -12,12 +11,6 @@ import (
 	"path"
 	"text/template"
 )
-
-var openSSLPath string
-
-func init() {
-	flag.StringVar(&openSSLPath, "openssl-path", "/usr/bin/openssl", "The path to the OpenSSL binary.")
-}
 
 // installerVars struct is a variable bag passed to a template.
 type templateVars struct {
