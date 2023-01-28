@@ -24,4 +24,4 @@ boot
 # Notes on what ip= kernel boot parameter means
 # https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt
 # The purpose of ip= in this script is to configure the hostname of the initial ubuntu installer environment, so that doesn't use the default ubuntu-server hostname.
-# This causes confusion at the DHCP level if you do many concurrent/parallel builds.
+# If you leave the default ubuntu-server hostname, it can cause confusion at the DHCP level if you do many concurrent/parallel builds.
