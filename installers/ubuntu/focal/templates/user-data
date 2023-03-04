@@ -18,7 +18,7 @@ autoinstall:
 
   identity:
     hostname: {{ index .PackerVars "vm_name" }}
-    password: {{ index. PackerVars "vm_password_crypted" }}
+    password: {{ index .PackerVars "vm_password_crypted" }}
     username: {{ index .PackerVars "vm_username" }} # root doesn't work
 
   storage:
