@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Add /usr/local/bin to the PATH
+export PATH=$PATH:/usr/local/bin
+
 # No password needed for privilege escalation
 cat <<EOF > /etc/sudoers.d/{{ index .PackerVars "vm_username" }}
 {{ index .PackerVars "vm_username" }} ALL=(ALL) NOPASSWD:ALL
