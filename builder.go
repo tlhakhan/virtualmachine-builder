@@ -89,7 +89,7 @@ func main() {
 	packerInspectArgs = append(packerInspectArgs, packerArgs...)
 	packerVars, err := builder.ExtractVars(packerInspectArgs...)
 	if err != nil {
-		log.Fatalln("packer inspect failed")
+		log.Fatalf("packer inspect failed: %s", err)
 	}
 
 	// get the http address
@@ -103,7 +103,7 @@ func main() {
 	packerValidateArgs = append(packerValidateArgs, packerArgs...)
 	err = builder.Packer(packerValidateArgs...)
 	if err != nil {
-		log.Fatalln("packer validation failed")
+		log.Fatalf("packer validation failed: %s", err)
 	}
 
 	// packer build
@@ -115,7 +115,7 @@ func main() {
 	packerBuildArgs = append(packerBuildArgs, packerArgs...)
 	err = builder.Packer(packerBuildArgs...)
 	if err != nil {
-		log.Fatalln("packer build failed")
+		log.Fatalln("packer build failed: %s", err)
 	}
 
 }
