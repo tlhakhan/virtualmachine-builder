@@ -88,7 +88,7 @@ variable "vm_username" {
 // VM hardware version details found here: https://kb.vmware.com/s/article/1003746
 variable "vm_version" {
   type    = string
-  default = "19"
+  default = "20"
 }
 
 variable "vm_guest_os_type" {
