@@ -13,7 +13,7 @@ var packerPath string
 type PackerVars map[string]string
 
 func init() {
-	flag.StringVar(&packerPath, "packer-path", "/usr/local/bin/packer", "The path to the Hashicorp Packer binary.")
+	flag.StringVar(&packerPath, "packer-path", "/usr/bin/packer", "The path to the Hashicorp Packer binary.")
 }
 
 // Packer command
