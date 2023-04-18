@@ -31,3 +31,7 @@ apt-get install -y python3-pip
 pip3 install --upgrade pip
 pip install --upgrade ansible
 ansible-galaxy collection install --timeout 180 community.general
+
+# Add net.ifnames=0 to the kernel boot parameters
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0"/' /etc/default/grub
+update-grub
