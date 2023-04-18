@@ -142,12 +142,16 @@ source "vmware-iso" "virtual_machine" {
   version                   = "${var.vm_version}"
   vm_name                   = "${var.vm_name}"
   vmx_data = {
-    "ethernet0.networkName" = "${var.esx_network}"
-    "mem.hotadd"            = "true"
-    "numa.autosize"         = "true"
-    "numa.autosize.once"    = "false"
-    "vcpu.hotadd"           = "true"
-    "vmxnet3.rev.30"        = "false"
+    "ethernet0.networkName"       = "${var.esx_network}"
+    "mem.hotadd"                  = "true"
+    "numa.autosize"               = "true"
+    "numa.autosize.once"          = "false"
+    "vcpu.hotadd"                 = "true"
+    "vmxnet3.rev.30"              = "false"
+    "pciPassthru.use64bitMMIO"    = "true"  # gpu passthru
+    "pciPassthru.64bitMMIOSizeGB" = "64"    # gpu passthru
+    "pciPassthru.msiEnabled"      = "false" # gpu passthru
+    "hypervisor.cpuid.v0"         = "false" # gpu passthru
   }
   vnc_over_websocket = "true"
 }
