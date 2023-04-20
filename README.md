@@ -9,7 +9,7 @@ This repo helps build virtual machines using Packer on VMware ESXi hosts.
 - [x] Build VMs in parallel, for instance `xargs -P4 ...`
 
 **Requirements**
-- vSphere 7.0U3 ESXi host with SSH access enabled.
+- vSphere 8.0b ESXi host with SSH access enabled.
 - A control machine with `go`, `ansible`, `hashicorp/packer` and `openssl` binaries.
 
 **Supported VM Builds**
