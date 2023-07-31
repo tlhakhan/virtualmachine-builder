@@ -43,8 +43,8 @@ func init() {
 
 	// parse flags
 	flag.StringVar(&virtualMachineName, "n", "", "Virtual machine name. (Required)")
-	flag.StringVar(&operatingSystem, "o", "", "Operating system. Examples: debian, centos, ubuntu. (Required)")
-	flag.StringVar(&operatingSystemRelease, "r", "", "Operating system release name. Examples: bullseye, 8-stream, focal, jammy. (Required)")
+	flag.StringVar(&operatingSystem, "o", "debian", "Operating system. Examples: debian (Required)")
+	flag.StringVar(&operatingSystemRelease, "r", "bookworm", "Operating system release name. Examples: bullseye, bookworm.  (Required)")
 	flag.StringVar(&overridesPackerVarsPath, "c", fmt.Sprintf("%s/overrides.pkrvars.hcl", installersDirPath), "The path to a Packer variables file that can override the default Packer variable values.")
 	flag.StringVar(&packerBuildErrorAction, "e", "ask", "If the Packer build fails do: clean up, abort, ask, or run-cleanup-provisioner.")
 	flag.BoolVar(&version, "version", false, "Print program version.")
