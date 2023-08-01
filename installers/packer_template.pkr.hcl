@@ -75,6 +75,11 @@ variable "vm_ssh_public_key" {
   default = "ssh-public-key"
 }
 
+variable "vm_ssh_ca_public_key" {
+  type    = string
+  default = "ssh-ca-public-key"
+}
+
 variable "vm_shutdown_command" {
   type    = string
   default = "sudo poweroff"

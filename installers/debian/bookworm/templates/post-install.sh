@@ -16,14 +16,21 @@ EOF
 chmod 0700 /root/.ssh
 chmod 0600 /root/.ssh/authorized_keys
 
-# Add authorized_keys for {{ index .PackerVars "vm_username" }}
-test -d /home/{{ index .PackerVars "vm_username" }}/.ssh || mkdir /home/{{ index .PackerVars "vm_username" }}/.ssh
-cat <<EOF > /home/{{ index .PackerVars "vm_username" }}/.ssh/authorized_keys
-{{ index .PackerVars "vm_ssh_public_key" }}
+# Allow SSH via public keys signed by a trusted SSH CA
+cat <<EOF > /etc/ssh/trusted-ca.pem
+{{ index .PackerVars "vm_ssh_ca_public_key" }}
 EOF
-chmod 0700 /home/{{ index .PackerVars "vm_username" }}/.ssh
-chmod 0600 /home/{{ index .PackerVars "vm_username" }}/.ssh/authorized_keys
-chown --recursive {{ index .PackerVars "vm_username" }}:{{ index .PackerVars "vm_username" }} /home/{{ index .PackerVars "vm_username" }}/.ssh
+
+mkdir /etc/ssh/auth_principals
+echo root > /etc/ssh/auth_principals/root
+echo {{ index .PackerVars "vm_username" }} > /etc/ssh/auth_principals/{{ index .PackerVars "vm_username" }}
+
+cat <<EOF >> /etc/ssh/sshd_config
+AuthorizedPrincipalsFile /etc/ssh/auth_principals/%u
+KbdInteractiveAuthentication no
+PasswordAuthentication yes
+TrustedUserCAKeys /etc/ssh/trusted-ca.pem
+EOF
 
 # Install ansible
 apt-get update
