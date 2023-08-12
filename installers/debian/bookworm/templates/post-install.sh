@@ -45,6 +45,7 @@ update-grub
 
 # Setup ZFS installation pre-reqs
 # Instructions: https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html#installation
+sed -r -i '/^deb(.*) contrib$/!s/^deb(.*)$/deb\1 contrib/g' /etc/apt/sources.list
 cat <<EOF > /etc/apt/sources.list.d/bookworm-backports.list
 deb http://deb.debian.org/debian bookworm-backports main contrib
 deb-src http://deb.debian.org/debian bookworm-backports main contrib
