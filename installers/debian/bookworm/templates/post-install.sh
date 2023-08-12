@@ -42,3 +42,19 @@ ansible-galaxy collection install --timeout 180 community.general
 # Add net.ifnames=0 to the kernel boot parameters
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0"/' /etc/default/grub
 update-grub
+
+# Setup ZFS installation pre-reqs
+# Instructions: https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html#installation
+cat <<EOF > /etc/apt/sources.list.d/bookworm-backports.list
+deb http://deb.debian.org/debian bookworm-backports main contrib
+deb-src http://deb.debian.org/debian bookworm-backports main contrib
+EOF
+
+cat <<EOF > /etc/apt/preferences.d/90_zfs
+Package: src:zfs-linux
+Pin: release n=bookworm-backports
+Pin-Priority: 990
+EOF
+
+apt-get update
+apt-get install -y dpkg-dev linux-headers-generic linux-image-generic
