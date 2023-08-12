@@ -1,4 +1,3 @@
-
 //
 // ESX server variables
 //
@@ -19,29 +18,25 @@ variable "esx_username" {
 
 variable "esx_password" {
   type      = string
-  default   = "password"
   sensitive = true
 }
 
 variable "esx_server" {
-  type    = string
-  default = "vsphere-1"
+  type = string
 }
 
 //
 // HTTP template server
 //
 variable "http_address" {
-  type    = string
-  default = "127.0.0.1"
+  type = string
 }
 
 //
 // Virtual machine variables
 //
 variable "vm_name" {
-  type    = string
-  default = "machine-00"
+  type = string
 }
 
 variable "vm_cpus" {
@@ -63,6 +58,12 @@ variable "vm_disk_size" {
   type    = string
   default = "10240"
 }
+
+variable "vm_disk_additional_size" {
+  type    = list(number)
+  default = [1024]
+}
+
 
 variable "vm_password" {
   type      = string
@@ -117,9 +118,10 @@ locals {
 
 source "vmware-iso" "virtual_machine" {
   boot_command              = ["<wait>", "dhcp && chain http://${var.http_address}/templates/ipxe.sh<enter>"]
-  cpus                      = "${var.vm_cpus}"
-  disk_adapter_type         = "${var.vm_disk_adapter_type}"
-  disk_size                 = "${var.vm_disk_size}"
+  cpus                      = var.vm_cpus
+  disk_adapter_type         = var.vm_disk_adapter_type
+  disk_size                 = var.vm_disk_size
+  disk_additional_size      = var.vm_disk_additional_size
   disk_type_id              = "thin"
   format                    = "vmx"
   guest_os_type             = "${var.vm_guest_os_type}"

@@ -1,4 +1,0 @@
-*.iso
-iso_contents/*
-initrd.gz
-linux
