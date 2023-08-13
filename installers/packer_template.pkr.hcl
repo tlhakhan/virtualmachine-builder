@@ -54,16 +54,15 @@ variable "vm_disk_adapter_type" {
   default = "nvme"
 }
 
-variable "vm_disk_size" {
-  type    = string
-  default = "10240"
+variable "vm_root_disk_size" {
+  type    = number
+  default = 10240
 }
 
-variable "vm_disk_additional_size" {
-  type    = list(number)
-  default = [1024]
+variable "vm_data_disk_size" {
+  type    = number
+  default = 10240
 }
-
 
 variable "vm_password" {
   type      = string
@@ -120,34 +119,34 @@ source "vmware-iso" "virtual_machine" {
   boot_command              = ["<wait>", "dhcp && chain http://${var.http_address}/templates/ipxe.sh<enter>"]
   cpus                      = var.vm_cpus
   disk_adapter_type         = var.vm_disk_adapter_type
-  disk_size                 = var.vm_disk_size
-  disk_additional_size      = var.vm_disk_additional_size
+  disk_size                 = var.vm_root_disk_size
+  disk_additional_size      = [var.vm_data_disk_size]
   disk_type_id              = "thin"
   format                    = "vmx"
-  guest_os_type             = "${var.vm_guest_os_type}"
+  guest_os_type             = var.vm_guest_os_type
   insecure_connection       = "true"
   iso_checksum              = "aed2f5c2a15ebf31a4a2782943bb0cabf59c4f0ccc8c9277822573d7bd6e5adb"
   iso_url                   = "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso"
   keep_registered           = "true"
-  memory                    = "${var.vm_memory}"
+  memory                    = var.vm_memory
   network_adapter_type      = "vmxnet3"
-  remote_cache_datastore    = "${var.esx_datastore}"
+  remote_cache_datastore    = var.esx_datastore
   remote_cache_directory    = "packer_cache/${var.vm_name}"
-  remote_datastore          = "${var.esx_datastore}"
-  remote_host               = "${var.esx_server}"
-  remote_password           = "${var.esx_password}"
+  remote_datastore          = var.esx_datastore
+  remote_host               = var.esx_server
+  remote_password           = var.esx_password
   remote_port               = "22"
   remote_type               = "esx5"
-  remote_username           = "${var.esx_username}"
-  shutdown_command          = "${var.vm_shutdown_command}"
+  remote_username           = var.esx_username
+  shutdown_command          = var.vm_shutdown_command
   skip_compaction           = "true"
   skip_export               = "true"
   skip_validate_credentials = "true"
-  ssh_password              = "${var.vm_password}"
+  ssh_password              = var.vm_password
   ssh_timeout               = "25m"
-  ssh_username              = "${var.vm_username}"
-  version                   = "${var.vm_version}"
-  vm_name                   = "${var.vm_name}"
+  ssh_username              = var.vm_username
+  version                   = var.vm_version
+  vm_name                   = var.vm_name
   vmx_data = {
     "ethernet0.networkName"       = "${var.esx_network}"
     "mem.hotadd"                  = "true"
@@ -159,6 +158,8 @@ source "vmware-iso" "virtual_machine" {
     "pciPassthru.64bitMMIOSizeGB" = "64"    # gpu passthru
     "pciPassthru.msiEnabled"      = "false" # gpu passthru
     "hypervisor.cpuid.v0"         = "false" # gpu passthru
+    "nvme0:1.fileName"            = "disk-1.vmdk"
+    "nvme0:1.present"             = "true"
   }
   vnc_over_websocket = "true"
 }
