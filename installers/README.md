@@ -12,8 +12,4 @@ The operating system folders are structured as follows:
 | File | Description |
 | -- | -- | 
 `<os-name>/<os-release>/virtual_machine.pkrvars.hcl` | Operating system release specific Packer variable overrides.
-`<os-name>/<os-release>/playbook.yaml` | Ansible playbook to run on the virtual machine.
-`<os-name>/<os-release>/inventory` | Ansible playbook inventory.
 `<os-name>/<os-release>/templates` | Every file is processed as a Go `text/template` upon request, passing in the `templateVars` struct to the template on execution.
-`<os-name>/<os-release>/files` | A directory to store non-template files, such as ISOs, initrd or other files needed during the pre|installation (iPXE) phase.
-`<os-name>/<os-release>/files/download_list.txt` | A file that contains a list of URLs that will be used to populate the files directory by the `prepare_installers.yaml` Ansible playbook.
