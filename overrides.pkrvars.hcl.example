@@ -1,5 +1,5 @@
 #
-# ESX variables
+# ESX config
 #
 esx_server    = "" # ESX host
 esx_username  = "" # ESX user with admin and SSH access 
@@ -8,8 +8,8 @@ esx_network   = "" # ESX virtual network name for the VM
 esx_datastore = "" # ESX datastore name to place the VM's VMDK files
 
 #
-# VM variables
+# VM config
 #
-vm_username       = "" # VM user to create
-vm_password       = "" # VM user's password
-vm_ssh_public_key = "" # SSH public key to place into the VM user's SSH authorized_keys file
+vm_cpus      = 2
+vm_memory    = 2048
+vm_disk_size = 10240

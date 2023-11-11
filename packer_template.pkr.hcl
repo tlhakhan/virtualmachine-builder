@@ -47,25 +47,9 @@ variable "vm_disk_adapter_type" {
   default = "nvme"
 }
 
-variable "vm_root_disk_size" {
+variable "vm_disk_size" {
   type    = number
   default = 10240
-}
-
-variable "vm_password" {
-  type      = string
-  default   = "packer"
-  sensitive = true
-}
-
-variable "vm_shutdown_command" {
-  type    = string
-  default = "echo packer | sudo -S poweroff"
-}
-
-variable "vm_username" {
-  type    = string
-  default = "packer"
 }
 
 // VM hardware version details found here: https://kb.vmware.com/s/article/1003746
@@ -76,30 +60,25 @@ variable "vm_version" {
 
 variable "vm_guest_os_type" {
   type    = string
-  default = "otherlinux-64"
+  default = "debian12-64"
 }
 
-variable "vm_linux_distro" {
+variable "vm_ipxe_script" {
   type    = string
-  default = "Linux"
-}
-
-variable "vm_linux_distro_release" {
-  type    = string
-  default = "Generic"
+  default = "debian/bookworm/ipxe.sh"
 }
 
 source "vmware-iso" "virtual_machine" {
-  boot_command              = ["<wait>", "dhcp && chain https://tlhakhan.github.io/vmware-builder/debian/bookworm/ipxe.sh<enter>"]
+  boot_command              = ["<wait>", "dhcp && chain https://tlhakhan.github.io/vmware-builder/${var.vm_ipxe_script}<enter>"]
   cpus                      = var.vm_cpus
   disk_adapter_type         = var.vm_disk_adapter_type
-  disk_size                 = var.vm_root_disk_size
+  disk_size                 = var.vm_disk_size
   disk_type_id              = "thin"
   format                    = "vmx"
   guest_os_type             = var.vm_guest_os_type
   insecure_connection       = "true"
-  iso_checksum              = "aed2f5c2a15ebf31a4a2782943bb0cabf59c4f0ccc8c9277822573d7bd6e5adb"
-  iso_url                   = "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.0/ipxe.iso"
+  iso_checksum              = "cdd2909cc09d8fc6378706a33e184db2945b04df87b7fa245b417fbfdb235f2e"
+  iso_url                   = "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.2/ipxe.iso"
   keep_registered           = "true"
   memory                    = var.vm_memory
   network_adapter_type      = "vmxnet3"
@@ -111,13 +90,13 @@ source "vmware-iso" "virtual_machine" {
   remote_port               = "22"
   remote_type               = "esx5"
   remote_username           = var.esx_username
-  shutdown_command          = var.vm_shutdown_command
+  shutdown_command          = "echo packer| sudo -S poweroff"
   skip_compaction           = "true"
   skip_export               = "true"
   skip_validate_credentials = "true"
-  ssh_password              = var.vm_password
+  ssh_username              = "packer"
+  ssh_password              = "packer"
   ssh_timeout               = "25m"
-  ssh_username              = var.vm_username
   version                   = var.vm_version
   vm_name                   = var.vm_name
   vmx_data = {
@@ -137,4 +116,7 @@ source "vmware-iso" "virtual_machine" {
 
 build {
   sources = ["source.vmware-iso.virtual_machine"]
+  provisioner "shell" {
+    inline = ["echo packer | sudo -S hostnamectl hostname ${var.vm_name}"]
+  }
 }
