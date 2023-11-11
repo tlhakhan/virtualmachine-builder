@@ -26,13 +26,6 @@ variable "esx_server" {
 }
 
 //
-// HTTP template server
-//
-variable "http_address" {
-  type = string
-}
-
-//
 // Virtual machine variables
 //
 variable "vm_name" {
@@ -59,35 +52,20 @@ variable "vm_root_disk_size" {
   default = 10240
 }
 
-variable "vm_data_disk_size" {
-  type    = number
-  default = 10240
-}
-
 variable "vm_password" {
   type      = string
-  default   = "password"
+  default   = "packer"
   sensitive = true
-}
-
-variable "vm_ssh_public_key" {
-  type    = string
-  default = "ssh-public-key"
-}
-
-variable "vm_ssh_ca_public_key" {
-  type    = string
-  default = "ssh-ca-public-key"
 }
 
 variable "vm_shutdown_command" {
   type    = string
-  default = "sudo poweroff"
+  default = "echo packer | sudo -S poweroff"
 }
 
 variable "vm_username" {
   type    = string
-  default = "sysuser"
+  default = "packer"
 }
 
 // VM hardware version details found here: https://kb.vmware.com/s/article/1003746
@@ -111,16 +89,11 @@ variable "vm_linux_distro_release" {
   default = "Generic"
 }
 
-locals {
-  vm_password_crypted = bcrypt(var.vm_password)
-}
-
 source "vmware-iso" "virtual_machine" {
-  boot_command              = ["<wait>", "dhcp && chain http://${var.http_address}/templates/ipxe.sh<enter>"]
+  boot_command              = ["<wait>", "dhcp && chain https://tlhakhan.github.io/vmware-builder/debian/bookworm/ipxe.sh<enter>"]
   cpus                      = var.vm_cpus
   disk_adapter_type         = var.vm_disk_adapter_type
   disk_size                 = var.vm_root_disk_size
-  disk_additional_size      = [var.vm_data_disk_size]
   disk_type_id              = "thin"
   format                    = "vmx"
   guest_os_type             = var.vm_guest_os_type
@@ -158,8 +131,6 @@ source "vmware-iso" "virtual_machine" {
     "pciPassthru.64bitMMIOSizeGB" = "64"    # gpu passthru
     "pciPassthru.msiEnabled"      = "false" # gpu passthru
     "hypervisor.cpuid.v0"         = "false" # gpu passthru
-    "nvme0:1.fileName"            = "disk-1.vmdk"
-    "nvme0:1.present"             = "true"
   }
   vnc_over_websocket = "true"
 }
