@@ -14,5 +14,6 @@ then
 fi 
 
 # Run packer
+packer init packer_template.pkr.hcl
 packer validate -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
 packer build -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
