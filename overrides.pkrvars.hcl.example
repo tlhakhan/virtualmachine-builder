@@ -4,8 +4,7 @@
 esx_server    = "" # ESX host
 esx_username  = "" # ESX user with admin and SSH access 
 esx_password  = "" # ESX user password
-esx_network   = "" # ESX virtual network name for the VM
-esx_datastore = "" # ESX datastore name to place the VM's VMDK files
+esx_datastore = "" # ESX datastore name to place the VM's disk files
 
 #
 # VM config
@@ -13,3 +12,4 @@ esx_datastore = "" # ESX datastore name to place the VM's VMDK files
 vm_cpus      = 2
 vm_memory    = 2048
 vm_disk_size = 10240
+vm_network   = "VM Network"

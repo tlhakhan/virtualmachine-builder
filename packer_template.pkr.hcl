@@ -10,19 +10,12 @@ packer {
 //
 // ESX server variables
 //
-variable "esx_datastore" {
-  type    = string
-  default = "datastore1"
-}
-
-variable "esx_network" {
-  type    = string
-  default = "VM Network"
+variable "esx_server" {
+  type = string
 }
 
 variable "esx_username" {
-  type    = string
-  default = "builder"
+  type = string
 }
 
 variable "esx_password" {
@@ -30,8 +23,9 @@ variable "esx_password" {
   sensitive = true
 }
 
-variable "esx_server" {
-  type = string
+variable "esx_datastore" {
+  type    = string
+  default = "datastore1"
 }
 
 //
@@ -47,24 +41,20 @@ variable "vm_cpus" {
 }
 
 variable "vm_memory" {
-  type    = string
-  default = "1024"
-}
-
-variable "vm_disk_adapter_type" {
-  type    = string
-  default = "nvme"
+  type        = string
+  default     = "1024"
+  description = "Memory size in MiB"
 }
 
 variable "vm_disk_size" {
-  type    = number
-  default = 10240
+  type        = number
+  default     = 10240
+  description = "Disk size in MiB"
 }
 
-// VM hardware version details found here: https://kb.vmware.com/s/article/1003746
-variable "vm_version" {
+variable "vm_network" {
   type    = string
-  default = "20"
+  default = "VM Network"
 }
 
 variable "vm_guest_os_type" {
@@ -77,39 +67,44 @@ variable "vm_ipxe_script" {
   default = "debian/bookworm/ipxe.sh"
 }
 
+variable "ssh_public_key" {
+  type    = string
+  default = ""
+}
+
 source "vmware-iso" "virtual_machine" {
   boot_command              = ["<wait>", "dhcp && chain https://tlhakhan.github.io/vmware-builder/${var.vm_ipxe_script}<enter>"]
+  vm_name                   = var.vm_name
   cpus                      = var.vm_cpus
-  disk_adapter_type         = var.vm_disk_adapter_type
+  memory                    = var.vm_memory
   disk_size                 = var.vm_disk_size
-  disk_type_id              = "thin"
-  format                    = "vmx"
   guest_os_type             = var.vm_guest_os_type
-  insecure_connection       = "true"
+  network_name              = var.vm_network
+  format                    = "vmx"
+  disk_type_id              = "thin"
+  disk_adapter_type         = "nvme"
+  network_adapter_type      = "vmxnet3"
+  version                   = "20"   # More info: https://kb.vmware.com/s/article/1003746
+  insecure_connection       = "true" # needed for self-signed certificates by esxi host
   iso_checksum              = "cdd2909cc09d8fc6378706a33e184db2945b04df87b7fa245b417fbfdb235f2e"
   iso_url                   = "https://github.com/tlhakhan/ipxe-iso/releases/download/v1.2/ipxe.iso"
   keep_registered           = "true"
-  memory                    = var.vm_memory
-  network_adapter_type      = "vmxnet3"
-  remote_cache_datastore    = var.esx_datastore
-  remote_cache_directory    = "packer_cache/${var.vm_name}"
   remote_datastore          = var.esx_datastore
   remote_host               = var.esx_server
+  remote_username           = var.esx_username
   remote_password           = var.esx_password
+  remote_cache_datastore    = var.esx_datastore
+  remote_cache_directory    = "packer_cache/${var.vm_name}"
   remote_port               = "22"
   remote_type               = "esx5"
-  remote_username           = var.esx_username
-  shutdown_command          = "echo packer| sudo -S poweroff"
   skip_compaction           = "true"
   skip_export               = "true"
   skip_validate_credentials = "true"
   ssh_username              = "packer"
   ssh_password              = "packer"
   ssh_timeout               = "25m"
-  version                   = var.vm_version
-  vm_name                   = var.vm_name
+  shutdown_command          = "echo packer| sudo -S poweroff"
   vmx_data = {
-    "ethernet0.networkName"       = "${var.esx_network}"
     "mem.hotadd"                  = "true"
     "numa.autosize"               = "true"
     "numa.autosize.once"          = "false"
@@ -123,9 +118,19 @@ source "vmware-iso" "virtual_machine" {
   vnc_over_websocket = "true"
 }
 
+source "null" "provisioner_debug" {
+  ssh_host     = var.vm_name
+  ssh_username = "packer"
+  ssh_password = "packer"
+}
+
+
 build {
-  sources = ["source.vmware-iso.virtual_machine"]
+  sources = ["source.vmware-iso.virtual_machine", "sources.null.provisioner_debug"]
   provisioner "shell" {
-    inline = ["echo packer | sudo -S hostnamectl hostname ${var.vm_name}"]
+    inline = [
+      "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys",
+      "echo packer | sudo -S hostnamectl hostname ${var.vm_name}"
+    ]
   }
 }
