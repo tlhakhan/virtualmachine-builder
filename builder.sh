@@ -5,7 +5,7 @@ PKR_VAR_vm_name="$1"
 
 if [[ -z $PKR_VAR_vm_name ]]
 then
-  echo Usage: $0 [ vm name ]
+  echo Usage: "$0" [ vm name ]
   exit 1
 fi
 
