@@ -9,6 +9,7 @@ then
   exit 1
 fi
 
+# Check for vars file
 if [[ ! -e "overrides.pkrvars.hcl" ]]
 then
   echo Error:
