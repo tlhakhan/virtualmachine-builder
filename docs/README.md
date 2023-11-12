@@ -1,5 +1,4 @@
-# README
-This folder contains files that will be availabe via <https://tlhakhan.github.io/vmware-builder>.
+# vmware-builder
 
 ## Debian 12
 
@@ -7,4 +6,4 @@ This folder contains files that will be availabe via <https://tlhakhan.github.io
 | - | - |
 | [ipxe.sh](https://tlhakhan.github.io/vmware-builder/debian/bookworm/ipxe.sh) | iPXE script |
 | [preseed.cfg](https://tlhakhan.github.io/vmware-builder/debian/bookworm/preseed.cfg) | Debian preseed config |
-| [sysprep.sh](https://tlhakhan.github.io/vmware-builder/debian/bookworm/sysprep.sh) | Post install script |
+| [sysprep.sh](https://tlhakhan.github.io/vmware-builder/debian/bookworm/sysprep.sh) | Post install shell script |
