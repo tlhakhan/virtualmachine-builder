@@ -7,9 +7,9 @@ packer {
   }
 }
 
-//
-// ESX server variables
-//
+#
+# ESX server variables
+#
 variable "esx_server" {
   type = string
 }
@@ -28,9 +28,9 @@ variable "esx_datastore" {
   default = "datastore1"
 }
 
-//
-// Virtual machine variables
-//
+#
+# Virtual machine variables
+#
 variable "vm_name" {
   type = string
 }
@@ -62,18 +62,19 @@ variable "vm_guest_os_type" {
   default = "debian12-64"
 }
 
-variable "vm_ipxe_script" {
+variable "vm_ipxe_script_url" {
   type    = string
-  default = "debian/bookworm/ipxe.sh"
+  default = "https://tlhakhan.github.io/vmware-builder/debian/bookworm/boot.ipxe"
 }
 
 variable "ssh_public_key" {
   type    = string
   default = ""
+  description = "SSH public key to add to packer user's authorized_keys file"
 }
 
 source "vmware-iso" "virtual_machine" {
-  boot_command              = ["<wait>", "dhcp && chain https://tlhakhan.github.io/vmware-builder/${var.vm_ipxe_script}<enter>"]
+  boot_command              = ["<wait>", "dhcp && chain ${var.vm_ipxe_script_url}<enter>"]
   vm_name                   = var.vm_name
   cpus                      = var.vm_cpus
   memory                    = var.vm_memory
@@ -118,12 +119,15 @@ source "vmware-iso" "virtual_machine" {
   vnc_over_websocket = "true"
 }
 
+#
+# For quick debugging of provisioner scripts
+# Run using: packer build -only=null.provisioner_debug ...
+#
 source "null" "provisioner_debug" {
   ssh_host     = var.vm_name
   ssh_username = "packer"
   ssh_password = "packer"
 }
-
 
 build {
   sources = ["source.vmware-iso.virtual_machine", "sources.null.provisioner_debug"]
