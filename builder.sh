@@ -1,19 +1,23 @@
 #!/bin/bash
 
-# Prompt the user for the name of the virtual machine
-read -p "Name of virtual machine? " vm_name
-
 # Export required variables
-export PKR_VAR_vm_name="$vm_name"
+PKR_VAR_vm_name="$1"
+
+if [[ -z $PKR_VAR_vm_name ]]
+then
+  echo Usage: $0 [ vm name ]
+  exit 1
+fi
 
 if [[ ! -e "overrides.pkrvars.hcl" ]]
 then
-  echo
-  echo Missing overrides.pkrvars.hcl file.  See README.md for more details.
+  echo Error:
+  echo   Missing overrides.pkrvars.hcl file.  See README.md for more details.
   exit 1
 fi 
 
 # Run packer
+export PKR_VAR_vm_name
 packer init packer_template.pkr.hcl
 packer validate -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
-packer build -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
+packer build -only=vmware-iso.virtual_machine -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
