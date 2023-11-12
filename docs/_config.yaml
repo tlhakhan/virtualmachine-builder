@@ -1,0 +1,4 @@
+theme: jekyll-theme-cayman
+markdown: GFM
+title: vmware-builder
+description: vmware-builder operating system installation scripts
