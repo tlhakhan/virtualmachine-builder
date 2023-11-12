@@ -70,7 +70,7 @@ variable "vm_ipxe_script_url" {
 variable "ssh_public_key" {
   type    = string
   default = ""
-  description = "SSH public key to add to admin user's authorized_keys file"
+  description = "SSH public key to add to packer user's authorized_keys file"
 }
 
 source "vmware-iso" "virtual_machine" {
@@ -101,10 +101,10 @@ source "vmware-iso" "virtual_machine" {
   skip_compaction           = "true"
   skip_export               = "true"
   skip_validate_credentials = "true"
-  ssh_username              = "admin"
-  ssh_password              = "admin"
+  ssh_username              = "packer"
+  ssh_password              = "packer"
   ssh_timeout               = "25m"
-  shutdown_command          = "echo admin | sudo -S poweroff"
+  shutdown_command          = "echo packer| sudo -S poweroff"
   vmx_data = {
     "mem.hotadd"                  = "true"
     "numa.autosize"               = "true"
@@ -125,8 +125,8 @@ source "vmware-iso" "virtual_machine" {
 #
 source "null" "provisioner_debug" {
   ssh_host     = var.vm_name
-  ssh_username = "admin"
-  ssh_password = "admin"
+  ssh_username = "packer"
+  ssh_password = "packer"
 }
 
 build {
@@ -134,7 +134,7 @@ build {
   provisioner "shell" {
     inline = [
       "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys",
-      "echo admin | sudo -S hostnamectl hostname ${var.vm_name}"
+      "echo packer | sudo -S hostnamectl hostname ${var.vm_name}"
     ]
   }
 }

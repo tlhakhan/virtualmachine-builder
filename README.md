@@ -19,7 +19,6 @@ status | os | version | machine specs
 # 🌱 Getting started
 1. Create an `overrides.pkrvars.hcl` file.  See example below.
 1. Run the `builder.sh` script.  Provide virtual machine name as argument.
-1. A machine with user `admin` and password `admin` will be created.
 
 ## ⚙️ Example overrides.pkrvars.hcl file
 The `overrides.pkrvars.hcl` file is not tracked by git, this file used to provide required inputs such as ESXi server configuration and override default VM instance size configuration.
