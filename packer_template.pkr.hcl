@@ -68,9 +68,15 @@ variable "vm_ipxe_script_url" {
 }
 
 variable "ssh_public_key" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "SSH public key to add to packer user's authorized_keys file"
+}
+
+variable "ssh_ca_public_key" {
+  type        = string
+  default     = ""
+  description = "SSH CA public key to add as a trusted CA key for sshd_config"
 }
 
 source "vmware-iso" "virtual_machine" {
@@ -134,6 +140,7 @@ build {
   provisioner "shell" {
     inline = [
       "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys",
+      "echo packer | sudo -S bash -c \"echo '${var.ssh_ca_public_key}' > /etc/ssh/trusted_ssh_ca.pub\"",
       "echo packer | sudo -S hostnamectl hostname ${var.vm_name}"
     ]
   }
