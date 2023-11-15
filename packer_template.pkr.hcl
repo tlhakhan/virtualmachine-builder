@@ -52,6 +52,12 @@ variable "vm_disk_size" {
   description = "Disk size in MiB"
 }
 
+variable "vm_disk_additional_size" {
+  type        = list(number)
+  default     = []
+  description = "An array of additional disks with disk size in MiB"
+}
+
 variable "vm_network" {
   type    = string
   default = "VM Network"
@@ -79,12 +85,20 @@ variable "ssh_ca_public_key" {
   description = "SSH CA public key to add as a trusted CA key for sshd_config"
 }
 
+locals {
+  vmx_data_additional_disks = merge(values({ for index, value in var.vm_disk_additional_size : index => {
+    "nvme0:${index + 1}.fileName" = "disk-${index + 1}.vmdk",
+    "nvme0:${index + 1}.present"  = "true"
+  } })...)
+}
+
 source "vmware-iso" "virtual_machine" {
   boot_command              = ["<wait>", "dhcp && chain ${var.vm_ipxe_script_url}<enter>"]
   vm_name                   = var.vm_name
   cpus                      = var.vm_cpus
   memory                    = var.vm_memory
   disk_size                 = var.vm_disk_size
+  disk_additional_size      = var.vm_disk_additional_size
   guest_os_type             = var.vm_guest_os_type
   network_name              = var.vm_network
   format                    = "vmx"
@@ -111,7 +125,7 @@ source "vmware-iso" "virtual_machine" {
   ssh_password              = "packer"
   ssh_timeout               = "25m"
   shutdown_command          = "echo packer| sudo -S poweroff"
-  vmx_data = {
+  vmx_data = merge({
     "mem.hotadd"                  = "true"
     "numa.autosize"               = "true"
     "numa.autosize.once"          = "false"
@@ -121,7 +135,7 @@ source "vmware-iso" "virtual_machine" {
     "pciPassthru.64bitMMIOSizeGB" = "64"    # gpu passthru
     "pciPassthru.msiEnabled"      = "false" # gpu passthru
     "hypervisor.cpuid.v0"         = "false" # gpu passthru
-  }
+  }, local.vmx_data_additional_disks)
   vnc_over_websocket = "true"
 }
 
