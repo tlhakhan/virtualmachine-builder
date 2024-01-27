@@ -1,5 +1,5 @@
 # 📖 README
-This repo helps build virtual machines using Packer on VMware ESXi hosts.
+This repo helps build virtual machines using Packer on VirtualBox.
 
 - [x] Build VMs on a simple network with just DHCP and DNS
 - [x] Doesn't use TFTP server for netbooting
@@ -8,7 +8,7 @@ This repo helps build virtual machines using Packer on VMware ESXi hosts.
 - [x] Build VMs in parallel, for instance `xargs -P4 ...`
 
 **Requirements**
-- vSphere 8.0 ESXi host with SSH access enabled.
+- VirtualBox 7.0.14 or higher.
 - A control machine with `hashicorp/packer` binaries.
 
 **Supported VM Builds**
@@ -18,27 +18,23 @@ status | os | version | machine specs
 
 # 🌱 Getting started
 1. Create an `overrides.pkrvars.hcl` file.  See example below.
-1. Run the `builder.sh` script.  Provide virtual machine name as argument.
+1. Run the `builder.sh` script for Linux or `builder.ps1` script for Windows.  Provide virtual machine name as argument.
 
 ## ⚙️ Example overrides.pkrvars.hcl file
-The `overrides.pkrvars.hcl` file is not tracked by git, this file used to provide required inputs such as ESXi server configuration and override default VM instance size configuration.
+The `overrides.pkrvars.hcl` file is not tracked by git, it is used to override default values in the `packer_template.pkr.hcl` variables.
 
 ```hcl
 #
-# ESX config
-#
-esx_server    = "" # ESX host
-esx_username  = "" # ESX user with admin and SSH access 
-esx_password  = "" # ESX user password
-esx_datastore = "" # ESX datastore name to place the VM's disk files
-
-#
 # VM config
 #
-vm_cpus      = 2
-vm_memory    = 4096
-vm_disk_size = 20480
-vm_network   = "VM Network"
+vm_cpus           = 4
+vm_memory         = 4096
+vm_disk_size      = 20480
+vm_network        = "NatNetwork"
+vm_disk_directory = "/datastore"
+
+ssh_public_key    = "" # SSH key to inject
+ssh_ca_public_key = "" # SSH CA key to trust
 ```
 
 ## 👏 Appendix
