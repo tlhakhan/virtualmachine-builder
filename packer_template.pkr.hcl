@@ -59,7 +59,7 @@ variable "vm_guest_os_type" {
 
 variable "vm_ipxe_script_url" {
   type    = string
-  default = "https://tlhakhan.github.io/vmware-builder/debian/bookworm/boot.ipxe"
+  default = "https://tlhakhan.github.io/virtualbox-builder/debian/bookworm/boot.ipxe"
 }
 
 variable "ssh_public_key" {
