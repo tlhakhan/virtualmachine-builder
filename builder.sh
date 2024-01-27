@@ -20,4 +20,4 @@ fi
 export PKR_VAR_vm_name
 packer init packer_template.pkr.hcl
 packer validate -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
-packer build -only=vmware-iso.virtual_machine -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
+packer build -var-file overrides.pkrvars.hcl packer_template.pkr.hcl
