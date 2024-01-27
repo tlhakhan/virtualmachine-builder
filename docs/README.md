@@ -1,8 +1,8 @@
-# vmware-builder
+# virtualbox-builder
 
 ## Supported OSes
 
-### Debian 12
+### Debian 12 (bookworm)
 
 | file | description |
 | - | - |
