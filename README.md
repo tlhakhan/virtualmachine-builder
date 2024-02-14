@@ -24,15 +24,16 @@ status | os | version | machine specs
 The `overrides.pkrvars.hcl` file is not tracked by git, it is used to override default values in the `packer_template.pkr.hcl` variables.
 
 ```hcl
-#
-# VM config
-#
+# VirtualBox configuration
+vbox_bridge_adapter_name = "Intel(R) Wi-Fi 6E AX210 160MHz"
+
+# VM configuration
 vm_cpus           = 4
 vm_memory         = 4096
 vm_disk_size      = 20480
-vm_network        = "NatNetwork"
 vm_disk_directory = "/datastore"
 
+# SSH details
 ssh_public_key    = "" # SSH key to inject
 ssh_ca_public_key = "" # SSH CA key to trust
 ```

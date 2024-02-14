@@ -10,6 +10,10 @@ packer {
 #
 # VirtualBox variables
 #
+variable "vbox_bridge_adapter_name" {
+  type        = string
+  description = "The name of the host's network adapter to bridge the virtual machine's network adapter to."
+}
 
 #
 # Virtual machine variables
@@ -45,11 +49,6 @@ variable "vm_disk_additional_size" {
   type        = list(number)
   default     = []
   description = "An array of additional disks with disk size in MiB"
-}
-
-variable "vm_network" {
-  type    = string
-  default = "NatNetwork"
 }
 
 variable "vm_guest_os_type" {
@@ -108,8 +107,8 @@ build {
   }
   post-processor "shell-local" {
     inline = [
-      "VBoxManage modifyvm ${var.vm_name} --nic1 natnetwork",
-      "VBoxManage modifyvm ${var.vm_name} --nat-network1 ${var.vm_network}"
+      "VBoxManage modifyvm ${var.vm_name} --nic1 bridged",
+      "VBoxManage modifyvm ${var.vm_name} --bridgeadapter1 \"${var.vbox_bridge_adapter_name}\"",
     ]
   }
 }
