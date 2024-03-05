@@ -1,20 +1,20 @@
 # 📖 README
-This repo helps build virtual machines using Packer on VirtualBox.
+This repo helps build virtual machines using Packer on VMware Workstation Pro.
 
 - [x] Build VMs on a simple network with just DHCP and DNS
 - [x] Doesn't use TFTP server for netbooting
 - [x] Doesn't use a separate HTTP server
 - [x] Gracefully handle CTRL+C
-- [x] Build VMs in parallel, for instance `xargs -P4 ...`
+- [x] Build VMs in parallel
 
 **Requirements**
-- VirtualBox 7.0.14 or higher.
+- VMware Workstation Pro 17.5 or higher.
 - A control machine with `hashicorp/packer` binaries.
 
 **Supported VM Builds**
 status | os | version | machine specs
 ---| --- | --- | ---
-👍 | debian | bookworm | 2 vCPU, 4 GiB vRAM, 20 GiB NVMe vDisk
+👍 | debian | bookworm | 4 vCPU, 4 GiB vRAM, 40 GiB vDisk
 
 # 🌱 Getting started
 1. Create an `overrides.pkrvars.hcl` file.  See example below.
@@ -24,13 +24,10 @@ status | os | version | machine specs
 The `overrides.pkrvars.hcl` file is not tracked by git, it is used to override default values in the `packer_template.pkr.hcl` variables.
 
 ```hcl
-# VirtualBox configuration
-vbox_bridge_adapter_name = "Intel(R) Wi-Fi 6E AX210 160MHz"
-
 # VM configuration
 vm_cpus           = 4
 vm_memory         = 4096
-vm_disk_size      = 20480
+vm_disk_size      = 40960
 vm_disk_directory = "/datastore"
 
 # SSH details
