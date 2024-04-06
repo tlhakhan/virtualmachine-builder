@@ -47,7 +47,7 @@ variable "ssh_public_key" {
 }
 
 variable "vm_username" {
-  default     = "sysuser"
+  default     = "root"
   description = "The virtual machine user name."
 }
 
@@ -65,7 +65,7 @@ variable "vm_user_id" {
 source "vmware-iso" "virtual_machine" {
   boot_command = [
     "<wait>", "c", "<wait3>",
-    "linux /install.a64/vmlinuz auto=true priority=critical interface=auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg DEBIAN_FRONTEND=text", "<enter>",
+    "linux /install.a64/vmlinuz hostname=${var.vm_name} auto=true priority=critical interface=auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg DEBIAN_FRONTEND=text", "<enter>",
     "initrd /install.a64/initrd.gz", "<enter>",
     "boot", "<enter>"
   ]
@@ -77,9 +77,8 @@ source "vmware-iso" "virtual_machine" {
   version       = "21" # see https://kb.vmware.com/s/article/1003746
   http_content = {
     "/preseed.cfg" = templatefile("${path.root}/docs/debian/bookworm/preseed.cfg", {
-      vm_username = var.vm_username,
-      vm_password = var.vm_password,
-      vm_user_id  = var.vm_user_id
+      vm_name     = var.vm_name,
+      vm_password = var.vm_password
     })
   }
   iso_url              = "https://cdimage.debian.org/debian-cd/current/arm64/iso-cd/debian-12.5.0-arm64-netinst.iso"
@@ -93,8 +92,8 @@ source "vmware-iso" "virtual_machine" {
   ssh_username         = var.vm_username
   ssh_password         = var.vm_password
   ssh_timeout          = "25m"
-  shutdown_command     = "echo ${var.vm_password} | sudo -S poweroff"
-  headless             = false
+  shutdown_command     = "poweroff"
+  headless             = true
   snapshot_name        = "clean"
   usb                  = true # console keyboard functionality
   vmx_data = {
@@ -111,7 +110,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "mkdir -m 0700 ~/.ssh",
+      "test -d ~/.ssh || mkdir -m 0700 ~/.ssh",
       "touch ~/.ssh/authorized_keys",
       "chmod 0600 ~/.ssh/authorized_keys",
       "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys"
