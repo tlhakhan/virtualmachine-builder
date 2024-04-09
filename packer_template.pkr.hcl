@@ -64,10 +64,7 @@ variable "vm_user_id" {
 
 source "vmware-iso" "virtual_machine" {
   boot_command = [
-    "<wait>", "c", "<wait3>",
-    "linux /install.a64/vmlinuz hostname=${var.vm_name} auto=true priority=critical interface=auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg DEBIAN_FRONTEND=text", "<enter>",
-    "initrd /install.a64/initrd.gz", "<enter>",
-    "boot", "<enter>"
+    templatefile("${path.root}/docs/debian/bookworm/boot_command.tpl", { vm_name = var.vm_name })
   ]
   vm_name       = var.vm_name
   cpus          = var.vm_cpus
@@ -99,9 +96,6 @@ source "vmware-iso" "virtual_machine" {
   vmx_data = {
     "architecture"     = "arm64"
     "usb_xhci.present" = true # console keyboard functionality
-  }
-  vmx_data_post = {
-    "ethernet0.connectionType" = "bridged"
   }
 }
 
