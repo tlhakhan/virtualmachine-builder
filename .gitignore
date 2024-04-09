@@ -1,2 +1,3 @@
 overrides.pkrvars.hcl
 packer_cache
+.DS_Store
