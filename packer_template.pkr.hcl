@@ -62,6 +62,11 @@ variable "vm_user_id" {
   description = "The virtual machine user's user id."
 }
 
+variable "vm_connection_type" {
+  default     = "nat"
+  description = "The type of network connection between the host and virtual machine. Example: nat, bridged"
+}
+
 source "vmware-iso" "virtual_machine" {
   boot_command = [
     templatefile("${path.root}/docs/debian/bookworm/boot_command.tpl", { vm_name = var.vm_name })
@@ -96,6 +101,9 @@ source "vmware-iso" "virtual_machine" {
   vmx_data = {
     "architecture"     = "arm64"
     "usb_xhci.present" = true # console keyboard functionality
+  }
+  vmx_data_post = {
+    "ethernet0.connectionType" = var.vm_connection_type
   }
 }
 
