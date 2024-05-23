@@ -115,7 +115,9 @@ build {
       "test -d ~/.ssh || mkdir -m 0700 ~/.ssh",
       "touch ~/.ssh/authorized_keys",
       "chmod 0600 ~/.ssh/authorized_keys",
-      "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys"
+      "echo '${var.ssh_public_key}' > ~/.ssh/authorized_keys",
+      "echo 'PermitRootLogin prohibit-password' >> /etc/ssh/sshd_config",
+      "echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config",
     ]
   }
 }
