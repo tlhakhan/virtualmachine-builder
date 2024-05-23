@@ -96,7 +96,7 @@ source "vmware-iso" "virtual_machine" {
   ssh_timeout          = "25m"
   shutdown_command     = "poweroff"
   headless             = true
-  snapshot_name        = "clean"
+  snapshot_name        = "init"
   usb                  = true # console keyboard functionality
   vmx_data = {
     "architecture"     = "arm64"
