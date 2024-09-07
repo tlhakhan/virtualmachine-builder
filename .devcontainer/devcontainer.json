@@ -8,7 +8,7 @@
 		"ghcr.io/devcontainers-contrib/features/packer-asdf:2": {}
 	},
 	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
 	]
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
