@@ -62,9 +62,10 @@ variable "vm_user_id" {
   description = "The virtual machine user's user id."
 }
 
-variable "vm_connection_type" {
-  default     = "nat"
-  description = "The type of network connection between the host and virtual machine. Example: nat, bridged"
+variable "vmx_data_post" {
+  default     = {}
+  type        = map(string)
+  description = "VMX modifications after virtual machine is provisioned."
 }
 
 source "vmware-iso" "virtual_machine" {
@@ -83,8 +84,8 @@ source "vmware-iso" "virtual_machine" {
       vm_password = var.vm_password
     })
   }
-  iso_url              = "https://cdimage.debian.org/debian-cd/current/arm64/iso-cd/debian-12.5.0-arm64-netinst.iso"
-  iso_checksum         = "sha256:1090f86eaf21dd305bb7ec24629f8421218d8cff02e93a1a87554153ab4efa38"
+  iso_url              = "http://cdimage.debian.org/debian-cd/current/arm64/iso-cd/debian-12.7.0-arm64-netinst.iso"
+  iso_checksum         = "sha256:ff476eeee26162e42111277796cdb7470ff1f1f6203bd9bc4548d211ebf9f931"
   disk_adapter_type    = "nvme"
   network_adapter_type = "e1000e"
   keep_registered      = true
@@ -102,9 +103,7 @@ source "vmware-iso" "virtual_machine" {
     "architecture"     = "arm64"
     "usb_xhci.present" = true # console keyboard functionality
   }
-  vmx_data_post = {
-    "ethernet0.connectionType" = var.vm_connection_type
-  }
+  vmx_data_post = var.vmx_data_post
 }
 
 build {
